@@ -47,10 +47,22 @@ accountHttp.getAccountInfo(address)
          // 承認音を鳴らす
         var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding2.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
-        my_audio.play();  //サウンドを再生
-      
+        my_audio.play();  //サウンドを再生      
     });
 
+    listener.unconfirmedAdded(address)
+    .subscribe(tx=>{
+        //受信後の処理を記述
+        console.log(tx);
+      　　// 未承認トランザクション音を鳴らす
+        var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
+        my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
+        my_audio.play();  //サウンドを再生
+      
+      
+    });
+    
+    
    
   });
   
@@ -126,9 +138,9 @@ function handleSSS() {
     
                                                 
                                                // (未承認)送金音を鳴らす
-    var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
-    my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
-    my_audio.play();  //サウンドを再生
+    //var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
+    //my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
+    //my_audio.play();  //サウンドを再生
     
     
     
