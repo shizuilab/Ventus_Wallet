@@ -32,12 +32,10 @@ accountHttp.getAccountInfo(address)
     //　リスナーに挑戦  //////////////////////
   
  
-  
   nsRepo = repositoryFactory.createNamespaceRepository();
   
   wsEndpoint = NODE_URL.replace('http', 'ws') + "/ws";
   listener = new symbol.Listener(wsEndpoint,nsRepo,WebSocket);
- // listener.open();
   
   listener.open().then(() => {
 
@@ -46,8 +44,7 @@ accountHttp.getAccountInfo(address)
     .subscribe(tx=>{
         //受信後の処理を記述
         console.log(tx);
-      
-                                             // 承認音を鳴らす
+         // 承認音を鳴らす
         var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding2.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
         my_audio.play();  //サウンドを再生
