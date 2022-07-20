@@ -37,13 +37,15 @@ accountHttp.getAccountInfo(address)
   wsEndpoint = NODE_URL.replace('http', 'ws') + "/ws";
   listener = new symbol.Listener(wsEndpoint,nsRepo,WebSocket);
   
-  listener.open().then(() => {
-    
-    
-    //ブロック生成の検知  （約30秒ごとに通信が発生する為、WebSocketの切断が起こりにくくなる/常時監視）
-    listener.newBlock(address)
+  
+  listener.open().then(() => {//Websocketが切断される事なく、常時監視するために、ブロック生成(約30秒毎)の検知を行う
+
+    //ブロック生成の検知
+    listener.newBlock()
     .subscribe(block=>console.log(block));
-    });
+　});
+  
+  listener.open().then(() => {
 
     //承認トランザクションの検知
     listener.confirmed(address)
