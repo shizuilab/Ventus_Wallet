@@ -38,6 +38,12 @@ accountHttp.getAccountInfo(address)
   listener = new symbol.Listener(wsEndpoint,nsRepo,WebSocket);
   
   listener.open().then(() => {
+    
+    
+    //ブロック生成の検知  （約30秒ごとに通信が発生する為、WebSocketの切断が起こりにくくなる/常時監視）
+    listener.newBlock()
+    .subscribe(block=>console.log(block));
+    });
 
     //承認トランザクションの検知
     listener.confirmed(address)
