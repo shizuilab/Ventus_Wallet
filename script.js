@@ -43,7 +43,7 @@ accountHttp.getAccountInfo(address)
     //Websocketが切断される事なく、常時監視するために、ブロック生成(約30秒毎)の検知を行う
 
     //ブロック生成の検知
-    listener.newBlock()
+    listener.newBlock(address)
     .subscribe(block=>{
       console.log(block);
     });
