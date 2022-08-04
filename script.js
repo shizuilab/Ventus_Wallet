@@ -86,11 +86,15 @@ const searchCriteria = {
   order: symbol.Order.Desc,
 }
 
+console.log("searchCriteria");  //////////////////
+console.log(searchCriteria);    //////////////////
+
 transactionHttp
   .search(searchCriteria)
   .toPromise()
   .then((txs) => {
-    console.log(txs)
+    console.log("txs");
+    console.log(txs);
     const dom_txInfo = document.getElementById('wallet-transactions')
     for (let tx of txs.data) {
       console.log(tx)
