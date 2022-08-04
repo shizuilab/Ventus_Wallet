@@ -97,11 +97,12 @@ transactionHttp
     console.log(txs);           /////////////////
     const dom_txInfo = document.getElementById('wallet-transactions')
     
-    console.log("dom_txInfo=");
-    console.log(dom_txInfo);
+    console.log("dom_txInfo="); ////////////////
+    console.log(dom_txInfo);    ////////////////
     
     for (let tx of txs.data) {
-      console.log(tx)
+      console.log("tx=");      ////////////////////
+      console.log(tx);
       const dom_tx = document.createElement('div')
       const dom_txType = document.createElement('div')
       const dom_hash = document.createElement('div')
@@ -127,7 +128,7 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
 // handleSSS関数はトランザクションを作成し、window.SSS.setTransaction関数を実行しSSSにトランザクションを登録します。そしてwindow.SSS.requestSign関数を実行し、SSSを用いた署名をユーザ－に要求します。
 
 function handleSSS() {
-  console.log('handle sss')
+  console.log('handle sss');
   const addr = document.getElementById('form-addr').value
   const amount = document.getElementById('form-amount').value
   const message = document.getElementById('form-message').value
