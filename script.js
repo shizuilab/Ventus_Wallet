@@ -106,6 +106,14 @@ transactionHttp
       const dom_tx = document.createElement('div')
       const dom_txType = document.createElement('div')
       const dom_hash = document.createElement('div')
+      
+      console.log("dom_tx="); ///////////////////////
+      console.log(dom_tx);
+      console.log("dom_txType=");
+      console.log(dom_txType);
+      console.log("dom_hash=");
+      console.log(dom_hash);   ///////////////////////
+      
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`
       dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`
