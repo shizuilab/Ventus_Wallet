@@ -115,8 +115,8 @@ transactionHttp
       console.log(dom_hash);   ///////////////////////
       
 
-      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`
-      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`
+      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}` //　文字列の結合 　Tx タイプ
+      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`       //  文字列の結合　 Tx ハッシュ 
 
       dom_tx.appendChild(dom_txType)
       dom_tx.appendChild(dom_hash)
