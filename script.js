@@ -121,8 +121,9 @@ transactionHttp
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}` //　文字列の結合 　Tx タイプ
       dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`       //  文字列の結合　 Tx ハッシュ 
 
-      dom_tx.appendChild(dom_txType)
-      dom_tx.appendChild(dom_hash)
+      dom_tx.appendChild(dom_txType)                    // dom_txType をdom_txに追加 
+      dom_tx.appendChild(dom_hash)                      // dom_hash をdom_txに追加
+      dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
       dom_tx.appendChild(document.createElement('hr'))
 
       dom_txInfo.appendChild(dom_tx)
