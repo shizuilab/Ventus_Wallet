@@ -116,8 +116,8 @@ transactionHttp
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`                     //　文字列の結合 　Tx タイプ
       dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`                           //  文字列の結合　 Tx ハッシュ 
-      dom_signer_address.innerText = `署名アドレス : ${tx.signer.address.address}`            //  文字列の結合　署名アドレス 
-      dom_recipient_address.innerText = `受信アドレス : ${tx.recipientAddress.address}`       //  文字列の結合　受信アドレス 
+      dom_signer_address.innerText = `送信者 : ${tx.signer.address.address}`    //  文字列の結合　送信者 
+      dom_recipient_address.innerText = `宛先 : ${tx.recipientAddress.address}`//  文字列の結合　宛先 
       
 
       dom_tx.appendChild(dom_txType)                    // dom_txType をdom_txに追加 
