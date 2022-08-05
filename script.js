@@ -110,7 +110,7 @@ transactionHttp
       const dom_txType = document.createElement('div')
       const dom_hash = document.createElement('div')
       
-      const dom_signer_address = document.createElement('div')
+      //const dom_signer_address = document.createElement('div')
       const dom_recipient_address = document.createElement('div')
       
       
