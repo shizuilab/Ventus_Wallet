@@ -82,7 +82,7 @@ const searchCriteria = {
   group: symbol.TransactionGroup.Confirmed,
   address,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 5,
   order: symbol.Order.Desc,
 }
 
@@ -103,7 +103,7 @@ transactionHttp
     console.log("dom_txInfo="); ////////////////
     console.log(dom_txInfo);    ////////////////
     
-    for (let tx of txs.data) {
+    for (let tx of txs.data) {   //    配列をループ処理
       console.log("tx=");      ////////////////////
       console.log(tx);
       const dom_tx = document.createElement('div')
