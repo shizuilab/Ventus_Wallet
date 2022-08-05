@@ -118,7 +118,7 @@ transactionHttp
       dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`                           //  文字列の結合　 Tx ハッシュ 
       dom_signer_address.innerText = `送信者 : ${tx.signer.address.address}`    //  文字列の結合　送信者
       
-    if (type === 16724) {  
+    if (tx.type === 16724) {  
       dom_recipient_address.innerText = `宛先   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
     }
       
@@ -127,7 +127,7 @@ transactionHttp
       dom_tx.appendChild(dom_hash)                      // dom_hash をdom_txに追加
       dom_tx.appendChild(dom_signer_address)
     
-    if (type === 16724) { 
+    if (tx.type === 16724) { 
       dom_tx.appendChild(dom_recipient_address)
     }
       
