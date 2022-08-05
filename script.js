@@ -109,22 +109,21 @@ transactionHttp
       const dom_tx = document.createElement('div')
       const dom_txType = document.createElement('div')
       const dom_hash = document.createElement('div')
-      
-      //const dom_signer_address = document.createElement('div')
-      //const dom_recipient_address = document.createElement('div')
+      const dom_signer_address = document.createElement('div')
+      const dom_recipient_address = document.createElement('div')
       
       
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`                     //　文字列の結合 　Tx タイプ
       dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`                           //  文字列の結合　 Tx ハッシュ 
-      //dom_signer_address.innerText = `署名アドレス : ${tx.signer.address}`                    //  文字列の結合　署名アドレス 
-      //dom_recipient_address.innerText = `受信アドレス : ${tx.recipientAddress.address}`       //  文字列の結合　受信アドレス 
+      dom_signer_address.innerText = `署名アドレス : ${tx.signer.address.address}`            //  文字列の結合　署名アドレス 
+      dom_recipient_address.innerText = `受信アドレス : ${tx.recipientAddress.address}`       //  文字列の結合　受信アドレス 
       
 
       dom_tx.appendChild(dom_txType)                    // dom_txType をdom_txに追加 
       dom_tx.appendChild(dom_hash)                      // dom_hash をdom_txに追加
-      //dom_tx.appendChild(dom_signer_address)
-      //dom_tx.appendChild(dom_recipient_address)
+      dom_tx.appendChild(dom_signer_address)
+      dom_tx.appendChild(dom_recipient_address)
 
       dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
 
@@ -144,12 +143,6 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
     　break;  
     case 16705:
     　return 'アグリゲートコンプリート'
-    　break;
-    case 16722:
-    　return 'シークレットロック'
-    　break;  
-    case 16978:
-    　return 'シークレットプルーフ'
     　break;
     default:
   　　return 'その他のトランザクション'
