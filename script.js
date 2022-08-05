@@ -132,8 +132,25 @@ transactionHttp
 
 
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
-  if (type === 16724) return 'TRANSFER TRANSACTION'
-  return 'OTHER TRANSACTION'
+  switch(type){
+  　case type === 16724:
+    　return '転送'
+    　break;
+  　case type === 16961:
+    　return 'アグリゲートボンデッド'
+    　break;  
+    case type === 16705:
+    　return 'アグリゲートコンプリート'
+    　break;
+    case type === 16722:
+    　return 'シークレットロック'
+    　break;  
+    case type === 16978:
+    　return 'シークレットプルーフ'
+    　break;
+    default:
+  　　return 'その他のトランザクション'
+  }
 }
 
 // handleSSS関数はトランザクションを作成し、window.SSS.setTransaction関数を実行しSSSにトランザクションを登録します。そしてwindow.SSS.requestSign関数を実行し、SSSを用いた署名をユーザ－に要求します。
