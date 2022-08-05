@@ -104,29 +104,31 @@ transactionHttp
     console.log(dom_txInfo);    ////////////////
     
     for (let tx of txs.data) {   //    配列をループ処理
-      console.log("tx=");      ////////////////////
-      console.log(tx);
+      //console.log("tx=");      ////////////////////
+      //console.log(tx);
       const dom_tx = document.createElement('div')
       const dom_txType = document.createElement('div')
       const dom_hash = document.createElement('div')
       
-      console.log("dom_tx="); ///////////////////////
-      console.log(dom_tx);
-      console.log("dom_txType=");
-      console.log(dom_txType);
-      console.log("dom_hash=");
-      console.log(dom_hash);   ///////////////////////
+      const dom_signer_address = document.createElement('div')
+      const dom_recipient_address = document.createElement('div')
+      
       
 
-      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}` //　文字列の結合 　Tx タイプ
-      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`       //  文字列の結合　 Tx ハッシュ 
+      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`                     //　文字列の結合 　Tx タイプ
+      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`                           //  文字列の結合　 Tx ハッシュ 
+      dom_signer_address.innerText = `署名アドレス : ${tx.signer.address}`                    //  文字列の結合　署名アドレス 
+      dom_recipient_address.innerText = `受信アドレス : ${tx.recipientAddress.address}`       //  文字列の結合　受信アドレス 
+      
 
       dom_tx.appendChild(dom_txType)                    // dom_txType をdom_txに追加 
       dom_tx.appendChild(dom_hash)                      // dom_hash をdom_txに追加
-      dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
-      dom_tx.appendChild(document.createElement('hr'))
+      dom_tx.appendChild(dom_signer_address)
+      dom_tx.appendChild(dom_recipient_address)
 
-      dom_txInfo.appendChild(dom_tx)
+      dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
+
+      dom_txInfo.appendChild(dom_tx)                    // トランザクション情報を追加
     }
   })
 }, 500)
