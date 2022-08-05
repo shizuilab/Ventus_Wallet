@@ -88,6 +88,9 @@ const searchCriteria = {
 
 console.log("searchCriteria=");  //////////////////
 console.log(searchCriteria);    //////////////////
+  
+console.log("transactionHttp=");/////////////////
+console.log(transactionHttp);   //////////////////
 
 transactionHttp
   .search(searchCriteria)
