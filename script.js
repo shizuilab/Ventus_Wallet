@@ -133,19 +133,19 @@ transactionHttp
 
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
   switch(type){
-  　case type === 16724:
+  　case 16724:
     　return '転送'
     　break;
-  　case type === 16961:
+  　case 16961:
     　return 'アグリゲートボンデッド'
     　break;  
-    case type === 16705:
+    case 16705:
     　return 'アグリゲートコンプリート'
     　break;
-    case type === 16722:
+    case 16722:
     　return 'シークレットロック'
     　break;  
-    case type === 16978:
+    case 16978:
     　return 'シークレットプルーフ'
     　break;
     default:
