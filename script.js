@@ -82,7 +82,7 @@ const searchCriteria = {
   group: symbol.TransactionGroup.Confirmed,
   address,
   pageNumber: 1,
-  pageSize: 20,
+  pageSize: 0,
   order: symbol.Order.Desc,
 }
 
@@ -114,8 +114,8 @@ transactionHttp
       
       
 
-      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`                     //　文字列の結合 　Tx タイプ
-      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`                           //  文字列の結合　 Tx ハッシュ 
+      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`        //　文字列の結合 　Tx タイプ
+      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`              //  文字列の結合　 Tx ハッシュ 
       dom_signer_address.innerText = `送信者 : ${tx.signer.address.address}`    //  文字列の結合　送信者
       
     if (tx.type === 16724) {  
