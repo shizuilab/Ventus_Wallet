@@ -24,7 +24,7 @@ accountHttp.getAccountInfo(address)
     for (let m of accountInfo.mosaics) {
       if (m.id.id.toHex() === XYM_ID) {
         const dom_xym = document.getElementById('wallet-xym')
-        dom_xym.innerText = `XYM 残高 : ${m.amount.compact() / Math.pow(10, 6)}`
+        dom_xym.innerText = `XYM Balance : ${m.amount.compact() / Math.pow(10, 6)}`
       }
     }
   })
@@ -116,10 +116,10 @@ transactionHttp
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`        //　文字列の結合 　Tx タイプ
       dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`              //  文字列の結合　 Tx ハッシュ 
-      dom_signer_address.innerText = `送信者 : ${tx.signer.address.address}`    //  文字列の結合　送信者
+      dom_signer_address.innerText = `From : ${tx.signer.address.address}`    //  文字列の結合　送信者
       
     if (tx.type === 16724) {  
-      dom_recipient_address.innerText = `宛先   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
+      dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
     }
       
 
@@ -142,16 +142,16 @@ transactionHttp
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
   switch(type){
   　case 16724:
-    　return '転送'
+    　return 'Transfer'
     　break;
   　case 16961:
-    　return 'アグリゲートボンデッド'
+    　return 'Aggregate Bonded'
     　break;  
     case 16705:
-    　return 'アグリゲートコンプリート'
+    　return 'Aggregate Complete'
     　break;
     default:
-  　　return 'その他のトランザクション'
+  　　return 'Other Transaction'
   }
 }
 
