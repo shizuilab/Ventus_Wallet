@@ -115,7 +115,8 @@ transactionHttp
       
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`        //　文字列の結合 　Tx タイプ
-      dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`              //  文字列の結合　 Tx ハッシュ 
+      //dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`              //  文字列の結合　 Tx ハッシュ
+      dom_hash.innerHTML = `Tx Hash : <a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`
       dom_signer_address.innerText = `From : ${tx.signer.address.address}`    //  文字列の結合　送信者
       
     if (tx.type === 16724) {  
