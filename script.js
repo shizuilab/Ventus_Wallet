@@ -142,17 +142,86 @@ transactionHttp
 
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
   switch(type){
-  　case 16724:
-    　return 'Transfer'
+  　case 16720:
+    　return 'ACCOUNT_ADDRESS_RESTRICTION'
     　break;
-  　case 16961:
-    　return 'Aggregate Bonded'
+  　case 16716:
+    　return 'ACCOUNT_KEY_LINK'
     　break;  
-    case 16705:
-    　return 'Aggregate Complete'
+    case 16708:
+    　return 'ACCOUNT_METADATA'
     　break;
+    case 16976:
+    　return 'ACCOUNT_MOSAIC_RESTRICTION'
+    　break;
+    case 17232:
+    　return 'ACCOUNT_OPERATION_RESTRICTION'
+    　break;
+    case 16974:
+    　return 'ADDRESS_ALIAS'
+    　break;
+    case 16961:
+    　return 'AGGREGATE_BONDED'
+    　break;
+    case 16705:
+    　return 'AGGREGATE_COMPLETE'
+    　break;
+    case 16712:
+    　return 'HASH_LOCK'
+    　break;
+    case 16977:
+    　return 'MOSAIC_ADDRESS_RESTRICTION'
+    　break;
+    case 17230:
+    　return 'MOSAIC_ALIAS'
+    　break;
+    case 16717:
+    　return 'MOSAIC_DEFINITION'
+    　break;
+    case 16721:
+    　return 'MOSAIC_GLOBAL_RESTRICTION'
+    　break;
+    case 16964:
+    　return 'MOSAIC_METADATA'
+    　break;
+    case 16973:
+    　return 'MOSAIC_SUPPLY_CHANGE'
+    　break;
+    case 17229:
+    　return 'MOSAIC_SUPPLY_REVOCATION'
+    　break;
+    case 16725:
+    　return 'MULTISIG_ACCOUNT_MODIFICATION'
+    　break;
+    case 17220:
+    　return 'NAMESPACE_METADATA'
+    　break;
+    case 16718:
+    　return 'NAMESPACE_REGISTRATION'
+    　break;
+    case 16972:
+    　return 'NODE_KEY_LINK'
+    　break;
+    case 0:
+    　return 'RESERVED'
+    　break;
+    case 16722:
+    　return 'SECRET_LOCK'
+    　break;
+    case 16978:
+    　return 'SECRET_PROOF'
+    　break;
+    case 16724:
+    　return 'TRANSFER'
+    　break;
+    case 16707:
+    　return 'VOTING_KEY_LINK'
+    　break;
+    case 16963:
+    　return 'VRF_KEY_LINK'
+    　break;  
     default:
-  　　return 'Other Transaction'
+  　　return 'Other'
   }
 }
 
