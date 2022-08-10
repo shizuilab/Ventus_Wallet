@@ -121,8 +121,9 @@ transactionHttp
       
     if (tx.type === 16724) {  
       dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
+      dom_amount.innerText = `amount : ${tx.mosaics.amount/1000000}`     // 　数量
     }
-      dom_amount.innerText = `amount : ${tx.mosaics.amount / 1000000} XYM`     // 　数量
+      
 
       dom_tx.appendChild(dom_txType)                    // dom_txType をdom_txに追加 
       dom_tx.appendChild(dom_hash)                      // dom_hash をdom_txに追加
@@ -130,8 +131,9 @@ transactionHttp
     
     if (tx.type === 16724) { 
       dom_tx.appendChild(dom_recipient_address)
-    }
       dom_tx.appendChild(dom_amount)
+    }
+      
       dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
 
       dom_txInfo.appendChild(dom_tx)                    // トランザクション情報を追加
