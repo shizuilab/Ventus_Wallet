@@ -123,8 +123,8 @@ transactionHttp
       dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
       dom_amount.innerText = `amount : ${tx.mosaics.amount}`     // 　数量 
       
-      console.log("tx.mosaics.mosaic.amount = "); /////////////
-      console.log(tx.mosaics.mosaic.amount);      /////////////
+      console.log("tx.mosaics.amount = "); /////////////
+      console.log(tx.mosaics.amount);      /////////////
     }
       
 
