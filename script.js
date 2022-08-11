@@ -111,7 +111,7 @@ transactionHttp
       const dom_hash = document.createElement('div')
       const dom_signer_address = document.createElement('div')
       const dom_recipient_address = document.createElement('div')
-      const dom_amount = document.createElement('div')
+      //const dom_amount = document.createElement('div')
       
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`        //　文字列の結合 　Tx タイプ
@@ -121,10 +121,10 @@ transactionHttp
       
     if (tx.type === 16724) {  
       dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
-      dom_amount.innerText = `amount : ${tx.mosaics.amount}`     // 　数量 
+      //dom_amount.innerText = `amount : ${tx.mosaics.amount}`     // 　数量 
       
-      console.log("tx.mosaics.amount = "); /////////////
-      console.log(tx.mosaics.amount);      /////////////
+      //console.log("tx.mosaics.amount = "); /////////////
+      //console.log(tx.mosaics.amount);      /////////////
     }
       
 
@@ -134,7 +134,7 @@ transactionHttp
     
     if (tx.type === 16724) { 
       dom_tx.appendChild(dom_recipient_address)
-      dom_tx.appendChild(dom_amount)
+      //dom_tx.appendChild(dom_amount)
     }
       
       dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
