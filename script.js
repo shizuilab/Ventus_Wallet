@@ -16,7 +16,7 @@ setTimeout(() => {
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
 
 const dom_addr = document.getElementById('wallet-addr');
-dom_addr.innerText = address.pretty()                                       // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
+dom_addr.innerText = address.pretty();                                       // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
 
 accountHttp.getAccountInfo(address)
   .toPromise()
@@ -81,7 +81,7 @@ const searchCriteria = {
   pageNumber: 1,
   pageSize: 10,
   order: symbol.Order.Desc,
-}
+};
 
 console.log("searchCriteria=");  //////////////////
 console.log(searchCriteria);    //////////////////
@@ -112,32 +112,32 @@ transactionHttp
       const dom_message = document.createElement('div');
       
 
-      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`        //　文字列の結合 　Tx タイプ
-      //dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`              //  文字列の結合　 Tx ハッシュ
-      dom_hash.innerHTML = `Tx Hash : <a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`
-      dom_signer_address.innerText = `From : ${tx.signer.address.address}`    //  文字列の結合　送信者
+      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`;        //　文字列の結合 　Tx タイプ
+      //dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`;              //  文字列の結合　 Tx ハッシュ
+      dom_hash.innerHTML = `Tx Hash : <a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`;
+      dom_signer_address.innerText = `From : ${tx.signer.address.address}`;    //  文字列の結合　送信者
       
     if (tx.type === 16724) {  // トランザクションが Transfer の場合
-      dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
-      dom_amount.innerText = `amount : ${tx.mosaics[0].amount.lower/1000000}`     // 　数量 
-      dom_message.innerText = `Message : ${tx.message.payload}`     // 　メッセージ 
+      dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`; //  文字列の結合　宛先
+      dom_amount.innerText = `amount : ${tx.mosaics[0].amount.lower/1000000}`;     // 　数量 
+      dom_message.innerText = `Message : ${tx.message.payload}`;     // 　メッセージ 
   
     }
       
 
-      dom_tx.appendChild(dom_txType)                    // dom_txType をdom_txに追加 
-      dom_tx.appendChild(dom_hash)                      // dom_hash をdom_txに追加
-      dom_tx.appendChild(dom_signer_address)            // dom_signer_address をdom_txに追加
+      dom_tx.appendChild(dom_txType);                    // dom_txType をdom_txに追加 
+      dom_tx.appendChild(dom_hash);                      // dom_hash をdom_txに追加
+      dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加
     
     if (tx.type === 16724) { // トランザクションが Transfer の場合
-      dom_tx.appendChild(dom_recipient_address)         // dom_recipient_address をdom_txに追加
-      dom_tx.appendChild(dom_amount)                    // dom_amount をdom_txに追加
-      dom_tx.appendChild(dom_message)                   // dom_message をdom_txに追加
+      dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
+      dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+      dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加
     }
       
-      dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
+      dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
 
-      dom_txInfo.appendChild(dom_tx)                    // トランザクション情報を追加
+      dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
   })
 }, 500)
@@ -146,85 +146,85 @@ transactionHttp
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
   switch(type){
   　case 16720:
-    　return 'ACCOUNT_ADDRESS_RESTRICTION'
+    　return 'ACCOUNT_ADDRESS_RESTRICTION';
     　break;
   　case 16716:
-    　return 'ACCOUNT_KEY_LINK'
+    　return 'ACCOUNT_KEY_LINK';
     　break;  
     case 16708:
-    　return 'ACCOUNT_METADATA'
+    　return 'ACCOUNT_METADATA';
     　break;
     case 16976:
-    　return 'ACCOUNT_MOSAIC_RESTRICTION'
+    　return 'ACCOUNT_MOSAIC_RESTRICTION';
     　break;
     case 17232:
-    　return 'ACCOUNT_OPERATION_RESTRICTION'
+    　return 'ACCOUNT_OPERATION_RESTRICTION';
     　break;
     case 16974:
-    　return 'ADDRESS_ALIAS'
+    　return 'ADDRESS_ALIAS';
     　break;
     case 16961:
-    　return 'AGGREGATE_BONDED'
+    　return 'AGGREGATE_BONDED';
     　break;
     case 16705:
-    　return 'AGGREGATE_COMPLETE'
+    　return 'AGGREGATE_COMPLETE';
     　break;
     case 16712:
-    　return 'HASH_LOCK'
+    　return 'HASH_LOCK';
     　break;
     case 16977:
-    　return 'MOSAIC_ADDRESS_RESTRICTION'
+    　return 'MOSAIC_ADDRESS_RESTRICTION';
     　break;
     case 17230:
-    　return 'MOSAIC_ALIAS'
+    　return 'MOSAIC_ALIAS';
     　break;
     case 16717:
-    　return 'MOSAIC_DEFINITION'
+    　return 'MOSAIC_DEFINITION';
     　break;
     case 16721:
-    　return 'MOSAIC_GLOBAL_RESTRICTION'
+    　return 'MOSAIC_GLOBAL_RESTRICTION';
     　break;
     case 16964:
-    　return 'MOSAIC_METADATA'
+    　return 'MOSAIC_METADATA';
     　break;
     case 16973:
-    　return 'MOSAIC_SUPPLY_CHANGE'
+    　return 'MOSAIC_SUPPLY_CHANGE';
     　break;
     case 17229:
-    　return 'MOSAIC_SUPPLY_REVOCATION'
+    　return 'MOSAIC_SUPPLY_REVOCATION';
     　break;
     case 16725:
-    　return 'MULTISIG_ACCOUNT_MODIFICATION'
+    　return 'MULTISIG_ACCOUNT_MODIFICATION';
     　break;
     case 17220:
-    　return 'NAMESPACE_METADATA'
+    　return 'NAMESPACE_METADATA';
     　break;
     case 16718:
-    　return 'NAMESPACE_REGISTRATION'
+    　return 'NAMESPACE_REGISTRATION';
     　break;
     case 16972:
-    　return 'NODE_KEY_LINK'
+    　return 'NODE_KEY_LINK';
     　break;
     case 0:
-    　return 'RESERVED'
+    　return 'RESERVED';
     　break;
     case 16722:
-    　return 'SECRET_LOCK'
+    　return 'SECRET_LOCK';
     　break;
     case 16978:
-    　return 'SECRET_PROOF'
+    　return 'SECRET_PROOF';
     　break;
     case 16724:
-    　return 'TRANSFER'
+    　return 'TRANSFER';
     　break;
     case 16707:
-    　return 'VOTING_KEY_LINK'
+    　return 'VOTING_KEY_LINK';
     　break;
     case 16963:
-    　return 'VRF_KEY_LINK'
+    　return 'VRF_KEY_LINK';
     　break;  
     default:
-  　　return 'Other'
+  　　return 'Other';
   }
 }
 
@@ -250,11 +250,11 @@ function handleSSS() {
     symbol.UInt64.fromUint(100000)
   )
 
-  window.SSS.setTransaction(tx)                 // SSSにトランザクションを登録
+  window.SSS.setTransaction(tx);               // SSSにトランザクションを登録
 
   window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
-    console.log('signedTx', signedTx)
-    transactionHttp.announce(signedTx)
+    console.log('signedTx', signedTx);
+    transactionHttp.announce(signedTx);
     
     
   })
