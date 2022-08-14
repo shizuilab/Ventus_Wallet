@@ -12,6 +12,8 @@ const transactionHttp = repositoryFactory.createTransactionRepository();
 
 
 setTimeout(() => {
+
+console.log(window.SSS.activeAddress);   ////////////////////////////
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
 
