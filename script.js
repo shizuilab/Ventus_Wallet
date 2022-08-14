@@ -1,5 +1,8 @@
 const symbol = require('/node_modules/symbol-sdk');
 
+const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
+
+
 const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
 const EPOCH = 1615853185;
 const XYM_ID = '6BED913FA20223F8';
@@ -13,7 +16,7 @@ const transactionHttp = repositoryFactory.createTransactionRepository();
 
 setTimeout(() => {
   
-const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
+//const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
 
 const dom_addr = document.getElementById('wallet-addr');
 dom_addr.innerText = address.pretty();                                       // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
