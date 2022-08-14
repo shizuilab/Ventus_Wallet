@@ -1,21 +1,21 @@
-const symbol = require('/node_modules/symbol-sdk')
+const symbol = require('/node_modules/symbol-sdk');
 
-const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6'
-const EPOCH = 1615853185
-const XYM_ID = '6BED913FA20223F8'
-const NODE_URL = 'https://symbol-mikun.net:3001'
-const NET_TYPE = symbol.NetworkType.MAIN_NET
+const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
+const EPOCH = 1615853185;
+const XYM_ID = '6BED913FA20223F8';
+const NODE_URL = 'https://symbol-mikun.net:3001';
+const NET_TYPE = symbol.NetworkType.MAIN_NET;
 
-const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL)       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-const accountHttp = repositoryFactory.createAccountRepository()
-const transactionHttp = repositoryFactory.createTransactionRepository()
+const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const accountHttp = repositoryFactory.createAccountRepository();
+const transactionHttp = repositoryFactory.createTransactionRepository();
 
 
 setTimeout(() => {
   
-const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress)
+const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
 
-const dom_addr = document.getElementById('wallet-addr')
+const dom_addr = document.getElementById('wallet-addr');
 dom_addr.innerText = address.pretty()                                       // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
 
 accountHttp.getAccountInfo(address)
@@ -95,7 +95,7 @@ transactionHttp
   .then((txs) => {
     console.log("txs=");         /////////////////
     console.log(txs);           /////////////////
-    const dom_txInfo = document.getElementById('wallet-transactions')
+    const dom_txInfo = document.getElementById('wallet-transactions');
     
     console.log("dom_txInfo="); ////////////////
     console.log(dom_txInfo);    ////////////////
@@ -103,12 +103,13 @@ transactionHttp
     for (let tx of txs.data) {   //    配列をループ処理
       console.log("tx=");      ////////////////////
       console.log(tx);
-      const dom_tx = document.createElement('div')
-      const dom_txType = document.createElement('div')
-      const dom_hash = document.createElement('div')
-      const dom_signer_address = document.createElement('div')
-      const dom_recipient_address = document.createElement('div')
-      const dom_amount = document.createElement('div')
+      const dom_tx = document.createElement('div');
+      const dom_txType = document.createElement('div');
+      const dom_hash = document.createElement('div');
+      const dom_signer_address = document.createElement('div');
+      const dom_recipient_address = document.createElement('div');
+      const dom_amount = document.createElement('div');
+      const dom_message = document.createElement('div');
       
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`        //　文字列の結合 　Tx タイプ
@@ -119,7 +120,7 @@ transactionHttp
     if (tx.type === 16724) {  // トランザクションが Transfer の場合
       dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`//  文字列の結合　宛先
       dom_amount.innerText = `amount : ${tx.mosaics[0].amount.lower/1000000}`     // 　数量 
-      
+      dom_message.innerText = `Message : ${tx.message.payload}`     // 　メッセージ 
   
     }
       
@@ -131,6 +132,7 @@ transactionHttp
     if (tx.type === 16724) { // トランザクションが Transfer の場合
       dom_tx.appendChild(dom_recipient_address)         // dom_recipient_address をdom_txに追加
       dom_tx.appendChild(dom_amount)                    // dom_amount をdom_txに追加
+      dom_tx.appendChild(dom_message)                   // dom_message をdom_txに追加
     }
       
       dom_tx.appendChild(document.createElement('hr'))  // 水平線を引く
@@ -230,9 +232,9 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
 
 function handleSSS() {
   console.log('handle sss');
-  const addr = document.getElementById('form-addr').value
-  const amount = document.getElementById('form-amount').value
-  const message = document.getElementById('form-message').value
+  const addr = document.getElementById('form-addr').value;
+  const amount = document.getElementById('form-amount').value;
+  const message = document.getElementById('form-message').value;
   
   const tx = symbol.TransferTransaction.create(        // トランザクションを生成
     symbol.Deadline.create(EPOCH),
