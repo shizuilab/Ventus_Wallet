@@ -11,9 +11,9 @@ const accountHttp = repositoryFactory.createAccountRepository();
 const transactionHttp = repositoryFactory.createTransactionRepository();
 
 
-setTimeout(() => {
+console.log(`window.SSS.activeAddress =  ${window.SSS.activeAddress}`);   ////////////////////////////
 
-console.log(window.SSS.activeAddress);   ////////////////////////////
+setTimeout(() => {
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
 
