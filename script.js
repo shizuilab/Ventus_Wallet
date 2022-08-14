@@ -118,7 +118,9 @@ transactionHttp
       dom_signer_address.innerText = `From : ${tx.signer.address.address}`;    //  文字列の結合　送信者
       
       
-         
+           dom_tx.appendChild(dom_txType);                    // dom_txType をdom_txに追加 
+           dom_tx.appendChild(dom_hash);                      // dom_hash をdom_txに追加
+           dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
       
        if (tx.type === 16724) {  // トランザクションが Transfer の場合
          
@@ -132,16 +134,14 @@ transactionHttp
          
          dom_message.innerText = `Message : ${tx.message.payload}`;     // 　メッセージ 
        
-        if (tx.mosaics[0].id.id.lower === 2718049272) { //XYMモザイクの時だけ
-          dom_tx.appendChild(dom_txType);                    // dom_txType をdom_txに追加 
-          dom_tx.appendChild(dom_hash);                      // dom_hash をdom_txに追加
-          dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
-          dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
-          dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-          dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加    
+          if (tx.mosaics[0].id.id.lower === 2718049272) { //XYMモザイクの時だけ  
+            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
+            dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+            dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
+          }
+         
           dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
-          dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
-        }
+          dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加 
       }
     }
   })
