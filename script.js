@@ -119,7 +119,13 @@ transactionHttp
       
     if (tx.type === 16724) {  // トランザクションが Transfer の場合
       dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`; //  文字列の結合　宛先
-      dom_amount.innerText = `amount : ${tx.mosaics[0].amount.lower/1000000}`;     // 　数量 
+      
+      if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
+         dom_amount.innerText = `🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)`;     // 　数量 
+      }else {
+         dom_amount.innerText = `💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)`;     // 　数量
+      }
+      
       dom_message.innerText = `Message : ${tx.message.payload}`;     // 　メッセージ 
   
     }
