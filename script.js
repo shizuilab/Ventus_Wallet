@@ -121,9 +121,9 @@ transactionHttp
       dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`; //  文字列の結合　宛先
       
       if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
-         dom_amount.innerText = `🥳➡️💰 :<font color="#FF0000">${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
+         dom_amount.innerHTML = `🥳➡️💰 :<font color="#FF0000">${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
       }else {
-         dom_amount.innerText = `💰➡️🥳 :<font color="#008000">${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量
+         dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 :${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量
       }
       
       dom_message.innerText = `Message : ${tx.message.payload}`;     // 　メッセージ 
