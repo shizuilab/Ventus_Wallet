@@ -1,17 +1,15 @@
-const symbol = require('/node_modules/symbol-sdk');
+//const symbol = require('/node_modules/symbol-sdk');
 
-const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
-const EPOCH = 1615853185;
-const XYM_ID = '6BED913FA20223F8';
-const NODE_URL = 'https://symbol-mikun.net:3001';
-const NET_TYPE = symbol.NetworkType.MAIN_NET;
+//const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
+//const EPOCH = 1615853185;
+//const XYM_ID = '6BED913FA20223F8';
+//const NODE_URL = 'https://symbol-mikun.net:3001';
+//const NET_TYPE = symbol.NetworkType.MAIN_NET;
 
-const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-const accountHttp = repositoryFactory.createAccountRepository();
-const transactionHttp = repositoryFactory.createTransactionRepository();
+//const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+//const accountHttp = repositoryFactory.createAccountRepository();
+//const transactionHttp = repositoryFactory.createTransactionRepository();
 
-
-console.log(`window.SSS.activeAddress =  ${window.SSS.activeAddress}`);   ////////////////////////////
 
 setTimeout(() => {
   
@@ -149,6 +147,21 @@ transactionHttp
     }
   })
 }, 500)
+
+
+const symbol = require('/node_modules/symbol-sdk');
+
+const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
+const EPOCH = 1615853185;
+const XYM_ID = '6BED913FA20223F8';
+const NODE_URL = 'https://symbol-mikun.net:3001';
+const NET_TYPE = symbol.NetworkType.MAIN_NET;
+
+const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const accountHttp = repositoryFactory.createAccountRepository();
+const transactionHttp = repositoryFactory.createTransactionRepository();
+
+
 
 // Transaction Type を返す関数
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
