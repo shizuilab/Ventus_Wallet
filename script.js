@@ -147,7 +147,7 @@ transactionHttp
        dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
   })
-}, 2000)
+}, 3000)
 
 
 // Transaction Type を返す関数
