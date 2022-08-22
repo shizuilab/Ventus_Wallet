@@ -58,7 +58,7 @@ accountHttp.getAccountInfo(address)
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
         my_audio.play();  //サウンドを再生
 
-        setTimeout(location.reload(),2000)  
+        setTimeout(location.reload(),5000)  
     });
 
     //未承認トランザクションの検知
