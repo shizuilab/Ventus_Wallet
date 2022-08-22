@@ -56,9 +56,8 @@ accountHttp.getAccountInfo(address)
          // 承認音を鳴らす
         var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding2.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
+        setTimeout(location.reload(),3000); //リロードに3秒待つ
         my_audio.play();  //サウンドを再生
-
-        setTimeout(location.reload(),3000);
     });
 
     //未承認トランザクションの検知
