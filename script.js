@@ -56,9 +56,8 @@ accountHttp.getAccountInfo(address)
          // 承認音を鳴らす
         var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding2.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
-        my_audio.play();  //サウンドを再生
-        //setTimeout(location.reload(),3000); //リロードに3秒待つ
-      
+        setTimeout(location.reload(),2000); //リロードに3秒待つ
+        my_audio.play();  //サウンドを再生 
     });
 
     //未承認トランザクションの検知
@@ -148,7 +147,7 @@ transactionHttp
        dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
   })
-}, 1000)
+}, 2000)
 
 
 // Transaction Type を返す関数
