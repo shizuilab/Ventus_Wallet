@@ -113,10 +113,10 @@ transactionHttp
       const dom_message = document.createElement('div');
       const dom_date = document.createElement('div');
 
-      dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`;        //　文字列の結合 　Tx タイプ
-      //dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`;              //  文字列の結合　 Tx ハッシュ
-      dom_hash.innerHTML = `Tx Hash : <a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`;
-      dom_signer_address.innerText = `From : ${tx.signer.address.address}`;    //  文字列の結合　送信者
+      dom_txType.innerHTML = `<font color='#2f4f4f'>Tx Type : ${getTransactionType(tx.type)}</font>`;        //　文字列の結合 　Tx タイプ
+      //dom_hash.innerHTML = `<font color='#2f4f4f'>Tx Hash : ${tx.transactionInfo.hash}</font>`;              //  文字列の結合　 Tx ハッシュ
+      dom_hash.innerHTML = `<font color='#2f4f4f'>Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`;
+      dom_signer_address.innerHTML = `<font color='#2f4f4f'>From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
       
       
       
@@ -148,7 +148,7 @@ transactionHttp
       
        if (tx.type === 16724) {  // トランザクションが Transfer の場合
          
-         dom_recipient_address.innerText = `To   : ${tx.recipientAddress.address}`; //  文字列の結合　宛先
+         dom_recipient_address.innerHTML = `<font color='#2f4f4f'>To   : ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
       
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
             dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
