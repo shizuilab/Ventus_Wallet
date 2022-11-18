@@ -138,7 +138,7 @@ transactionHttp
       
      　　　 console.log(ymdhms);
       
-     　　　 dom_date.innerHTML = `<p style="text-align: right">${ymdhms}</p>`;    //　日付  右寄せ
+     　　　 dom_date.innerHTML = `<font color="#ff7f50"><p style="text-align: right">${ymdhms}</p></font>`;    //　日付  右寄せ
       
      　　　 dom_tx.appendChild(dom_date);                     //　dom_date　をdom_txに追加
         
