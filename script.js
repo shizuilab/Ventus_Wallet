@@ -111,7 +111,7 @@ transactionHttp
       const dom_recipient_address = document.createElement('div');
       const dom_amount = document.createElement('div');
       const dom_message = document.createElement('div');
-      
+      const dom_date = document.createElement('div');
 
       dom_txType.innerText = `Tx Type : ${getTransactionType(tx.type)}`;        //　文字列の結合 　Tx タイプ
       //dom_hash.innerText = `Tx Hash : ${tx.transactionInfo.hash}`;              //  文字列の結合　 Tx ハッシュ
@@ -119,6 +119,29 @@ transactionHttp
       dom_signer_address.innerText = `From : ${tx.signer.address.address}`;    //  文字列の結合　送信者
       
       
+      
+      　　　console.log("timestamp=");                                                ///////////　　  　timestamp to Date 　　　　　　　//////////
+      　　　const timestamp = EPOCH + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
+      　　　const date = new Date(timestamp * 1000);
+      　　　console.log(date.getTime());
+      
+     　　　 const yyyy = `${date.getFullYear()}`;
+      　　　// .slice(-2)で文字列中の末尾の2文字を取得する
+      　　　// `0${date.getHoge()}`.slice(-2) と書くことで０埋めをする
+      　　　const MM = `0${date.getMonth() + 1}`.slice(-2); // getMonth()の返り値は0が基点
+      　　　const dd = `0${date.getDate()}`.slice(-2);
+      　　　const HH = `0${date.getHours()}`.slice(-2);
+      　　　const mm = `0${date.getMinutes()}`.slice(-2);
+      　　　const ss = `0${date.getSeconds()}`.slice(-2);
+
+　　　      const ymdhms = `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}`;
+      
+     　　　 console.log(ymdhms);
+      
+     　　　 dom_date.innerHTML = `<p style="text-align: right">${ymdhms}</p>`;    //　日付  右寄せ
+      
+     　　　 dom_tx.appendChild(dom_date);                     //　dom_date　をdom_txに追加
+        
            dom_tx.appendChild(dom_txType);                    // dom_txType をdom_txに追加 
            dom_tx.appendChild(dom_hash);                      // dom_hash をdom_txに追加
            dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
