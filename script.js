@@ -156,7 +156,7 @@ transactionHttp
             dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量
          }
          
-         dom_message.innerText = `Message : ${tx.message.payload}`;     // 　メッセージ 
+         dom_message.innerText = `<font color='#2f4f4f'>Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
           if (tx.mosaics[0].id.id.lower === 2718049272) { //XYMモザイクの時だけ  
             dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
