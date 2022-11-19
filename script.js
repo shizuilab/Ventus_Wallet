@@ -150,14 +150,14 @@ transactionHttp
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
       
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
-            dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
+            dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.toHex()/1000000} (XYM)</font>`;     // 　数量 
          }else {
-            dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量
+            dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.toHex()/1000000} (XYM)</font>`;     // 　数量
          }
          
          dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
-          if (tx.mosaics[0].id.id.lower === 2718049272) { //XYMモザイクの時だけ  
+          if (tx.mosaics[0].id.id.toHex() === "6BED913FA20223F8") { //XYMモザイクの時だけ  
             dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
