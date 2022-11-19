@@ -163,7 +163,7 @@ transactionHttp
            if (tx.mosaics === ""){   
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : No mosaic</font>`;     // No mosaic
               return;
-             else{
+             }else{
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
              }
            } 
