@@ -113,10 +113,10 @@ transactionHttp
       const dom_message = document.createElement('div');
       const dom_date = document.createElement('div');
 
-      dom_txType.innerHTML = `<font color='#2f4f4f'>Tx Type : ${getTransactionType(tx.type)}</font>`;        //　文字列の結合 　Tx タイプ
-      //dom_hash.innerHTML = `<font color='#2f4f4f'>Tx Hash : ${tx.transactionInfo.hash}</font>`;              //  文字列の結合　 Tx ハッシュ
-      dom_hash.innerHTML = `<font color='#2f4f4f'>Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`;
-      dom_signer_address.innerHTML = `<font color='#2f4f4f'>From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
+      dom_txType.innerHTML = `<font color="#2f4f4f">Tx Type : ${getTransactionType(tx.type)}</font>`;        //　文字列の結合 　Tx タイプ
+      //dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : ${tx.transactionInfo.hash}</font>`;              //  文字列の結合　 Tx ハッシュ
+      dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`;
+      dom_signer_address.innerHTML = `<font color="#2f4f4f">From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
       
       
       
@@ -148,7 +148,7 @@ transactionHttp
       
        if (tx.type === 16724) {  // トランザクションが Transfer の場合
          
-         dom_recipient_address.innerHTML = `<font color='#2f4f4f'>To   : ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
+         dom_recipient_address.innerHTML = `<font color="#2f4f4f">To   : ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
       
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
             dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
@@ -156,7 +156,7 @@ transactionHttp
             dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量
          }
          
-         dom_message.innerHTML = `<font color='#2f4f4f'>Message : ${tx.message.payload}</font>`;     // 　メッセージ 
+         dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
           if (tx.mosaics[0].id.id.lower === 2718049272) { //XYMモザイクの時だけ  
             dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
