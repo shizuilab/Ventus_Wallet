@@ -148,12 +148,21 @@ transactionHttp
        if (tx.type === 16724) {  // トランザクションが Transfer の場合
          
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
-      
+
+         
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
-            dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.toHex()/1000000} (XYM)</font>`;     // 　数量 
+           if (tx.mosaics === []){   
+              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : No mosaic</font>`;     // No mosaic
+           }
+              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
          }else {
-            dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.toHex()/1000000} (XYM)</font>`;     // 　数量
+            if (tx.mosaics === []){   
+              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : No mosaic</font>`;     // No mosaic
+           }
+           
+            dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量
          }
+        
          
          dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
