@@ -151,13 +151,13 @@ transactionHttp
 
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
-           if (tx.mosaics[0] === ""){   
+           if (tx.mosaics[0] === []){   
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : No mosaic</font>`;     // No mosaic
            }else {    
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
            }   
          }else {
-           if (tx.mosaics[0] === ""){   
+           if (tx.mosaics[0] === []){   
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : No mosaic</font>`;     // No mosaic
            }else {          
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
