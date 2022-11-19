@@ -151,13 +151,13 @@ transactionHttp
 
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
-           if (tx.mosaics.length === 0){   
+           if (tx.mosaics.length === 0){   //モザイクが空の場合
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : No mosaic</font>`;     // No mosaic
            }else {    
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
            }   
          }else {
-           if (tx.mosaics.length === 0){   
+           if (tx.mosaics.length === 0){   //モザイクが空の場合
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : No mosaic</font>`;     // No mosaic
            }else {          
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
@@ -167,11 +167,11 @@ transactionHttp
          
          dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
-          if (tx.mosaics[0].id.id.toHex() === "6BED913FA20223F8") { //XYMモザイクの時だけ  
+        //  if (tx.mosaics[0].id.id.toHex() === "6BED913FA20223F8") { //XYMモザイクの時だけ  
             dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
-          }
+        //  }
          
            
        }
