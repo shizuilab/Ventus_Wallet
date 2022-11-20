@@ -11,8 +11,6 @@ const accountHttp = repositoryFactory.createAccountRepository();
 const transactionHttp = repositoryFactory.createTransactionRepository();
 const mosaicHttp = repositoryFactory.createMosaicRepository();
 
-console.log(mosaicHttp);
-console.log(mosaicHttp.getMosaicsNames("6BED913FA20223F8"));
 
 setTimeout(() => {
   
@@ -150,17 +148,20 @@ transactionHttp
            dom_tx.appendChild(dom_hash);                      // dom_hash をdom_txに追加
            dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
       
-       if (tx.type === 16724) {  // トランザクションが Transfer の場合
+     //  if (tx.type === 16724) {  // トランザクションが Transfer の場合
          
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
-
+         
+        if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
+            const mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
+        }
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
            if (tx.mosaics.length === 0){   //モザイクが空の場合
               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : </font>`;     // 　数量 
            }else {
-              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : ${tx.mosaics[0].id.id.toHex()} </font>`; 
+              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : ${tx.mosaics[0].id.id.toHex()}(${mosaicNames}) </font>`; 
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }   
          }else {
@@ -168,7 +169,7 @@ transactionHttp
               dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
            }else {
-              dom_mosaic.innerHTML = `<font color="#008000">Mosaic : ${tx.mosaics[0].id.id.toHex()} </font>`; 
+              dom_mosaic.innerHTML = `<font color="#008000">Mosaic : ${tx.mosaics[0].id.id.toHex()}(${mosaicNames}) </font>`; 
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }
          }
@@ -184,7 +185,7 @@ transactionHttp
         //  }
          
            
-       }
+     //  }
        dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
        dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
