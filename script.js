@@ -153,13 +153,13 @@ transactionHttp
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
         
       
-        if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
+     //   if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
          (async() => {
           const nsRepo = repositoryFactory.createNamespaceRepository();
           return mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
           console.log(mosaicNames);        
-          })();  
-        }
+        
+   //     }
          
           
       
@@ -181,7 +181,8 @@ transactionHttp
            }
          }
         
-         
+         })(); // async() => {
+      
          dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
         //  if (tx.mosaics[0].id.id.toHex() === "6BED913FA20223F8") { //XYMモザイクの時だけ  
