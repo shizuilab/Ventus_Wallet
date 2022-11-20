@@ -10,7 +10,7 @@ const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // R
 const accountHttp = repositoryFactory.createAccountRepository();
 const transactionHttp = repositoryFactory.createTransactionRepository();
 const mosaicHttp = repositoryFactory.createMosaicRepository();
-
+const nsRepo = repositoryFactory.createNamespaceRepository();
 
 setTimeout(() => {
   
@@ -148,18 +148,15 @@ transactionHttp
            dom_tx.appendChild(dom_hash);                      // dom_hash をdom_txに追加
            dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
       
-     //  if (tx.type === 16724) {  // トランザクションが Transfer の場合
+ 
          
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
         
       
-     //   if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
          (async() => {
-          const nsRepo = repositoryFactory.createNamespaceRepository();
-          mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
+          const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
           console.log(mosaicNames);        
         
-   //    }
          
           
       
@@ -185,17 +182,14 @@ transactionHttp
       
          dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
-        //  if (tx.mosaics[0].id.id.toHex() === "6BED913FA20223F8") { //XYMモザイクの時だけ  
+        
             dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
-        //  }
-         
-           
-     //  }
-       dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
-       dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
+  
+            dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
+            dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
   })
 }, 3000)
