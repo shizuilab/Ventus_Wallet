@@ -153,11 +153,11 @@ transactionHttp
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
         
       
-       // if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
+        if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
          (async() => {
           mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
           })();  
-      // }
+        }
          
           console.log(mosaicNames);
       
