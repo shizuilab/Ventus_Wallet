@@ -150,6 +150,7 @@ transactionHttp
       
  
         if (tx.type !== 16961 || tx.type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' 以外の時
+          console.log("typeのところだよ。あぐぼん、あぐり");
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
         }
       
