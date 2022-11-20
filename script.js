@@ -154,9 +154,9 @@ transactionHttp
         
       if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
          (async() => {
-          mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
+          const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
           
-          mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();
+          mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
           console.log(mosaicInfo.divisibility);
           console.log(mosaicNames);
           
