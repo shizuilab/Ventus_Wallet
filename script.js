@@ -9,7 +9,9 @@ const NET_TYPE = symbol.NetworkType.MAIN_NET;
 const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountHttp = repositoryFactory.createAccountRepository();
 const transactionHttp = repositoryFactory.createTransactionRepository();
+const mosaicHttp = repositoryFactory.createMosaicRepository();
 
+console.log(mosaicHttp);
 
 setTimeout(() => {
   
