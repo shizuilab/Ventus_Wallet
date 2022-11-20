@@ -149,9 +149,10 @@ transactionHttp
            dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
       
  
-         
-         dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
-        
+        if (type !== 16961 || type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' 以外の時
+           dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
+        }
+      
       if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
          (async() => {
           const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
