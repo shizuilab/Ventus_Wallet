@@ -160,7 +160,7 @@ transactionHttp
           console.log(mosaicInfo.divisibility);
           console.log(mosaicNames);
           
-          const div = mosaicInfo.divisibility;
+          const div = mosaicInfo.divisibility; // 可分性
       
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
            if (tx.mosaics.length === 0){   //モザイクが空の場合
@@ -168,7 +168,7 @@ transactionHttp
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : </font>`;     // 　数量 
            }else {
               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
-              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/(10^div)} </font>`;     // 　数量 
+              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/(10**div)} </font>`;     // 　数量 
            }   
          }else {
            if (tx.mosaics.length === 0){   //モザイクが空の場合
@@ -176,7 +176,7 @@ transactionHttp
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
            }else {
               dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
-              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/(10^div)} </font>`;     // 　数量 
+              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/(10**div)} </font>`;     // 　数量 
            }
          }
         
