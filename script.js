@@ -33,7 +33,7 @@ accountHttp.getAccountInfo(address)
     //　リスナーでトランザクションを検知し、音を鳴らす
   
  
-  nsRepo = repositoryFactory.createNamespaceRepository();
+ // nsRepo = repositoryFactory.createNamespaceRepository();
   
   wsEndpoint = NODE_URL.replace('http', 'ws') + "/ws";
   listener = new symbol.Listener(wsEndpoint,nsRepo,WebSocket);
