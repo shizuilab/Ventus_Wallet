@@ -156,6 +156,7 @@ transactionHttp
           (async() =>{
            mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId("6BED913FA20223F8")]).toPromise();
             console.log("なんで上手く動かないの？");
+            console.log([new symbol.MosaicId("6BED913FA20223F8")]);
           })();  
             console.log("mosaicNames=");
             console.log(mosaicNames);
