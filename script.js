@@ -154,6 +154,8 @@ transactionHttp
          
         if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
             const mosaicNames = nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]);
+            console.log("mosaicNames=");
+            console.log(mosaicNames);
         }
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
