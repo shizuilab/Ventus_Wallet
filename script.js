@@ -159,6 +159,8 @@ transactionHttp
           })();  
         }
          
+          console.log(mosaicNames_);
+      
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
            if (tx.mosaics.length === 0){   //モザイクが空の場合
               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
