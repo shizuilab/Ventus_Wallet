@@ -154,14 +154,16 @@ transactionHttp
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
            if (tx.mosaics.length === 0){   //モザイクが空の場合
-              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : No mosaic</font>`;     // No mosaic
+              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
+              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : </font>`;     // 　数量 
            }else {
               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : ${tx.mosaics[0].id.id.toHex()} </font>`; 
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }   
          }else {
            if (tx.mosaics.length === 0){   //モザイクが空の場合
-              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : No mosaic</font>`;     // No mosaic
+              dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
+              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
            }else {
               dom_mosaic.innerHTML = `<font color="#008000">Mosaic : ${tx.mosaics[0].id.id.toHex()} </font>`; 
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
