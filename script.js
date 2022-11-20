@@ -149,39 +149,38 @@ transactionHttp
            dom_tx.appendChild(dom_signer_address);            // dom_signer_address をdom_txに追加  
       
  
-        if (tx.type !== 16961 && tx.type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' 以外の時
-          console.log("typeのところだよ。あぐぼん、あぐり");
+        if (tx.type !== 16961 && tx.type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
-        }
-      
-      if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
-         (async() => {
-          const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+             
+         if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
+            (async() => {
+             const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
           
-          mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
-          console.log(mosaicInfo.divisibility);
-          console.log(mosaicNames);
+             mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
+             console.log(mosaicInfo.divisibility);
+             console.log(mosaicNames);
           
-          const div = mosaicInfo.divisibility; // 可分性
+             const div = mosaicInfo.divisibility; // 可分性
       
-         if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える           
-              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
-              dom_amount.innerHTML = `<font color="#FF0000">☺️➡️💰 : ${tx.mosaics[0].amount.lower/(10**div)} </font>`;     // 　数量               
-         }else {         
-              dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
-              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/(10**div)} </font>`;     // 　数量            
-         }
+            if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える           
+                 dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
+                 dom_amount.innerHTML = `<font color="#FF0000">☺️➡️💰 : ${tx.mosaics[0].amount.lower/(10**div)} </font>`;     // 　数量               
+            }else {         
+                 dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
+                 dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/(10**div)} </font>`;     // 　数量            
+            }
         
-         })(); // async()
-       }else { //モザイクが空の場合
-          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
-            dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
-            dom_amount.innerHTML = `<font color="#FF0000">☺️➡️💰 : </font>`;     // 　数量 
-          }else {
-         　　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
-            dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
-          }
-        }
+            })(); // async()
+          }else { //モザイクが空の場合
+             if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
+               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
+               dom_amount.innerHTML = `<font color="#FF0000">☺️➡️💰 : </font>`;     // 　数量 
+             }else {
+         　   　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
+               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
+             }
+           }
+         }
       
          dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
        
