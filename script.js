@@ -154,9 +154,9 @@ transactionHttp
         
       
         if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
-         (async() => {
+       //  (async() => {
           mosaicNames = nsRepo.getMosaicsNames([new symbol.MosaicId("6BED913FA20223F8")]).toPromise();
-          })();  
+       //   })();  
             console.log("mosaicNames=");
             console.log([mosaicNames]);
         }
