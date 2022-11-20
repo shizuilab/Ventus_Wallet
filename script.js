@@ -12,7 +12,7 @@ const transactionHttp = repositoryFactory.createTransactionRepository();
 const mosaicHttp = repositoryFactory.createMosaicRepository();
 
 console.log(mosaicHttp);
-consolo.log(mosaicHttp.getMosaicInfo("6BED913FA20223F8"));
+console.log(mosaicHttp.getMosaicsNames("6BED913FA20223F8"));
 
 setTimeout(() => {
   
