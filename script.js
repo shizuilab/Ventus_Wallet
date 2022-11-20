@@ -105,13 +105,15 @@ transactionHttp
       console.log("tx=");      ////////////////////
       console.log(tx);
       const dom_tx = document.createElement('div');
+      const dom_date = document.createElement('div');
       const dom_txType = document.createElement('div');
       const dom_hash = document.createElement('div');
       const dom_signer_address = document.createElement('div');
       const dom_recipient_address = document.createElement('div');
+      const dom_mosaic = document.createElement('div');
       const dom_amount = document.createElement('div');
       const dom_message = document.createElement('div');
-      const dom_date = document.createElement('div');
+     
 
       dom_txType.innerHTML = `<font color="#2f4f4f">Tx Type : ${getTransactionType(tx.type)}</font>`;        //　文字列の結合 　Tx タイプ
       dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
@@ -153,14 +155,16 @@ transactionHttp
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
            if (tx.mosaics.length === 0){   //モザイクが空の場合
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : No mosaic</font>`;     // No mosaic
-           }else {    
-              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
+           }else {
+              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : ${tx.mosaics[0].id.id.toHex()} </font>`; 
+              dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }   
          }else {
            if (tx.mosaics.length === 0){   //モザイクが空の場合
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : No mosaic</font>`;     // No mosaic
-           }else {          
-              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} (XYM)</font>`;     // 　数量 
+           }else {
+              dom_mosaic.innerHTML = `<font color="#008000">Mosaic : ${tx.mosaics[0].id.id.toHex()} </font>`; 
+              dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }
          }
         
@@ -169,6 +173,7 @@ transactionHttp
        
         //  if (tx.mosaics[0].id.id.toHex() === "6BED913FA20223F8") { //XYMモザイクの時だけ  
             dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
+            dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
         //  }
