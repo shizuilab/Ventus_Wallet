@@ -151,7 +151,8 @@ transactionHttp
      //  if (tx.type === 16724) {  // トランザクションが Transfer の場合
          
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
-         
+        
+      let  mosaicNames;
         if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
          (async() => {
            mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId("6BED913FA20223F8")]).toPromise();
