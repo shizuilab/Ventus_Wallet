@@ -157,10 +157,11 @@ transactionHttp
          (async() => {
           const nsRepo = repositoryFactory.createNamespaceRepository();
           let mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise();
+          console.log(mosaicNames);        
           })();  
         }
          
-          console.log(mosaicNames);
+          
       
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
            if (tx.mosaics.length === 0){   //モザイクが空の場合
