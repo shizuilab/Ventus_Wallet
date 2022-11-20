@@ -158,7 +158,7 @@ transactionHttp
           const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId("6BED913FA20223F8")]).toPromise();
           })();  
             console.log("mosaicNames=");
-            console.log(mosaicNames);
+            console.log([mosaicNames]);
         }
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
