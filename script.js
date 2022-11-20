@@ -153,7 +153,7 @@ transactionHttp
          dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
          
         if (tx.mosaics.length !== 0){   //モザイクが空でない場合 Namespaceを取得する
-            const mosaicNames = nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]);
+            const mosaicNames = nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id)]);
         }
          
          if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで表示を変える
@@ -161,7 +161,7 @@ transactionHttp
               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : </font>`;     // 　数量 
            }else {
-              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : ${tx.mosaics[0].id.id.toHex()}(${mosaicNames}) </font>`; 
+              dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : ${tx.mosaics[0].id.id.toHex()}(${mosaicNames.toHex()}) </font>`; 
               dom_amount.innerHTML = `<font color="#FF0000">🥳➡️💰 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }   
          }else {
@@ -169,7 +169,7 @@ transactionHttp
               dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
            }else {
-              dom_mosaic.innerHTML = `<font color="#008000">Mosaic : ${tx.mosaics[0].id.id.toHex()}(${mosaicNames}) </font>`; 
+              dom_mosaic.innerHTML = `<font color="#008000">Mosaic : ${tx.mosaics[0].id.id.toHex()}(${mosaicNames.toHex()}) </font>`; 
               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${tx.mosaics[0].amount.lower/1000000} </font>`;     // 　数量 
            }
          }
