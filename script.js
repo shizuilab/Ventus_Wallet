@@ -12,7 +12,7 @@ const transactionHttp = repositoryFactory.createTransactionRepository();
 const mosaicHttp = repositoryFactory.createMosaicRepository();
 const nsRepo = repositoryFactory.createNamespaceRepository();
 
-setTimeout(() => {
+setTimeout(() => {    //指定した時間後に一度だけ動作する
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
   console.log("activeAddress=");
