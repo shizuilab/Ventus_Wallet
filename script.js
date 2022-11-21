@@ -57,7 +57,7 @@ const check_netType = address.address.charAt(0);
       if (check_netType === 'T'){
           const EPOCH = EPOCH_T;
           const NODE_URL = NODE_URL_T;
-          const NET_TYPE = NET_TYPE_M_T;
+          const NET_TYPE = NET_TYPE_T;
           const XYM_ID = XYM_ID_T;
         
           const repositoryFactory = repositoryFactory_T;
