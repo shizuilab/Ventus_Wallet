@@ -62,7 +62,7 @@ const check_netType = address.address.charAt(0);
        transactionHttp = transactionHttp_M;
        mosaicHttp = mosaicHttp_M;
        nsRepo = nsRepo_M;
-     
+       
       console.log("MAIN_NET");
    }else 
       if (check_netType === 'T'){
@@ -85,10 +85,18 @@ const check_netType = address.address.charAt(0);
        
          
 
-  
+const dom_netType = document.getElementById('netType');
+     
+  if (NET_TYPE === NET_TYPE_M){   
+     dom_netType.innerText = "MAIN_NET"    
+  else
+    if (NET_TYPE === NET_TYPE_T){
+       dom_netType.innerText = "TEST_NET" 
+  }    
+     
 const dom_addr = document.getElementById('wallet-addr');
-//dom_addr.innerText = address.pretty();                         // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
-dom_addr.innerText = address.address;                            // ハイフン無しで表示
+//dom_addr.innerText = address.pretty();                         // address.pretty() アドレスがハイフンで区切られた文字列で表示される
+dom_addr.innerText = address.address;                            // ハイフン無しでアドレスを表示
   
 accountHttp.getAccountInfo(address)
   .toPromise()
