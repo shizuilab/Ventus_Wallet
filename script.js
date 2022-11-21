@@ -5,14 +5,21 @@ const symbol = require('/node_modules/symbol-sdk');
 let EPOCH = 1615853185;
 let NODE_URL = 'https://symbol-mikun.net:3001';
 let NET_TYPE = symbol.NetworkType.MAIN_NET;
-let XYM_ID = '6BED913FA20223F8';   
+let XYM_ID = '6BED913FA20223F8'; 
+
+let repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+let accountHttp = repositoryFactory.createAccountRepository();
+let transactionHttp = repositoryFactory.createTransactionRepository();
+let mosaicHttp = repositoryFactory.createMosaicRepository();
+let nsRepo = repositoryFactory.createNamespaceRepository();
 
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
-const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
+//const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
+const address = symbol.Address.createFromRawAddress("TANWG4F32RMJT6UEKA2COQPJERCDLHB34RIGBII"); // テストネット　　テスト
   
   console.log("activeAddress=");
-  console.log(window.SSS.activeAddress);
+  console.log();
   
 const check_netType = window.SSS.activeAddress.charAt(0);     
 
@@ -33,11 +40,12 @@ const check_netType = window.SSS.activeAddress.charAt(0);
        console.log("check_netType=");
        console.log(check_netType);
   
-         const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-         const accountHttp = repositoryFactory.createAccountRepository();
-         const transactionHttp = repositoryFactory.createTransactionRepository();
-         const mosaicHttp = repositoryFactory.createMosaicRepository();
-         const nsRepo = repositoryFactory.createNamespaceRepository();
+       repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+       accountHttp = repositoryFactory.createAccountRepository();
+       transactionHttp = repositoryFactory.createTransactionRepository();
+       mosaicHttp = repositoryFactory.createMosaicRepository();
+       nsRepo = repositoryFactory.createNamespaceRepository();
+         
 
   
 const dom_addr = document.getElementById('wallet-addr');
