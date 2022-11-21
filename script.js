@@ -9,7 +9,7 @@ const NODE_URL_M = 'https://symbol-mikun.net:3001';
 const NET_TYPE_M = symbol.NetworkType.MAIN_NET;
 const XYM_ID_M = '6BED913FA20223F8'; 
 
-const repositoryFactory_M = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const repositoryFactory_M = new symbol.RepositoryFactoryHttp(NODE_URL_M);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountHttp_M = repositoryFactory.createAccountRepository();
 const transactionHttp_M = repositoryFactory.createTransactionRepository();
 const mosaicHttp_M = repositoryFactory.createMosaicRepository();
@@ -22,7 +22,7 @@ const NODE_URL_T = 'https://mikun-testnet.tk:3001';
 const NET_TYPE_T = symbol.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
 
-const repositoryFactory_T = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const repositoryFactory_T = new symbol.RepositoryFactoryHttp(NODE_URL_T);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountHttp_T = repositoryFactory.createAccountRepository();
 const transactionHttp_T = repositoryFactory.createTransactionRepository();
 const mosaicHttp_T = repositoryFactory.createMosaicRepository();
