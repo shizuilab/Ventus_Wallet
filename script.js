@@ -2,6 +2,11 @@ const symbol = require('/node_modules/symbol-sdk');
 
 //const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
 
+let EPOCH = 1615853185;
+let NODE_URL = 'https://symbol-mikun.net:3001';
+let NET_TYPE = symbol.NetworkType.MAIN_NET;
+let XYM_ID = '6BED913FA20223F8';   
+
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
@@ -12,18 +17,16 @@ const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
 const check_netType = window.SSS.activeAddress.charAt(0);     
 
    if (check_netType === 'N'){           //ネットワークの判別　Nはメインネット / Tはテストネット
-      const EPOCH = 1615853185;
-      const NODE_URL = 'https://symbol-mikun.net:3001';
-      const NET_TYPE = symbol.NetworkType.MAIN_NET;
-      const XYM_ID = '6BED913FA20223F8';     
-      console.log('あ');
+      EPOCH = 1615853185;
+      NODE_URL = 'https://symbol-mikun.net:3001';
+      NET_TYPE = symbol.NetworkType.MAIN_NET;
+      XYM_ID = '6BED913FA20223F8';     
    }else 
       if (check_netType === 'T'){
-         const EPOCH = 1667250467;
-         const NODE_URL = 'https://mikun-testnet.tk:3001';
-         const NET_TYPE = symbol.NetworkType.TEST_NET;
-         const XYM_ID = '72C0212E67A08BCE';
-        console.log('い');
+         EPOCH = 1667250467;
+         NODE_URL = 'https://mikun-testnet.tk:3001';
+         NET_TYPE = symbol.NetworkType.TEST_NET;
+         XYM_ID = '72C0212E67A08BCE';
       }
        console.log("check_netType=");
        console.log(check_netType);
