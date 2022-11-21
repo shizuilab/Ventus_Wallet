@@ -104,7 +104,7 @@ accountHttp.getAccountInfo(address)
     for (let m of accountInfo.mosaics) {
       if (m.id.id.toHex() === XYM_ID) {
         const dom_xym = document.getElementById('wallet-xym')
-        dom_xym.innerText = `XYM Balance : ${m.amount.compact() / Math.pow(10, 6)}`
+        dom_xym.innerText = `Balance : ${(m.amount.compact() / Math.pow(10, 6)).toLocaleString()}`
       }
     }
   })
@@ -250,10 +250,10 @@ transactionHttp
       
             if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える           
                  dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
-                 dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : ${parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)} </font>`;     // 　数量               
+                 dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString()} </font>`;     // 　数量               
             }else {         
                  dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
-                 dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)} </font>`;     // 　数量            
+                 dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString()} </font>`;     // 　数量            
             }
         
             })(); // async()
