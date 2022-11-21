@@ -2,16 +2,33 @@ const symbol = require('/node_modules/symbol-sdk');
 
 //const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
 
-let EPOCH = 1615853185;
-let NODE_URL = 'https://symbol-mikun.net:3001';
-let NET_TYPE = symbol.NetworkType.MAIN_NET;
-let XYM_ID = '6BED913FA20223F8'; 
+//MAIN_NET の場合
 
-let repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-let accountHttp = repositoryFactory.createAccountRepository();
-let transactionHttp = repositoryFactory.createTransactionRepository();
-let mosaicHttp = repositoryFactory.createMosaicRepository();
-let nsRepo = repositoryFactory.createNamespaceRepository();
+const EPOCH_M = 1615853185;
+const NODE_URL_M = 'https://symbol-mikun.net:3001';
+const NET_TYPE_M = symbol.NetworkType.MAIN_NET;
+const XYM_ID_M = '6BED913FA20223F8'; 
+
+const repositoryFactory_M = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const accountHttp_M = repositoryFactory.createAccountRepository();
+const transactionHttp_M = repositoryFactory.createTransactionRepository();
+const mosaicHttp_M = repositoryFactory.createMosaicRepository();
+const nsRepo_M = repositoryFactory.createNamespaceRepository();
+
+//TEST_NET の場合
+
+const EPOCH_T = 1667250467;
+const NODE_URL_T = 'https://mikun-testnet.tk:3001';
+const NET_TYPE_T = symbol.NetworkType.TEST_NET;
+const XYM_ID_T = '72C0212E67A08BCE';
+
+const repositoryFactory_T = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const accountHttp_T = repositoryFactory.createAccountRepository();
+const transactionHttp_T = repositoryFactory.createTransactionRepository();
+const mosaicHttp_T = repositoryFactory.createMosaicRepository();
+const nsRepo_T = repositoryFactory.createNamespaceRepository();
+
+
 
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
@@ -21,30 +38,40 @@ const address = symbol.Address.createFromRawAddress("TANWG4F32RMJT6UEKA2COQPJERC
   console.log("activeAddress=");
   console.log(address.address);
   
-const check_netType = window.SSS.activeAddress.charAt(0);     
+const check_netType = address.address.charAt(0);     
 
    if (check_netType === 'N'){           //ネットワークの判別　Nはメインネット / Tはテストネット
-     // EPOCH = 1615853185;
-     // NODE_URL = 'https://symbol-mikun.net:3001';
-     // NET_TYPE = symbol.NetworkType.MAIN_NET;
-     // XYM_ID = '6BED913FA20223F8';
-     console.log("MAIN_NET");
+       const EPOCH = EPOCH_M;
+       const NODE_URL = NODE_URL_M;
+       const NET_TYPE = NET_TYPE_M;
+       const XYM_ID = XYM_ID_M;
+     
+       const repositoryFactory = repositoryFactory_M;
+       const accountHttp = accountHttp_M;
+       const transactionHttp = transactionHttp_M;
+       const mosaicHttp = mosaicHttp_M;
+       const nsRepo = nsRepo_M;
+     
+      console.log("MAIN_NET");
    }else 
       if (check_netType === 'T'){
-         EPOCH = 1667250467;
-         NODE_URL = 'https://mikun-testnet.tk:3001';
-         NET_TYPE = symbol.NetworkType.TEST_NET;
-         XYM_ID = '72C0212E67A08BCE';
-         console.log("TEST_NET");
+          const EPOCH = EPOCH_T;
+          const NODE_URL = NODE_URL_T;
+          const NET_TYPE = NET_TYPE_M_T;
+          const XYM_ID = XYM_ID_T;
+        
+          const repositoryFactory = repositoryFactory_T;
+          const accountHttp = accountHttp_T;
+          const transactionHttp = transactionHttp_T;
+          const mosaicHttp = mosaicHttp_T;
+          const nsRepo = nsRepo_T;
+        
+          console.log("TEST_NET");
       }
        console.log("check_netType=");
        console.log(check_netType);
   
-       repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-       accountHttp = repositoryFactory.createAccountRepository();
-       transactionHttp = repositoryFactory.createTransactionRepository();
-       mosaicHttp = repositoryFactory.createMosaicRepository();
-       nsRepo = repositoryFactory.createNamespaceRepository();
+       
          
 
   
