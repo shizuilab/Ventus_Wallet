@@ -17,7 +17,7 @@ const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
   console.log("activeAddress=");
   console.log(window.SSS.activeAddress);
   
-const check_netType = window.SSS.activeAddress.charAt(0));     
+const check_netType = window.SSS.activeAddress.charAt(0);     
 
    if (check_netType === "N"){           //ネットワークの判別　Nはメインネット / Tはテストネット
       const EPOCH = 1615853185;
