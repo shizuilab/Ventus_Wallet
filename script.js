@@ -1,10 +1,8 @@
 const symbol = require('/node_modules/symbol-sdk');
 
 //const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
-const EPOCH = 1615853185;
-const XYM_ID = '6BED913FA20223F8';
-const NODE_URL = 'https://symbol-mikun.net:3001';
-const NET_TYPE = symbol.NetworkType.MAIN_NET;
+
+
 
 const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountHttp = repositoryFactory.createAccountRepository();
@@ -15,11 +13,26 @@ const nsRepo = repositoryFactory.createNamespaceRepository();
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
+  
   console.log("activeAddress=");
   console.log(window.SSS.activeAddress);
-  console.log("address=");
-  console.log(address);
-  console.log(window.SSS.activeAddress.charAt(0));
+  
+const check_netType = window.SSS.activeAddress.charAt(0));     
+
+   if (check_netType === "N"){           //ネットワークの判別　Nはメインネット / Tはテストネット
+      const EPOCH = 1615853185;
+      const NODE_URL = 'https://symbol-mikun.net:3001';
+      const NET_TYPE = symbol.NetworkType.MAIN_NET;
+      const XYM_ID = '6BED913FA20223F8';
+
+   }else 
+      if (check_netType === "T"){
+         const EPOCH = 1667250467;
+         const NODE_URL = 'https://mikun-testnet.tk:3001';
+         const NET_TYPE = symbol.NetworkType.TEST_NET;
+         const XYM_ID = '72C0212E67A08BCE';
+   }
+  
 
 const dom_addr = document.getElementById('wallet-addr');
 dom_addr.innerText = address.pretty();                                       // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
