@@ -160,7 +160,7 @@ const searchCriteria = {
   group: symbol.TransactionGroup.Confirmed,
   address,
   pageNumber: 1,
-  pageSize: 20,
+  pageSize: 10,
   order: symbol.Order.Desc,
 };
 
