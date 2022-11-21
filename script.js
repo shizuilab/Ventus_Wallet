@@ -364,6 +364,20 @@ function handleSSS() {
      
      console.log("addr=");
      console.log(addr);
+     
+     if (addr.charAt(0) === 'N'){  // MAINNET の場合 
+         EPOCH = EPOCH_M; 
+         XYM_ID = XYM_ID_M;
+         NET_TYPE = NET_TYPE_M;
+         transactionHttp = transactionHttp_M;
+     }else
+        if (addr.charAt(0) === 'T'){ //TESTNET の場合
+            EPOCH = EPOCH_T; 
+            XYM_ID = XYM_ID_T;
+            NET_TYPE = NET_TYPE_T
+            transactionHttp = transactionHttp_T;
+        }
+             
   
   const tx = symbol.TransferTransaction.create(        // トランザクションを生成
     symbol.Deadline.create(EPOCH),
