@@ -106,7 +106,7 @@ accountHttp.getAccountInfo(address)
            console.log("m=");
            console.log(m);
         const dom_xym = document.getElementById('wallet-xym')
-        dom_xym.innerText = `Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6))}`
+        dom_xym.innerText = `Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
       }
     }
   })
