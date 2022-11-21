@@ -89,9 +89,9 @@ const dom_netType = document.getElementById('netType');
      
   if (NET_TYPE === NET_TYPE_M){   
      dom_netType.innerText = "MAIN_NET"    
-  else
-    if (NET_TYPE === NET_TYPE_T){
-       dom_netType.innerText = "TEST_NET" 
+  }else
+     if (NET_TYPE === NET_TYPE_T){
+        dom_netType.innerText = "TEST_NET" 
   }    
      
 const dom_addr = document.getElementById('wallet-addr');
