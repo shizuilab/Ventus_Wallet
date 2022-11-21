@@ -10,10 +10,10 @@ const NET_TYPE_M = symbol.NetworkType.MAIN_NET;
 const XYM_ID_M = '6BED913FA20223F8'; 
 
 const repositoryFactory_M = new symbol.RepositoryFactoryHttp(NODE_URL_M);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-const accountHttp_M = repositoryFactory.createAccountRepository();
-const transactionHttp_M = repositoryFactory.createTransactionRepository();
-const mosaicHttp_M = repositoryFactory.createMosaicRepository();
-const nsRepo_M = repositoryFactory.createNamespaceRepository();
+const accountHttp_M = repositoryFactory_M.createAccountRepository();
+const transactionHttp_M = repositoryFactory_M.createTransactionRepository();
+const mosaicHttp_M = repositoryFactory_M.createMosaicRepository();
+const nsRepo_M = repositoryFactory_M.createNamespaceRepository();
 
 //TEST_NET の場合
 
@@ -23,10 +23,10 @@ const NET_TYPE_T = symbol.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
 
 const repositoryFactory_T = new symbol.RepositoryFactoryHttp(NODE_URL_T);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
-const accountHttp_T = repositoryFactory.createAccountRepository();
-const transactionHttp_T = repositoryFactory.createTransactionRepository();
-const mosaicHttp_T = repositoryFactory.createMosaicRepository();
-const nsRepo_T = repositoryFactory.createNamespaceRepository();
+const accountHttp_T = repositoryFactory_T.createAccountRepository();
+const transactionHttp_T = repositoryFactory_T.createTransactionRepository();
+const mosaicHttp_T = repositoryFactory_T.createMosaicRepository();
+const nsRepo_T = repositoryFactory_T.createNamespaceRepository();
 
 
 
