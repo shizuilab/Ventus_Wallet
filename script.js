@@ -103,6 +103,8 @@ accountHttp.getAccountInfo(address)
   .then((accountInfo) => {
     for (let m of accountInfo.mosaics) {
       if (m.id.id.toHex() === XYM_ID) {
+           console.lob("m=");
+           console.log(m);
         const dom_xym = document.getElementById('wallet-xym')
         dom_xym.innerText = `Balance : ${(m.amount / Math.pow(10, 6)).toLocaleString()}`
       }
