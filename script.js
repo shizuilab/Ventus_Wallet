@@ -15,7 +15,7 @@ const nsRepo = repositoryFactory.createNamespaceRepository();
 setTimeout(() => {
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
-  
+  console.log("activeAddress=");
   console.log(window.SSS.activeAddress);
 
 const dom_addr = document.getElementById('wallet-addr');
