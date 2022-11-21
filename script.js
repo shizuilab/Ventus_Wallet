@@ -21,14 +21,14 @@ const check_netType = window.SSS.activeAddress.charAt(0);
      // NODE_URL = 'https://symbol-mikun.net:3001';
      // NET_TYPE = symbol.NetworkType.MAIN_NET;
      // XYM_ID = '6BED913FA20223F8';
-     console.log(MAIN_NET);
+     console.log("MAIN_NET");
    }else 
       if (check_netType === 'T'){
          EPOCH = 1667250467;
          NODE_URL = 'https://mikun-testnet.tk:3001';
          NET_TYPE = symbol.NetworkType.TEST_NET;
          XYM_ID = '72C0212E67A08BCE';
-         console.log(TEST_NET);
+         console.log("TEST_NET");
       }
        console.log("check_netType=");
        console.log(check_netType);
