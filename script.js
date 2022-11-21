@@ -88,7 +88,7 @@ const check_netType = address.address.charAt(0);
 const dom_netType = document.getElementById('netType');
      
   if (NET_TYPE === NET_TYPE_M){   
-     dom_netType.innerHTML = '<font color="#ff8c00">< MAIN_NET Address ></font>'
+     dom_netType.innerHTML = '<font color="0000cd">< MAIN_NET Address ></font>'
   }else
      if (NET_TYPE === NET_TYPE_T){
         dom_netType.innerHTML = '<font color="#ff8c00">< TEST_NET Address ></font>'
