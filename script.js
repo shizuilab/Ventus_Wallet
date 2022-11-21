@@ -41,8 +41,9 @@ const check_netType = window.SSS.activeAddress.charAt(0);
 
   
 const dom_addr = document.getElementById('wallet-addr');
-dom_addr.innerText = address.pretty();                                       // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
-
+//dom_addr.innerText = address.pretty();                         // address.pretty() アドレスがハイフンで区切られた文字列で表示され見やすくなる
+dom_addr.innerText = address.address;                            // ハイフン無しで表示
+  
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
