@@ -17,6 +17,8 @@ setTimeout(() => {
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
   console.log("activeAddress=");
   console.log(window.SSS.activeAddress);
+  console.log("address=");
+  console.log(address);
   console.log(window.SSS.activeAddress.charAt(0));
 
 const dom_addr = document.getElementById('wallet-addr');
