@@ -23,6 +23,8 @@ const check_netType = window.SSS.activeAddress.charAt(0);
          const NET_TYPE = symbol.NetworkType.TEST_NET;
          const XYM_ID = '72C0212E67A08BCE';        
       }
+       console.log("check_netType=");
+       console.log(check_netType);
   
          const repositoryFactory = new symbol.RepositoryFactoryHttp(NODE_URL);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
          const accountHttp = repositoryFactory.createAccountRepository();
