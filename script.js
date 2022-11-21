@@ -85,7 +85,7 @@ const check_netType = address.address.charAt(0);
        
          
 
-const dom_netType = document.getElementById('netType');
+const dom_netType = document.getElementById('netType');  // network Type を表示　
      
   if (NET_TYPE === NET_TYPE_M){   
      dom_netType.innerHTML = '<font color="0000cd">< MAIN_NET Address ></font>'
@@ -104,7 +104,7 @@ accountHttp.getAccountInfo(address)
     for (let m of accountInfo.mosaics) {
       if (m.id.id.toHex() === XYM_ID) {
         const dom_xym = document.getElementById('wallet-xym')
-        dom_xym.innerText = `Balance : ${(m.amount.compact() / Math.pow(10, 6)).toLocaleString()}`
+        dom_xym.innerText = `Balance : ${(m.amount / Math.pow(10, 6)).toLocaleString()}`
       }
     }
   })
