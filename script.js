@@ -11,17 +11,19 @@ const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
   
 const check_netType = window.SSS.activeAddress.charAt(0);     
 
-   if (check_netType === "N"){           //ネットワークの判別　Nはメインネット / Tはテストネット
+   if (check_netType === 'N'){           //ネットワークの判別　Nはメインネット / Tはテストネット
       const EPOCH = 1615853185;
       const NODE_URL = 'https://symbol-mikun.net:3001';
       const NET_TYPE = symbol.NetworkType.MAIN_NET;
       const XYM_ID = '6BED913FA20223F8';     
+      console.log('あ');
    }else 
-      if (check_netType === "T"){
+      if (check_netType === 'T'){
          const EPOCH = 1667250467;
          const NODE_URL = 'https://mikun-testnet.tk:3001';
          const NET_TYPE = symbol.NetworkType.TEST_NET;
-         const XYM_ID = '72C0212E67A08BCE';        
+         const XYM_ID = '72C0212E67A08BCE';
+        console.log('い');
       }
        console.log("check_netType=");
        console.log(check_netType);
