@@ -28,6 +28,17 @@ const transactionHttp_T = repositoryFactory_T.createTransactionRepository();
 const mosaicHttp_T = repositoryFactory_T.createMosaicRepository();
 const nsRepo_T = repositoryFactory_T.createNamespaceRepository();
 
+let EPOCH;
+let NODE_URL;
+let NET_TYPE;
+let XYM_ID;
+     
+let repositoryFactory;
+let accountHttp;
+let transactionHttp;
+let mosaicHttp;
+let nsRepo;
+
 
 
 setTimeout(() => {    //指定した時間後に一度だけ動作する
@@ -41,30 +52,30 @@ const address = symbol.Address.createFromRawAddress("TANWG4F32RMJT6UEKA2COQPJERC
 const check_netType = address.address.charAt(0);     
 
    if (check_netType === 'N'){           //ネットワークの判別　Nはメインネット / Tはテストネット
-       const EPOCH = EPOCH_M;
-       const NODE_URL = NODE_URL_M;
-       const NET_TYPE = NET_TYPE_M;
-       const XYM_ID = XYM_ID_M;
+       EPOCH = EPOCH_M;
+       NODE_URL = NODE_URL_M;
+       NET_TYPE = NET_TYPE_M;
+       XYM_ID = XYM_ID_M;
      
-       const repositoryFactory = repositoryFactory_M;
-       const accountHttp = accountHttp_M;
-       const transactionHttp = transactionHttp_M;
-       const mosaicHttp = mosaicHttp_M;
-       const nsRepo = nsRepo_M;
+       repositoryFactory = repositoryFactory_M;
+       accountHttp = accountHttp_M;
+       transactionHttp = transactionHttp_M;
+       mosaicHttp = mosaicHttp_M;
+       nsRepo = nsRepo_M;
      
       console.log("MAIN_NET");
    }else 
       if (check_netType === 'T'){
-          const EPOCH = EPOCH_T;
-          const NODE_URL = NODE_URL_T;
-          const NET_TYPE = NET_TYPE_T;
-          const XYM_ID = XYM_ID_T;
+          EPOCH = EPOCH_T;
+          NODE_URL = NODE_URL_T;
+          NET_TYPE = NET_TYPE_T;
+          XYM_ID = XYM_ID_T;
         
-          const repositoryFactory = repositoryFactory_T;
-          const accountHttp = accountHttp_T;
-          const transactionHttp = transactionHttp_T;
-          const mosaicHttp = mosaicHttp_T;
-          const nsRepo = nsRepo_T;
+          repositoryFactory = repositoryFactory_T;
+          accountHttp = accountHttp_T;
+          transactionHttp = transactionHttp_T;
+          mosaicHttp = mosaicHttp_T;
+          nsRepo = nsRepo_T;
         
           console.log("TEST_NET");
       }
