@@ -88,10 +88,10 @@ const check_netType = address.address.charAt(0);
 const dom_netType = document.getElementById('netType');
      
   if (NET_TYPE === NET_TYPE_M){   
-     dom_netType.innerText = "MAIN_NET"    
+     dom_netType.innerText = "< MAIN_NET Address>"    
   }else
      if (NET_TYPE === NET_TYPE_T){
-        dom_netType.innerText = "TEST_NET" 
+        dom_netType.innerText = "< TEST_NET Address>" 
   }    
      
 const dom_addr = document.getElementById('wallet-addr');
