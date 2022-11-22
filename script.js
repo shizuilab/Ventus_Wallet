@@ -203,7 +203,9 @@ transactionHttp
       dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
     }else
        if (check_netType === 'T'){ // TESTNET の場合
-           dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
+           //dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
+           
+           dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">ハッシュはここをクリックしてね。</a>`; //Tx hash 
        }
          
       dom_signer_address.innerHTML = `<font color="#2f4f4f">From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
@@ -251,10 +253,10 @@ transactionHttp
              const div = mosaicInfo.divisibility; // 可分性
       
             if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える           
-                 dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
+                 dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`; 
                  dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </font>`;     // 　数量               
             }else {         
-                 dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  (${tx.mosaics[0].id.id.toHex()})</font>`; 
+                 dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  ${[mosaicNames][0][0].names[0].name}  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`; 
                  dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </font>`;     // 　数量            
             }
         
