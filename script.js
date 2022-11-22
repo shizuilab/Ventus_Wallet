@@ -112,10 +112,10 @@ accountHttp.getAccountInfo(address)
          const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise();
          console.log(mosaicNamesA); 
         
-       if ([mosaicNamesA][0].names.length !== 0) { 
+       if ([mosaicNamesA][0].names[0].length !== 0) { 
          console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0].names[0].name}`);    //モザイクID と　ネームスペース
        }else
-          if ([mosaicNamesA][0].names.length === 0){
+          if ([mosaicNamesA][0].names[0].length === 0){
              console.log(`${m.id.id.toHex()}`);
           }  
             
