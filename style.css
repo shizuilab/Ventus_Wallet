@@ -80,6 +80,10 @@ h2 {
   font-weight: 700;
 }
 
+#wallet-transactions{
+  margin: 20px;
+}
+
 .container {
   font-size: 24px;
   margin: 16px;
