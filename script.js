@@ -114,9 +114,11 @@ accountHttp.getAccountInfo(address)
         
        if ([mosaicNamesA][0][0].names[0].name.length !== 0) { 
          console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
+         console.log("ネームスペース有り");
        }else
           if ([mosaicNamesA][0][0].names[0].name.length === 0){
              console.log(m.id.id.toHex());
+             console.log("ネームスペース無しです");
           }  
             
         })(); // async()    
