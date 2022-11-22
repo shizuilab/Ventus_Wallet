@@ -197,15 +197,15 @@ transactionHttp
       const dom_message = document.createElement('div');
      
 
-      dom_txType.innerHTML = `<p style="text-align: right; line-height:100%;&"><font color="#0000ff">< ${getTransactionType(tx.type)} ></font></p>`;        //　文字列の結合 　Tx タイプ
+      dom_txType.innerHTML = `<p style="text-align: left; line-height:100%;&"><font color="#0000ff">< ${getTransactionType(tx.type)} ></font></p>`;        //　文字列の結合 　Tx タイプ
       
     if (check_netType === 'N'){   // MAINNET の場合
            // dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
-           dom_hash.innerHTML = `<p style="text-align: right; font-weight:bold; line-height:100%;&"><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">⛓ Transaction Info ⛓</a></p>`; //Tx hash
+           dom_hash.innerHTML = `<p style="text-align: left; font-weight:bold; line-height:100%;&"><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">⛓ Transaction Info ⛓</a></p>`; //Tx hash
     }else
        if (check_netType === 'T'){ // TESTNET の場合
            //dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash      
-           dom_hash.innerHTML = `<p style="text-align: right; font-weight:bold; line-height:100%;&"><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">⛓ Transaction Info ⛓</a></p>`; //Tx hash          
+           dom_hash.innerHTML = `<p style="text-align: left; font-weight:bold; line-height:100%;&"><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">⛓ Transaction Info ⛓</a></p>`; //Tx hash          
        }
          
       dom_signer_address.innerHTML = `<font color="#2f4f4f">From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
@@ -230,7 +230,7 @@ transactionHttp
       
      　　　 console.log(ymdhms);
       
-     　　　 dom_date.innerHTML = `<font color="#7E00FF"><p style="text-align: right">${ymdhms}</p></font>`;    //　日付  右寄せ
+     　　　 dom_date.innerHTML = `<font color="#7E00FF"><p style="text-align: left">${ymdhms}</p></font>`;    //　日付  右寄せ
       
      　　　 dom_tx.appendChild(dom_date);                     //　dom_date　をdom_txに追加
         
