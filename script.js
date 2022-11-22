@@ -116,7 +116,7 @@ accountHttp.getAccountInfo(address)
          console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0].names[0].name}`);    //モザイクID と　ネームスペース
        }else
           if ([mosaicNamesA][0].names.length === 0){
-             console.log(`${m.id.id.toHex()`);
+             console.log(`${m.id.id.toHex()}`);
           }  
             
         })(); // async()    
