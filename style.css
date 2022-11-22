@@ -39,9 +39,9 @@ h2 {
   color: #2f4f4f;
 }
 
-/* #button-haichi{
+#button-haichi{
   text-align: right;
-} */
+} 
 
 .button-sign{
   font-size: 20px;  
@@ -50,7 +50,6 @@ h2 {
   color:rgb(255,255,255); 
   border-radius: 16px;
   cursor: pointer;
-  text-align: right;
 }
 
 .tx-card {
