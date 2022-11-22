@@ -91,7 +91,7 @@ const dom_netType = document.getElementById('netType');  // network Type を表�
      dom_netType.innerHTML = '<font color="0000cd">< MAIN_NET Address ></font>'
   }else
      if (NET_TYPE === NET_TYPE_T){
-        dom_netType.innerHTML = '<font color="#ff8c00">< TEST_NET Address ></font>'
+        dom_netType.innerHTML = '<font color="#ff00">< TEST_NET Address ></font>'
   }    
      
 const dom_addr = document.getElementById('wallet-addr');
