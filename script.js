@@ -101,9 +101,9 @@ accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
     for (let m of accountInfo.mosaics) {
+         console.log("m=");
+         console.log(m);
       if (m.id.id.toHex() === XYM_ID) {
-           console.log("m=");
-           console.log(m);
         const dom_xym = document.getElementById('wallet-xym')
         dom_xym.innerText = `Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
       }
