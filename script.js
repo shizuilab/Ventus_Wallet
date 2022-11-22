@@ -110,7 +110,7 @@ accountHttp.getAccountInfo(address)
          //console.log("m=");
        (async() => {  
          const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise();  
-         console.log('${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}');    //モザイクID と　ネームスペース
+         console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
         })(); // async()    
 
       if (m.id.id.toHex() === XYM_ID) {
