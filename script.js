@@ -113,6 +113,39 @@ accountHttp.getAccountInfo(address)
       }
     }
   })
+     
+     
+     
+     //////////////////////////////////////////////////////
+const animals = [
+  { value: 1, name: 'ゾウ'},
+  { value: 2, name: 'キリン'},
+  { value: 3, name: 'イルカ'},
+  { value: 4, name: 'ライオン'},
+]
+const jsSelectBox = document.querySelector('.js-selectbox');
+const selectWrap = document.createElement('div');
+selectWrap.classList.add('selectwrap');
+const select = document.createElement('select');
+select.classList.add('select');
+animals.forEach((v) => {
+  const option = document.createElement('option');
+  option.value = v.value;
+  option.textContent = v.name;
+  select.appendChild(option);
+});
+selectWrap.appendChild(select);
+jsSelectBox.appendChild(selectWrap);
+     
+     
+     
+     
+     //////////////////////////////////////////////////////
+     
+     
+     
+     
+     
  
     //　リスナーでトランザクションを検知し、音を鳴らす
   
