@@ -100,9 +100,11 @@ dom_addr.innerText = address.address;                            // ハイフン
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
+        console.log("accountInfo.mosaics=");
+        console.log(accountInfo.mosaics); ///////
     for (let m of accountInfo.mosaics) {
-         console.log("m=");
-         console.log(m.id.id.toHex());
+         //console.log("m=");
+         //console.log(m.id.id.toHex());
       if (m.id.id.toHex() === XYM_ID) {
         const dom_xym = document.getElementById('wallet-xym')
         dom_xym.innerText = `Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
