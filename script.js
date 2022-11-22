@@ -100,7 +100,7 @@ dom_addr.innerText = address.address;                            // ハイフン
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
-        consolo.log("acountInfo=")
+        console.log("acountInfo=")
         console.log(accountInfo);
         //console.log("accountInfo.mosaics=");
         //console.log(accountInfo.mosaics); ///////
