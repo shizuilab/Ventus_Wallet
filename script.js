@@ -112,7 +112,7 @@ accountHttp.getAccountInfo(address)
          const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise();
          console.log(mosaicNamesA); 
         
-       if ([mosaicNamesA][0][0].names[0].name.length !== 0) { 
+       if ([mosaicNamesA][0][0].names[0].length !== 0) { 
           console.log([mosaicNamesA][0][0].names[0].name.length);  
           console.log("ネームスペース有り");
           console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
