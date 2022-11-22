@@ -205,7 +205,7 @@ transactionHttp
        if (check_netType === 'T'){ // TESTNET の場合
            //dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
            
-           dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">ハッシュはここをクリックしてね。</a>`; //Tx hash 
+           dom_hash.innerHTML = `<p style="text-align: right"><font color="#2f4f4f">Tx Hash : </font><a href="https://testnet.symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer">Tx info</a></p>`; //Tx hash 
        }
          
       dom_signer_address.innerHTML = `<font color="#2f4f4f">From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
