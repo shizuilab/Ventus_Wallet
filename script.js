@@ -44,7 +44,6 @@ let nsRepo;
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
-//const address = symbol.Address.createFromRawAddress("TANWG4F32RMJT6UEKA2COQPJERCDLHB34RIGBII"); // テストネット　　テスト
   
   console.log("activeAddress=");
   console.log(address.address);
