@@ -113,6 +113,7 @@ accountHttp.getAccountInfo(address)
          console.log(mosaicNamesA); 
         
        if ([mosaicNamesA][0][0].names[0].name.length !== 0) { 
+          console.log([mosaicNamesA][0][0].names[0].name.length);  
           console.log("ネームスペース有り");
           console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
          
