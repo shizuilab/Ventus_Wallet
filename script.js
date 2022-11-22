@@ -100,10 +100,12 @@ dom_addr.innerText = address.address;                            // ハイフン
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
-        console.log("acountInfo=")
+        console.log("accountInfo=")
         console.log(accountInfo);
-        //console.log("accountInfo.mosaics=");
-        //console.log(accountInfo.mosaics); ///////
+     
+      console.log("モザイクの配列の大きさ=");
+      console.log(accountInfo.mosaics.length);
+     
     for (let m of accountInfo.mosaics) {
          //console.log("m=");
          //console.log(m.id.id.toHex());
@@ -113,6 +115,9 @@ accountHttp.getAccountInfo(address)
       }
     }
   })
+     
+     
+     
      
      
      
