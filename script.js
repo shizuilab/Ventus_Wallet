@@ -247,8 +247,6 @@ transactionHttp
              const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
           
              mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
-             console.log(mosaicInfo.divisibility);
-             console.log(mosaicNames);
           
              const div = mosaicInfo.divisibility; // 可分性
       
@@ -284,7 +282,7 @@ transactionHttp
             dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
   })
-}, 500)
+}, 1000)
 
 
 // Transaction Type を返す関数
