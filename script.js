@@ -197,7 +197,7 @@ transactionHttp
       const dom_message = document.createElement('div');
      
 
-      dom_txType.innerHTML = `<p style="text-align: right; line-height:100%;&"><font color="#ff">< ${getTransactionType(tx.type)} ></font></p>`;        //　文字列の結合 　Tx タイプ
+      dom_txType.innerHTML = `<p style="text-align: right; line-height:100%;&"><font color="#0000ff">< ${getTransactionType(tx.type)} ></font></p>`;        //　文字列の結合 　Tx タイプ
       
     if (check_netType === 'N'){   // MAINNET の場合
            // dom_hash.innerHTML = `<font color="#2f4f4f">Tx Hash : </font><a href="https://symbol.fyi/transactions/${tx.transactionInfo.hash}" target="_blank" rel="noopener noreferrer"><small>${tx.transactionInfo.hash}</small></a>`; //Tx hash
