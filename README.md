@@ -1,4 +1,4 @@
-# SSS_mikun_wallet
+# Ventus_wallet
 Symbol × SSS Extension で作る dApps 入門をベースに作成した
 Symbolブラウザウォレットです。
 https://qiita.com/inatatsu_csg/items/191edf3bcd1f0acf15c1
