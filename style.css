@@ -38,6 +38,7 @@ h2 {
   padding: 24px;
   position: -webkit-sticky; /* safari対応 */
   position: fixed;
+  top: 100;
 }
 
 .sender-card {
@@ -48,6 +49,7 @@ h2 {
   color: #2f4f4f;
   position: -webkit-sticky; /* safari対応 */
   position: fixed;
+  top: 150; 
 }
 
 #button-haichi{
