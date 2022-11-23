@@ -439,7 +439,7 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
 function handleSSS() {
   console.log('handle sss');
   const addr = document.getElementById('form-addr').value;
-  const mosaic_ID = document.getElementById('tomato4').value;
+  const mosaic_ID = document.getElementById('form-mosaic_ID').value;
   const amount = document.getElementById('form-amount').value;
   const message = document.getElementById('form-message').value;
      
