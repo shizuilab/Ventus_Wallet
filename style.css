@@ -17,6 +17,7 @@ h1 {
   font-size: 96px;
   text-align: right;
   margin-right: 80px;
+  position: fixed;
 }
 
 h2 {
