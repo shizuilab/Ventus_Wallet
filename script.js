@@ -120,11 +120,11 @@ accountHttp.getAccountInfo(address)
             console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
             mosaic_data[i][0] = m.id.id.toHex();
             mosaic_data[i][1] = [mosaicNamesA][0][0].names[0].name;
-            i = i+1;
+            i = ++i;
          }else{
                console.log(m.id.id.toHex());
                mosaic_data[i][0]= m.id.toHex();
-               i = i+1;
+               i = ++i;
          }   
              console.log("i=");
        　　　 console.log(i);
