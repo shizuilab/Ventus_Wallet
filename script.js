@@ -110,9 +110,8 @@ accountHttp.getAccountInfo(address)
    // for (let i = 0; i < mosaic_data.length; i++) {
    //     mosaic_data[i] = new Array(2);
    // }
-   //  let mosaic_data = {};
-      let mosaic_data.value = new Array(mosaic_data.length);
-      let mosaic_data.name = new Array(mosaic_data.length);
+     let mosaic_data = [];
+     let mosaic_dataX = {};
      
    (async() => { 
       i = 0;
@@ -120,12 +119,14 @@ accountHttp.getAccountInfo(address)
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
             //console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
-            mosaic_data.value[i] = m.id.id.toHex();
-            mosaic_data.name[i] = [mosaicNamesA][0][0].names[0].name;
+            mosaic_dataX.value = m.id.id.toHex();
+            mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
+            mosaic_data.push(mosaic_dataX);  
             i = ++i;
          }else{
                //console.log(m.id.id.toHex());
                mosaic_data.value[i] = m.id.toHex();
+               mosaic_data.push(mosaic_dataX); 
                i = ++i;
          }   
         if (m.id.id.toHex() === XYM_ID) {
