@@ -48,9 +48,9 @@ const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
   console.log("activeAddress=");
   console.log(address.address);
   
-const check_netType = address.address.charAt(0);     
+const check_netType = address.address.charAt(0);     // 1文字目を抽出
 
-   if (check_netType === 'N'){           //ネットワークの判別　Nはメインネット / Tはテストネット
+   if (check_netType === 'N'){           //ネットワークの判別　 メインネット 
        EPOCH = EPOCH_M;
        NODE_URL = NODE_URL_M;
        NET_TYPE = NET_TYPE_M;
@@ -64,7 +64,7 @@ const check_netType = address.address.charAt(0);
        
       console.log("MAIN_NET");
    }else 
-      if (check_netType === 'T'){
+      if (check_netType === 'T'){      // テストネット
           EPOCH = EPOCH_T;
           NODE_URL = NODE_URL_T;
           NET_TYPE = NET_TYPE_T;
@@ -110,11 +110,10 @@ accountHttp.getAccountInfo(address)
     for (let i = 0; i < mosaic_data.length; i++) {
         mosaic_data[i] = new Array(2);
     }
-     
-    i = 0;
-    for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
-       
-       (async() => {
+    
+   (async() => { 
+      i = 0;
+      for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
             console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
@@ -126,17 +125,15 @@ accountHttp.getAccountInfo(address)
                mosaic_data[i][0]= m.id.toHex();
                i = ++i;
          }   
-             console.log("i=");
-       　　　 console.log(i);
-            console.log("mosaic_data=");
-            console.log(mosaic_data);
-        })(); // async()    
-
-      if (m.id.id.toHex() === XYM_ID) {
-        const dom_xym = document.getElementById('wallet-xym')
-        dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
+        if (m.id.id.toHex() === XYM_ID) {
+           const dom_xym = document.getElementById('wallet-xym')
+           dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
+        }
       }
-    }
+      console.log("mosaic_data=");
+      console.log(mosaic_data);
+        
+    })(); // async() 
   })
      
             
