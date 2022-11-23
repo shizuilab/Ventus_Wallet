@@ -25,7 +25,11 @@ h2 {
 
 .left {
   width: 800px;
+  position: -webkit-sticky; /* safari対応 */
+  position: sticky;
+  top: 10px;
 }
+
 .right {
   width: 70%;
 }
