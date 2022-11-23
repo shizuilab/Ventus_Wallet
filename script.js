@@ -110,8 +110,8 @@ accountHttp.getAccountInfo(address)
    // for (let i = 0; i < mosaic_data.length; i++) {
    //     mosaic_data[i] = new Array(2);
    // }
-     let mosaic_data = [];
-     let mosaic_dataX = {};
+     var mosaic_data = [];
+     var mosaic_dataX = {};
      
    (async() => { 
       i = 0;
