@@ -125,7 +125,7 @@ accountHttp.getAccountInfo(address)
             i = ++i;
          }else{
                //console.log(m.id.id.toHex());
-               mosaic_data.value[i] = m.id.toHex();
+               mosaic_data.value = m.id.toHex();
                mosaic_data.push(mosaic_dataX); 
                i = ++i;
          }   
