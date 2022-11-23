@@ -138,9 +138,9 @@ accountHttp.getAccountInfo(address)
                i = ++i;            
          }   
             
-         if (i === 2){ 
-              return;
-         }
+         //if (i === 2){ 
+         //     return;
+         // }
             
            //console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
            
