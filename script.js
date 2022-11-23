@@ -106,18 +106,28 @@ accountHttp.getAccountInfo(address)
       console.log("モザイクの配列の大きさ=");
       console.log(accountInfo.mosaics.length);
      
-    for (let m of accountInfo.mosaics) {
-         //console.log("m=");
-       (async() => {  
-         const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); 
-        
-       if ([mosaicNamesA][0][0].names.length !== 0) {  
-          console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
-       }else{
-             console.log(m.id.id.toHex());
-          }  
-            
-        })(); // async()    
+    let mosaic_data = new Array(accountInfo.mosaics.length); //モザイクの数だけの配列を作成
+    for (i = 0; i < mosaic_data.length; i++) {
+        mosaic_data[i] = new Array(2);
+    }
+     
+    let i=0;
+    let j=0; 
+    for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
+       
+       (async() => {
+          const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
+         if ([mosaicNamesA][0][0].names.length !== 0) {  
+            console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
+            mosaic_data[i] = m.id.id.toHex();
+            mosaic_data[i][1] = mosaicNamesA][0][0].names[0].name;
+            i = i++;
+         }else{
+               console.log(m.id.id.toHex());
+               mosaic_data[i]= m.id.toHex();
+               i = i++;
+         }     
+       })(); // async()    
 
       if (m.id.id.toHex() === XYM_ID) {
         const dom_xym = document.getElementById('wallet-xym')
