@@ -127,10 +127,6 @@ accountHttp.getAccountInfo(address)
             console.log(i);   
             i = ++i; 
               
-             if (i === 1){ 
-              return;
-             }
-              
          }else{
                //console.log(m.id.id.toHex());
                mosaic_dataX.id = m.id.toHex();
@@ -141,6 +137,11 @@ accountHttp.getAccountInfo(address)
                console.log(i);
                i = ++i;            
          }   
+            
+         if (i === 1){ 
+              return;
+         }
+            
            //console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
            
         if (m.id.id.toHex() === XYM_ID) {
