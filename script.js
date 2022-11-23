@@ -111,7 +111,7 @@ accountHttp.getAccountInfo(address)
    //     mosaic_data[i] = new Array(2);
    // }
      const mosaic_data = [];
-     const mosaic_dataX = {};
+     const mosaic_dataX = {"id":"AAAA", "name":"test"};
      
    (async() => { 
       i = 0;
