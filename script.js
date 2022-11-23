@@ -124,12 +124,14 @@ accountHttp.getAccountInfo(address)
             console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);  
             i = ++i;
+            console.log(i);  
          }else{
                //console.log(m.id.id.toHex());
                mosaic_dataX.value = m.id.toHex();
-               console.log(mosaic_dataX)
+               console.log(mosaic_dataX);
                mosaic_data.push(mosaic_dataX); 
                i = ++i;
+              console.log(i);
          }   
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
