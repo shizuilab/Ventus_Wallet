@@ -25,6 +25,7 @@ h2 {
 
 .left {
   width: 800px;
+  top: 100;
   position: fixed;
 }
 
