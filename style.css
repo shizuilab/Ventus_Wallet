@@ -25,9 +25,6 @@ h2 {
 
 .left {
   width: 800px;
-  position: -webkit-sticky; /* safari対応 */
-  position: sticky;
-  top: 10px;
 }
 
 .right {
@@ -39,6 +36,9 @@ h2 {
   border-radius: 16px;
   margin: 16px;
   padding: 24px;
+  position: -webkit-sticky; /* safari対応 */
+  position: sticky;
+  top: 10px;
 }
 
 .sender-card {
@@ -47,6 +47,9 @@ h2 {
   margin: 16px;
   padding: 24px;
   color: #2f4f4f;
+  position: -webkit-sticky; /* safari対応 */
+  position: sticky;
+  top: 10px;
 }
 
 #button-haichi{
