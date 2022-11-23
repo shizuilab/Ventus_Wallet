@@ -9,7 +9,6 @@ body {
         background: rgb(255, 255, 255,0.8);
         font-size: 30px;
         text-align: right;
-        position: fixed;
 }
 
 h1 {
@@ -17,7 +16,6 @@ h1 {
   font-size: 96px;
   text-align: right;
   margin-right: 80px;
-  position: fixed;
 }
 
 h2 {
