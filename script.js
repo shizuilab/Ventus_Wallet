@@ -116,12 +116,12 @@ accountHttp.getAccountInfo(address)
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
-            console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
+            //console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
             mosaic_data[i][0] = m.id.id.toHex();
             mosaic_data[i][1] = [mosaicNamesA][0][0].names[0].name;
             i = ++i;
          }else{
-               console.log(m.id.id.toHex());
+               //console.log(m.id.id.toHex());
                mosaic_data[i][0]= m.id.toHex();
                i = ++i;
          }   
