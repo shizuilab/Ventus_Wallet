@@ -106,45 +106,25 @@ accountHttp.getAccountInfo(address)
       console.log("モザイクの配列の大きさ=");
       console.log(accountInfo.mosaics.length);
      
-   // let mosaic_data = new Array(accountInfo.mosaics.length); //モザイクの数だけの配列を作成
-   // for (let i = 0; i < mosaic_data.length; i++) {
-   //     mosaic_data[i] = new Array(2);
-   // }
-     const mosaic_data = [];
-     
-     
+ 
+          const mosaic_data = [];    
    (async() => { 
-    //  i = 0;
+    
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
-          const mosaic_dataX = {};
-          const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
+           const mosaic_dataX = {};
+           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
             mosaic_dataX.id = m.id.id.toHex();
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
-              
-            console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);
-            //console.log(i);   
-            //i = ++i; 
               
          }else{   //ネームスペースがない場合
-               //console.log(m.id.id.toHex());
+              
                mosaic_dataX.id = m.id.toHex();
                mosaic_dataX.name = "";
-              
-               console.log(mosaic_dataX);
-               mosaic_data.push(mosaic_dataX); 
-               //console.log(i);
-               //i = ++i;            
-         }   
-            
-         //if (i === 2){ 
-         //     return;
-         // }
-            
-           //console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
-           
+               mosaic_data.push(mosaic_dataX);           
+         }             
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
            dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
