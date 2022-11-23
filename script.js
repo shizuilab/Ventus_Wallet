@@ -114,7 +114,7 @@ accountHttp.getAccountInfo(address)
     i = 0;
     for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
         console.log("i=");
-        cosole.log(i);
+        console.log(i);
        (async() => {
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
