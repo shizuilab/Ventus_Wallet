@@ -138,7 +138,7 @@ accountHttp.getAccountInfo(address)
                i = ++i;            
          }   
             
-         if (i === 1){ 
+         if (i === 2){ 
               return;
          }
             
