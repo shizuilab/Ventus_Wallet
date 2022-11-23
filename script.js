@@ -117,17 +117,17 @@ accountHttp.getAccountInfo(address)
     //  i = 0;
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
-         if ([mosaicNamesA][0][0].names.length !== 0) {  
+         if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
-            mosaic_dataX.id = m.id.id.toHex();
-            mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
+            mosaic_dataX.id = `${m.id.id.toHex()}`;
+            mosaic_dataX.name = `${[mosaicNamesA][0][0].names[0].name}`;
               
             console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);
             //console.log(i);   
             //i = ++i; 
               
-         }else{
+         }else{   //ネームスペースがない場合
                //console.log(m.id.id.toHex());
                mosaic_dataX.id = m.id.toHex();
                mosaic_dataX.name = "";
