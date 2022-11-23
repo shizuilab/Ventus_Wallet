@@ -123,7 +123,7 @@ accountHttp.getAccountInfo(address)
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
               
             //console.log(mosaic_dataX);  
-            mosaic_data.push(mosaic_dataX);
+            //mosaic_data.push(mosaic_dataX);
             console.log(i);   
             i = ++i; 
          }else{
@@ -132,7 +132,7 @@ accountHttp.getAccountInfo(address)
                mosaic_dataX.name = "";
               
                //console.log(mosaic_dataX);
-               mosaic_data.push(mosaic_dataX); 
+               //mosaic_data.push(mosaic_dataX); 
                console.log(i);
                i = ++i;            
          }   
