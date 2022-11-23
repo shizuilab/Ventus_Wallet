@@ -107,11 +107,11 @@ accountHttp.getAccountInfo(address)
       console.log(accountInfo.mosaics.length);
      
     let mosaic_data = new Array(accountInfo.mosaics.length); //モザイクの数だけの配列を作成
-    for (i = 0; i < mosaic_data.length; i++) {
+    for (let i = 0; i < mosaic_data.length; i++) {
         mosaic_data[i] = new Array(2);
     }
      
-    let i=0;
+    i = 0;
     for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
        
        (async() => {
