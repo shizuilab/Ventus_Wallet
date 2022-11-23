@@ -110,17 +110,18 @@ accountHttp.getAccountInfo(address)
    // for (let i = 0; i < mosaic_data.length; i++) {
    //     mosaic_data[i] = new Array(2);
    // }
-     const mosaic_data = [{"id":"AAAA", "name":"test"}];
-     const mosaic_dataX = {};
+     const mosaic_data = [];
+     
      
    (async() => { 
     //  i = 0;
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
+          const mosaic_dataX = {};
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
-            mosaic_dataX.id = `${m.id.id.toHex()}`;
-            mosaic_dataX.name = `${[mosaicNamesA][0][0].names[0].name}`;
+            mosaic_dataX.id = m.id.id.toHex();
+            mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
               
             console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);
