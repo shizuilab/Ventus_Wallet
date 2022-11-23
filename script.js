@@ -122,7 +122,7 @@ accountHttp.getAccountInfo(address)
             mosaic_dataX.id = m.id.id.toHex();
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
               
-            //console.log(mosaic_dataX);  
+            console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);
             console.log(i);   
             i = ++i; 
@@ -131,12 +131,12 @@ accountHttp.getAccountInfo(address)
                mosaic_dataX.id = m.id.toHex();
                mosaic_dataX.name = "";
               
-               //console.log(mosaic_dataX);
+               console.log(mosaic_dataX);
                mosaic_data.push(mosaic_dataX); 
                console.log(i);
                i = ++i;            
          }   
-           console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
+           //console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
            
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
