@@ -119,21 +119,25 @@ accountHttp.getAccountInfo(address)
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
             //console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
-            mosaic_dataX.value = m.id.id.toHex();
+            mosaic_dataX.id = m.id.id.toHex();
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
-            console.log(mosaic_dataX);  
+              
+            //console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);
             console.log(i);   
             i = ++i; 
          }else{
                //console.log(m.id.id.toHex());
-               mosaic_dataX.value = m.id.toHex();
+               mosaic_dataX.id = m.id.toHex();
                mosaic_dataX.name = "";
-               console.log(mosaic_dataX);
+              
+               //console.log(mosaic_dataX);
                mosaic_data.push(mosaic_dataX); 
                console.log(i);
                i = ++i;            
          }   
+           console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
+           
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
            dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
