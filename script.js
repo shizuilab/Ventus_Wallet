@@ -119,16 +119,14 @@ accountHttp.getAccountInfo(address)
          if ([mosaicNamesA][0][0].names.length !== 0) {  
             //console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
             mosaic_data[i] = m.id.id.toHex();
-            mosaic_data[i][1] = [mosaicNamesA][0][0].names[0].name;
+            mosaic_data[i][0] = [mosaicNamesA][0][0].names[0].name;
             i = i++;
          }else{
               // console.log(m.id.id.toHex());
                mosaic_data[i]= m.id.toHex();
                i = i++;
-         }
-            console.log("mosaic_data=");
-            console.log(mosaic_data);
-       })(); // async()    
+         }           
+        })(); // async()    
 
       if (m.id.id.toHex() === XYM_ID) {
         const dom_xym = document.getElementById('wallet-xym')
@@ -137,7 +135,8 @@ accountHttp.getAccountInfo(address)
     }
   })
      
-     
+            console.log("mosaic_data=");
+            console.log(mosaic_data);
      
      
      
