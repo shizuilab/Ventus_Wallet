@@ -125,7 +125,9 @@ accountHttp.getAccountInfo(address)
               // console.log(m.id.id.toHex());
                mosaic_data[i]= m.id.toHex();
                i = i++;
-         }     
+         }
+            console.log("mosaic_data=");
+            console.log(mosaic_data);
        })(); // async()    
 
       if (m.id.id.toHex() === XYM_ID) {
@@ -134,8 +136,7 @@ accountHttp.getAccountInfo(address)
       }
     }
   })
-     console.log("mosaic_data=");
-     console.log(mosaic_data);
+     
      
      
      
