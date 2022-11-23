@@ -112,7 +112,6 @@ accountHttp.getAccountInfo(address)
     }
      
     let i=0;
-    let j=0; 
     for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
        
        (async() => {
@@ -135,8 +134,8 @@ accountHttp.getAccountInfo(address)
       }
     }
   })
-     
-     
+     console.log("mosaic_data=");
+     console.log(mosaic_data);
      
      
      
