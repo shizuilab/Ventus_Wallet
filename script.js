@@ -317,14 +317,14 @@ transactionHttp
                 }else{    //　ネームスペースがない場合
                     dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`;
                 }    
-                    dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </font>`;     // 　数量               
+                    dom_amount.innerHTML = `<font color="#FF0000"><big><strong>💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量               
             }else {
                 if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合
                     dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
                 }else{   // ネームスペースがない場合
                     dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`;
                 }
-                    dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </font>`;     // 　数量            
+                    dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️🥳 :<big><strong> ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
             }
         
             })(); // async()
