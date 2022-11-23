@@ -439,6 +439,7 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
 function handleSSS() {
   console.log('handle sss');
   const addr = document.getElementById('form-addr').value;
+  const mosaic_ID = document.getElementById('tomato4').value;
   const amount = document.getElementById('form-amount').value;
   const message = document.getElementById('form-message').value;
      
@@ -447,13 +448,13 @@ function handleSSS() {
      
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
          EPOCH = EPOCH_M; 
-         XYM_ID = XYM_ID_M;
+         // XYM_ID = XYM_ID_M;
          NET_TYPE = NET_TYPE_M;
          transactionHttp = transactionHttp_M;
      }else
         if (addr.charAt(0) === 'T'){ //TESTNET の場合
             EPOCH = EPOCH_T; 
-            XYM_ID = XYM_ID_T;
+            // XYM_ID = XYM_ID_T;
             NET_TYPE = NET_TYPE_T
             transactionHttp = transactionHttp_T;
         }
@@ -464,7 +465,7 @@ function handleSSS() {
     symbol.Address.createFromRawAddress(addr),
     [
       new symbol.Mosaic(
-        new symbol.MosaicId(XYM_ID),
+        new symbol.MosaicId(mosaic_ID),
         symbol.UInt64.fromUint(Number(amount)*1000000)
       )
     ],
