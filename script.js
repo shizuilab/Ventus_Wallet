@@ -106,23 +106,25 @@ accountHttp.getAccountInfo(address)
       console.log("モザイクの配列の大きさ=");
       console.log(accountInfo.mosaics.length);
      
-    let mosaic_data = new Array(accountInfo.mosaics.length); //モザイクの数だけの配列を作成
-    for (let i = 0; i < mosaic_data.length; i++) {
-        mosaic_data[i] = new Array(2);
-    }
-    
+   // let mosaic_data = new Array(accountInfo.mosaics.length); //モザイクの数だけの配列を作成
+   // for (let i = 0; i < mosaic_data.length; i++) {
+   //     mosaic_data[i] = new Array(2);
+   // }
+      let mosaic_data = {};
+     
+     
    (async() => { 
       i = 0;
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
             //console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
-            mosaic_data[i][0] = m.id.id.toHex();
-            mosaic_data[i][1] = [mosaicNamesA][0][0].names[0].name;
+            mosaic_data[i].value = m.id.id.toHex();
+            mosaic_data[i].name = [mosaicNamesA][0][0].names[0].name;
             i = ++i;
          }else{
                //console.log(m.id.id.toHex());
-               mosaic_data[i][0]= m.id.toHex();
+               mosaic_data[i].value = m.id.toHex();
                i = ++i;
          }   
         if (m.id.id.toHex() === XYM_ID) {
