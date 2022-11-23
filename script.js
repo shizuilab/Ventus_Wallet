@@ -119,13 +119,15 @@ accountHttp.getAccountInfo(address)
           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  
             //console.log(`${m.id.id.toHex()} : ${[mosaicNamesA][0][0].names[0].name}`);    //モザイクID と　ネームスペース
-            mosaic_dataX[i].value = m.id.id.toHex();
-            mosaic_dataX[i].name = [mosaicNamesA][0][0].names[0].name;
+            mosaic_dataX.value = m.id.id.toHex();
+            mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
+            console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);  
             i = ++i;
          }else{
                //console.log(m.id.id.toHex());
-               mosaic_data[i].value = m.id.toHex();
+               mosaic_dataX.value = m.id.toHex();
+               console.log(mosaic_dataX)
                mosaic_data.push(mosaic_dataX); 
                i = ++i;
          }   
