@@ -124,7 +124,7 @@ accountHttp.getAccountInfo(address)
               
             console.log(mosaic_dataX);  
             mosaic_data.push(mosaic_dataX);
-            console.log(i);   
+            //console.log(i);   
             i = ++i; 
          }else{
                //console.log(m.id.id.toHex());
@@ -133,7 +133,7 @@ accountHttp.getAccountInfo(address)
               
                console.log(mosaic_dataX);
                mosaic_data.push(mosaic_dataX); 
-               console.log(i);
+               //console.log(i);
                i = ++i;            
          }   
            //console.log(`${mosaic_dataX.id} : ${mosaic_dataX.name}`);
