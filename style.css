@@ -30,6 +30,8 @@ h2 {
 
 .right {
   width: 70%;
+  position: fixed;
+  overflow: auto;
 }
 
 .account-card {
@@ -37,7 +39,6 @@ h2 {
   border-radius: 16px;
   margin: 16px;
   padding: 24px;
-  position: fixed;
 }
 
 .sender-card {
@@ -46,7 +47,6 @@ h2 {
   margin: 16px;
   padding: 24px;
   color: #2f4f4f;
-  position: fixed;
 }
 
 #button-haichi{
