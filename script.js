@@ -106,6 +106,10 @@ accountHttp.getAccountInfo(address)
       console.log("モザイクの配列の大きさ=");
       console.log(accountInfo.mosaics.length);
      
+          //select要素を取得する
+          const selectMosaic = document.getElementById('form-mosaic_ID');
+          //option要素を新しく作る
+          const option1 = document.createElement('option');
  
           const mosaic_data = [];    
    (async() => { 
@@ -129,9 +133,17 @@ accountHttp.getAccountInfo(address)
            const dom_xym = document.getElementById('wallet-xym')
            dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
         }
+         
+           //option要素にvalueと表示名を設定
+           option1.value = mosaic_dataX.id;
+           option1.textContent = mosaic_dataX.name;
+
+           //select要素にoption要素を追加する
+           selectMosaic.appendChild(option1);      
+           
       }
       console.log("mosaic_data=");
-      console.log(mosaic_data);
+      console.log(mosaic_data);        
         
     })(); // async() 
   })
