@@ -29,7 +29,8 @@ h2 {
   position: fixed;
 }
 
-.right {   
+.right {
+  top: 300px;
   padding-left: 800px; 
   width: 70%;
   overflow: auto;
