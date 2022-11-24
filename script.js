@@ -108,13 +108,14 @@ accountHttp.getAccountInfo(address)
      
           //select要素を取得する
           const selectMosaic = document.getElementById('form-mosaic_ID');
-          //option要素を新しく作る
-          const option1 = document.createElement('option');
  
           const mosaic_data = [];    
    (async() => { 
     
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
+           //option要素を新しく作る
+           const option1 = document.createElement('option');
+           
            const mosaic_dataX = {};
            const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
