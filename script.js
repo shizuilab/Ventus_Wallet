@@ -451,7 +451,7 @@ function handleSSS() {
      
      
    (async() => {   
-     mosaicInfo = await mosaicHttp.getMosaic().toPromise();// 可分性の情報を取得する
+     mosaicInfo = await mosaicHttp.getMosaic(mosaic_ID).toPromise();// 可分性の情報を取得する
      const div = mosaicInfo.divisibility; // 可分性
   
     const tx = symbol.TransferTransaction.create(        // トランザクションを生成
