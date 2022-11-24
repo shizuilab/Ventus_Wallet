@@ -30,8 +30,8 @@ h2 {
 }
 
 .right {
-  left: 500;
   width: 70%;
+  position: fixed;
   overflow: auto;
 }
 
