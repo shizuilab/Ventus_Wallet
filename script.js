@@ -121,23 +121,23 @@ accountHttp.getAccountInfo(address)
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
             mosaic_dataX.id = m.id.id.toHex();
+            option1.value =   m.id.id.toHex();  // セレクトボックスvalue
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
+            option1.textContent = [mosaicNamesA][0][0].names[0].name;  // セレクトボックスtext
             mosaic_data.push(mosaic_dataX);
               
          }else{   //ネームスペースがない場合
               
                mosaic_dataX.id = m.id.toHex();
+               option1.value =   m.id.id.toHex();  // セレクトボックスvalue
                mosaic_dataX.name = "";
+               option1.textContent = m.id.id.toHex(); // セレクトボックスtext
                mosaic_data.push(mosaic_dataX);           
          }             
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
            dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
         }
-         
-           //option要素にvalueと表示名を設定
-           option1.value = mosaic_dataX.id;
-           option1.textContent = mosaic_dataX.name;
 
            //select要素にoption要素を追加する
            selectMosaic.appendChild(option1);      
