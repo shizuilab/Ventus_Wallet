@@ -113,6 +113,9 @@ accountHttp.getAccountInfo(address)
    (async() => { 
     
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
+           mosaicInfo = await mosaicHttp.getMosaic(m.id.id).toPromise();// 可分性の情報を取得する
+           const div = mosaicInfo.divisibility;
+           
            //option要素を新しく作る
            const option1 = document.createElement('option');
            
@@ -123,7 +126,7 @@ accountHttp.getAccountInfo(address)
             mosaic_dataX.id = m.id.id.toHex();
             option1.value =   m.id.id.toHex();  // セレクトボックスvalue
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
-            option1.textContent = `${[mosaicNamesA][0][0].names[0].name} : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
+            option1.textContent = `${[mosaicNamesA][0][0].names[0].name} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
             mosaic_data.push(mosaic_dataX);
               
          }else{   //ネームスペースがない場合
