@@ -467,14 +467,12 @@ function handleSSS() {
      NET_TYPE,
      symbol.UInt64.fromUint(100000)
     )
-   })(); // async()
-     
-  window.SSS.setTransaction(tx);               // SSSにトランザクションを登録
-
-  window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+      
+   window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
+   window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
     console.log('signedTx', signedTx);
     transactionHttp.announce(signedTx);
-    
+  })(); // async()  
     
   })
 }
