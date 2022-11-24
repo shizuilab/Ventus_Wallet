@@ -87,10 +87,10 @@ const check_netType = address.address.charAt(0);     // 1文字目を抽出
 const dom_netType = document.getElementById('netType');  // network Type を表示　
      
   if (NET_TYPE === NET_TYPE_M){   
-     dom_netType.innerHTML = '<font color="0000cd">< MAIN_NET Address ></font>'
+     dom_netType.innerHTML = '<font color="0000cd">< MAIN_NET ></font>'
   }else
      if (NET_TYPE === NET_TYPE_T){
-        dom_netType.innerHTML = '<font color="#ff00ff">< TEST_NET Address ></font>'
+        dom_netType.innerHTML = '<font color="#ff00ff">< TEST_NET　></font>'
   }    
      
 const dom_addr = document.getElementById('wallet-addr');
