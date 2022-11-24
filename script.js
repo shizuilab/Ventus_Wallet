@@ -450,7 +450,7 @@ function handleSSS() {
      
       //console.log([new symbol.MosaicId(mosaic_ID)]);
      
- // (async() => {  
+ (async() => {  
      mosaicInfo = await mosaicHttp.getMosaic([new symbol.MosaicId(mosaic_ID)]).toPromise();// 可分性の情報を取得する
        
        console.log("なぜ？")
@@ -475,7 +475,7 @@ function handleSSS() {
    window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
     console.log('signedTx', signedTx);
     transactionHttp.announce(signedTx);
- //})(); // async()  
+ })(); // async()  
     
   })
 }
