@@ -115,7 +115,8 @@ accountHttp.getAccountInfo(address)
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
            mosaicInfo = await mosaicHttp.getMosaic(m.id.id).toPromise();// 可分性の情報を取得する
            const div = mosaicInfo.divisibility;
-           
+           console.log("div=");
+           console.log(div);
            //option要素を新しく作る
            const option1 = document.createElement('option');
            
