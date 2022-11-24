@@ -433,8 +433,7 @@ function handleSSS() {
      console.log("addr=");
      console.log(addr);
      
-     console.log("get_mosaic_ID=");
-     console.log(mosaic_ID);
+     console.log("get_mosaic_ID=",mosaic_ID);
      
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
          EPOCH = EPOCH_M; 
@@ -449,6 +448,7 @@ function handleSSS() {
             transactionHttp = transactionHttp_T;
         }
      
+      console.log([new symbol.MosaicId(mosaic_ID)]);
      
    (async() => {   
      mosaicInfo = await mosaicHttp.getMosaic([new symbol.MosaicId(mosaic_ID)]).toPromise();// 可分性の情報を取得する
