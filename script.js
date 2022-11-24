@@ -424,6 +424,8 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
 // handleSSS関数はトランザクションを作成し、window.SSS.setTransaction関数を実行しSSSにトランザクションを登録します。そしてwindow.SSS.requestSign関数を実行し、SSSを用いた署名をユーザ－に要求します。
 
 function handleSSS() {
+     
+ (async() => {       
   console.log('handle sss');
   const addr = document.getElementById('form-addr').value;
   const mosaic_ID = document.getElementById('form-mosaic_ID').value;
@@ -450,7 +452,7 @@ function handleSSS() {
      
       console.log([new symbol.MosaicId(mosaic_ID)]);
      
-   (async() => {   
+  
      mosaicInfo = await mosaicHttp.getMosaic([new symbol.MosaicId(mosaic_ID)]).toPromise();// 可分性の情報を取得する
      console.log("mosaicInfo=",mosaicInfo);   
      const div = mosaicInfo.divisibility; // 可分性
