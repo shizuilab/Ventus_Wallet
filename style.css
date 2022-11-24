@@ -107,5 +107,5 @@ h2 {
 .wrapper {
   display: flex;
   justify-content: space-between;
-  margin: 60px;
+  margin-top: 50px;
 }
