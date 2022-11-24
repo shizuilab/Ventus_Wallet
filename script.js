@@ -122,17 +122,17 @@ accountHttp.getAccountInfo(address)
            const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
-            //mosaic_dataX.id = m.id.id.toHex();
+            //mosaic_dataX.id = m.id.id.toHex();  // モザイクデータチェック用
             option1.value =   m.id.id.toHex();  // セレクトボックスvalue
-            //mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
+            //mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;  // モザイクデータチェック用
             option1.textContent = `${[mosaicNamesA][0][0].names[0].name} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
             //mosaic_data.push(mosaic_dataX);  // モザイクデータチェック用
               
          }else{   //ネームスペースがない場合
               
-               //mosaic_dataX.id = m.id.toHex();
+               //mosaic_dataX.id = m.id.toHex();   // モザイクデータチェック用
                option1.value =   m.id.id.toHex();  // セレクトボックスvalue
-               //mosaic_dataX.name = "";
+               //mosaic_dataX.name = "";           // モザイクデータチェック用
                option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
                //mosaic_data.push(mosaic_dataX);  // モザイクデータチェック用         
          }             
