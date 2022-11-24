@@ -33,7 +33,7 @@ h3 {
   font-family: 'Itim', cursive;
   display: flex;
   justify-content: flex-end;
-  margin-right: 80px;
+  margin: 0px 80px 10px auto;
 }
 
 .left {
