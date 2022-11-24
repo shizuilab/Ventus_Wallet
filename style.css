@@ -24,7 +24,8 @@ h2 {
 }
 
 .left {
-  width: 700px;
+  top: 20px; 
+  width: 800px;
   position: fixed;
 }
 
