@@ -24,13 +24,12 @@ h2 {
 }
 
 .left {
-  top: 300px; 
+  top: 320px; 
   width: 800px;
   position: fixed;
 }
 
 .right {
-  top: 200px;
   padding-left: 800px; 
   width: 70%;
   overflow: auto;
