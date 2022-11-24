@@ -115,8 +115,6 @@ accountHttp.getAccountInfo(address)
       for (let m of accountInfo.mosaics) {  //accountInfo のモザイクの数だけ繰り返す
            mosaicInfo = await mosaicHttp.getMosaic(m.id.id).toPromise();// 可分性の情報を取得する
            const div = mosaicInfo.divisibility;
-           console.log("div=");
-           console.log(div);
            //option要素を新しく作る
            const option1 = document.createElement('option');
            
@@ -135,7 +133,7 @@ accountHttp.getAccountInfo(address)
                mosaic_dataX.id = m.id.toHex();
                option1.value =   m.id.id.toHex();  // セレクトボックスvalue
                mosaic_dataX.name = "";
-               option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
+               option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
                mosaic_data.push(mosaic_dataX);           
          }             
         if (m.id.id.toHex() === XYM_ID) {
