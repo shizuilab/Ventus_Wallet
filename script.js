@@ -123,7 +123,7 @@ accountHttp.getAccountInfo(address)
             mosaic_dataX.id = m.id.id.toHex();
             option1.value =   m.id.id.toHex();  // セレクトボックスvalue
             mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
-            option1.textContent = `[mosaicNamesA][0][0].names[0].name : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
+            option1.textContent = `${[mosaicNamesA][0][0].names[0].name} : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
             mosaic_data.push(mosaic_dataX);
               
          }else{   //ネームスペースがない場合
@@ -131,7 +131,7 @@ accountHttp.getAccountInfo(address)
                mosaic_dataX.id = m.id.toHex();
                option1.value =   m.id.id.toHex();  // セレクトボックスvalue
                mosaic_dataX.name = "";
-               option1.textContent = `m.id.id.toHex() : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
+               option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
                mosaic_data.push(mosaic_dataX);           
          }             
         if (m.id.id.toHex() === XYM_ID) {
