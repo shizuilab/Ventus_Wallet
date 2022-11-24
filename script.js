@@ -448,22 +448,27 @@ function handleSSS() {
             NET_TYPE = NET_TYPE_T
             transactionHttp = transactionHttp_T;
         }
-             
+     
+     
+   (async() => {   
+     mosaicInfo = await mosaicHttp.getMosaic().toPromise();// 可分性の情報を取得する
+     const div = mosaicInfo.divisibility; // 可分性
   
-  const tx = symbol.TransferTransaction.create(        // トランザクションを生成
-    symbol.Deadline.create(EPOCH),
-    symbol.Address.createFromRawAddress(addr),
-    [
-      new symbol.Mosaic(
-        new symbol.MosaicId(mosaic_ID),
-        symbol.UInt64.fromUint(Number(amount)*1000000)
-      )
-    ],
-    symbol.PlainMessage.create(message),
-    NET_TYPE,
-    symbol.UInt64.fromUint(100000)
-  )
-
+    const tx = symbol.TransferTransaction.create(        // トランザクションを生成
+     symbol.Deadline.create(EPOCH),
+     symbol.Address.createFromRawAddress(addr),
+     [
+       new symbol.Mosaic(
+         new symbol.MosaicId(mosaic_ID),
+         symbol.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
+       )
+     ],
+     symbol.PlainMessage.create(message),
+     NET_TYPE,
+     symbol.UInt64.fromUint(100000)
+    )
+   })(); // async()
+     
   window.SSS.setTransaction(tx);               // SSSにトランザクションを登録
 
   window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
