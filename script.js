@@ -433,6 +433,9 @@ function handleSSS() {
      console.log("addr=");
      console.log(addr);
      
+     console.log("get_mosaic_ID=");
+     console.log(mosaic_ID);
+     
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
          EPOCH = EPOCH_M; 
          // XYM_ID = XYM_ID_M;
