@@ -254,10 +254,10 @@ transactionHttp
       
       
       
-      　　　console.log("timestamp=");                                                ///////////　　  　timestamp to Date 　　　　　　　//////////
+      　　　//console.log("timestamp=");                                                ///////////　　  　timestamp to Date 　　　　　　　//////////
       　　　const timestamp = EPOCH + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
       　　　const date = new Date(timestamp * 1000);
-      　　　console.log(date.getTime());
+      　　　//console.log(date.getTime());
       
      　　　 const yyyy = `${date.getFullYear()}`;
       　　　// .slice(-2)で文字列中の末尾の2文字を取得する
