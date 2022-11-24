@@ -453,7 +453,7 @@ function handleSSS() {
  (async() => {  
       console.log("symbol=",symbol);
       console.log("mosaicHttp=",mosaicHttp);
-     mosaicInfo = await mosaicHttp.getMosaic([new symbol.MosaicId(mosaic_ID)]).toPromise();// 可分性の情報を取得する
+     mosaicInfo = await mosaicHttp.getMosaic(new symbol.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する
        
      console.log("なぜ？");
      console.log("mosaicInfo=",mosaicInfo);   
