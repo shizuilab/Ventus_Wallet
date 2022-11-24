@@ -122,23 +122,23 @@ accountHttp.getAccountInfo(address)
            const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
-            mosaic_dataX.id = m.id.id.toHex();
+            //mosaic_dataX.id = m.id.id.toHex();
             option1.value =   m.id.id.toHex();  // セレクトボックスvalue
-            mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
+            //mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;
             option1.textContent = `${[mosaicNamesA][0][0].names[0].name} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
-            mosaic_data.push(mosaic_dataX);
+            //mosaic_data.push(mosaic_dataX);  // モザイクデータチェック用
               
          }else{   //ネームスペースがない場合
               
-               mosaic_dataX.id = m.id.toHex();
+               //mosaic_dataX.id = m.id.toHex();
                option1.value =   m.id.id.toHex();  // セレクトボックスvalue
-               mosaic_dataX.name = "";
+               //mosaic_dataX.name = "";
                option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
-               mosaic_data.push(mosaic_dataX);           
+               //mosaic_data.push(mosaic_dataX);  // モザイクデータチェック用         
          }             
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
-           dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/ Math.pow(10, 6)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
+           dom_xym.innerText = `XYM Balance : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`
         }
 
            //select要素にoption要素を追加する
