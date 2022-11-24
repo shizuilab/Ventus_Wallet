@@ -448,8 +448,7 @@ function handleSSS() {
             transactionHttp = transactionHttp_T;
         }
      
-      //console.log([new symbol.MosaicId(mosaic_ID)]);
-     
+     console.log("なぜ？")
  (async() => {  
       console.log("symbol=",symbol);
       console.log("mosaicHttp=",mosaicHttp);
