@@ -430,11 +430,6 @@ function handleSSS() {
   const amount = document.getElementById('form-amount').value;
   const message = document.getElementById('form-message').value;
      
-     console.log("addr=");
-     console.log(addr);
-     
-     console.log("get_mosaic_ID=",mosaic_ID);
-     
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
          EPOCH = EPOCH_M; 
          // XYM_ID = XYM_ID_M;
@@ -448,15 +443,8 @@ function handleSSS() {
             transactionHttp = transactionHttp_T;
         }
      
-     console.log("なぜ？");
-     
  (async() => {  
-      console.log("symbol=",symbol);
-      console.log("mosaicHttp=",mosaicHttp);
-     mosaicInfo = await mosaicHttp.getMosaic(new symbol.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する
-       
-     console.log("なぜ？");
-     console.log("mosaicInfo=",mosaicInfo);   
+     mosaicInfo = await mosaicHttp.getMosaic(new symbol.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する 
      const div = mosaicInfo.divisibility; // 可分性
   
     const tx = symbol.TransferTransaction.create(        // トランザクションを生成
