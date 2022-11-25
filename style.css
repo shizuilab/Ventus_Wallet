@@ -87,7 +87,7 @@ h3 {
 }
 
 .right {
-  margin-right: 0;
+  margin-right: 0px;
   overflow: auto;
 }
 
@@ -123,7 +123,7 @@ h3 {
   background: rgb(255, 255, 255,0.8);
   border-radius: 16px;
   width: 600px;
-  margin-right: 0;
+  margin-right: 0px;
   padding: 32px;
 }
 
