@@ -53,18 +53,6 @@ body {
 .popup-inner img {
   width: 100%;
 }
-/*.close-btn {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  line-height: 50px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-}*/
 .bg-black {
   position: absolute;
   left: 0;
