@@ -176,12 +176,12 @@ accountHttp.getAccountInfo(address)
     .subscribe(tx=>{
         //受信後の処理を記述
         console.log(tx);
-         var popup = document.getElementById('popup');
-             popup.classList.toggle('is-show');
          // 承認音を鳴らす   
         var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding2.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す      
         my_audio.play();  //サウンドを再生
+        var popup = document.getElementById('popup'); // ポップアップを閉じる
+             popup.classList.toggle('is-show');
         window.setTimeout(function(){location.reload();},2000); // 2秒後にページをリロード
     });
 
@@ -190,12 +190,12 @@ accountHttp.getAccountInfo(address)
     .subscribe(tx=>{
         //受信後の処理を記述
         console.log(tx);
-         var popup = document.getElementById('popup');
-             popup.classList.toggle('is-show');
       　　// 未承認トランザクション音を鳴らす
         var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
-        my_audio.play();  //サウンドを再生   
+        my_audio.play();  //サウンドを再生 
+         var popup = document.getElementById('popup'); //ポップアップを表示
+             popup.classList.toggle('is-show'); 
     });   
   });
   
