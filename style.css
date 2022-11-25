@@ -16,7 +16,7 @@ body {
 
 /* ポップアップ */
 .popup {
-  /*position: fixed;*/
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -81,7 +81,7 @@ h3 {
 
 .left {
   top: 310px; 
-  width: 800px;
+  width: 700px;
   /*position: fixed;*/
 }
 
