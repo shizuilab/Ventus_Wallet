@@ -86,7 +86,7 @@ h3 {
 }
 
 .right {
-  margin-right: 0;
+  width: 100%;
   overflow: auto;
 }
 
