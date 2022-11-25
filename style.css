@@ -14,14 +14,14 @@ body {
         text-align: right;
 }
 
-.loading {
+/*.loading {
   margin: 30px auto;
   width: 150px;
   height: 150px;
   border-radius: 50%;
   background: red url('https://cdn.dribbble.com/users/1056629/screenshots/3220439/unicorn.gif') no-repeat -50px center;
   background-size: cover;
-}
+}*/
 
 /* ポップアップ */
 .popup {
@@ -53,7 +53,7 @@ body {
 .popup-inner img {
   width: 100%;
 }
-.close-btn {
+/*.close-btn {
   position: absolute;
   right: 0;
   top: 0;
@@ -64,7 +64,7 @@ body {
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-}
+}*/
 .bg-black {
   position: absolute;
   left: 0;
