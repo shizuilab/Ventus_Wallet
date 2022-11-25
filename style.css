@@ -74,8 +74,9 @@ h2 {
 h3 {
   font-size: 40px;
   font-family: 'Itim', cursive;
-  display: flex;
-  justify-content: flex-end;
+  /*display: flex;
+  justify-content: flex-end;*/
+  text-align: right;
   margin: 0px 80px 10px auto;
 }
 
