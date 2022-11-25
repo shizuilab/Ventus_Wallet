@@ -86,9 +86,7 @@ h3 {
 }
 
 .right {
-  padding-left: 820px;
-  padding-right: 80px;
-  width: 700px;
+  width: 90%;
   overflow: auto;
 }
 
