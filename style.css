@@ -86,8 +86,7 @@ h3 {
 }
 
 .right {
- /* padding-left: 800px; */
-  margin-right: 80;
+  padding-left: 820px;
   width: 700px;
   overflow: auto;
 }
