@@ -478,12 +478,12 @@ function popupSetting(){
   if(!popup) return;
 
   let bgBlack = document.getElementById('bg-black');
-  let closeBtn = document.getElementById('close-btn');
+  //let closeBtn = document.getElementById('close-btn');
   let showBtn = document.getElementById('show-btn');
 
   // ポップアップ
   popUp(bgBlack);
-  popUp(closeBtn);
+  //popUp(closeBtn);
   popUp(showBtn);
 
   // ポップアップ処理
