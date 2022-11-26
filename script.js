@@ -325,14 +325,13 @@ transactionHttp
                     dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
                }
             }            
-            
+            dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
            }           
             dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
           }
-            dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
+            
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
-  
             dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
             dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }
