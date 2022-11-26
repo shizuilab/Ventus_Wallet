@@ -303,14 +303,14 @@ transactionHttp
                  if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
                      if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
                          dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
-                     }else{    //　ネームスペースがない場合
+                     }else{   　　　　　　　　　　　　　　　　　　　　　 //　ネームスペースがない場合
                          dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
                      }    
                          dom_amount.innerHTML = `<font color="#FF0000"><big><strong>💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量               
                  }else {
                      if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合
                          dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
-                     }else{   // ネームスペースがない場合
+                     }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
                          dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
                      }
                          dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️🥳 :<big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
@@ -328,7 +328,7 @@ transactionHttp
             }                                       
             dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
- 
+               console.log("i=",i);
            }  //モザイクの数だけ繰り返す
              
              dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
