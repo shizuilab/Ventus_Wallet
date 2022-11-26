@@ -209,7 +209,7 @@ const searchCriteria = {
   pageNumber: 1,
   pageSize: 30,
   order: symbol.Order.Desc,
-  embedded:true,
+  embedded: true,
 };
 
 console.log("searchCriteria=");  //////////////////
