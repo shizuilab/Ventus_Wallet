@@ -313,7 +313,7 @@ transactionHttp
                      }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
                          dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
                      }
-                         dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️🥳 :<big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
+                         dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️😊 :<big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
                  }
         
                })(); // async()
@@ -323,7 +323,7 @@ transactionHttp
                   dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量 
                }else {
          　        　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
-                    dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
+                    dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量 
                }
             }                                       
             dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
