@@ -81,7 +81,7 @@ h3 {
 }
 
 .left {
-  top: 310px; 
+  margin-top: 0px; 
   width: 700px;
   position: fixed;
 }
