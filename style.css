@@ -151,8 +151,7 @@ h3 {
 
 .container {
   font-size: 24px;
-  margin-left: 0px;
-  margin: 20px 0px 30px 30px;
+  margin: 20px 0px 30px auto;
 }
 
 .wrapper {
