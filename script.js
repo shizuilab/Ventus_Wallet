@@ -289,8 +289,8 @@ transactionHttp
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
           console.log('モザイク数=',tx.mosaics.length);
-          let i=0;   
-          for(i=0 i<tx.mosaics.length i++){  //モザイクの数だけ繰り返す
+     
+          for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
             if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
              (async() => {
                const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
