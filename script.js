@@ -205,6 +205,7 @@ accountHttp.getAccountInfo(address)
                                   // トランザクション履歴を取得する
 const searchCriteria = {                                   
   group: symbol.TransactionGroup.Confirmed,
+　signerPublicKey: "AE637ACA688204714B90BBA77B7D08BFE79CBF7406AF31F7E0E55836EFEA987A",
   address,
   pageNumber: 1,
   pageSize: 30,
