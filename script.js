@@ -286,49 +286,51 @@ transactionHttp
  
         if (tx.type !== 16961 && tx.type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
+           dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
+            
+            console.log('モザイク数=',tx.mosaics.length) 
              
-          if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
-            (async() => {
-             const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+            if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
+             (async() => {
+               const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
           
-             mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
+               mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
           
-             const div = mosaicInfo.divisibility; // 可分性
+               const div = mosaicInfo.divisibility; // 可分性
       
-            if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
-                if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
-                    dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
-                }else{    //　ネームスペースがない場合
-                    dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`;
-                }    
-                    dom_amount.innerHTML = `<font color="#FF0000"><big><strong>💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量               
-            }else {
-                if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合
-                    dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
-                }else{   // ネームスペースがない場合
-                    dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`;
-                }
-                    dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️🥳 :<big><strong> ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
+              if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
+                  if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
+                      dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
+                  }else{    //　ネームスペースがない場合
+                      dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`;
+                  }    
+                      dom_amount.innerHTML = `<font color="#FF0000"><big><strong>💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量               
+              }else {
+                  if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合
+                      dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
+                  }else{   // ネームスペースがない場合
+                      dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[0].id.id.toHex()})</small></font>`;
+                  }
+                      dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️🥳 :<big><strong> ${(parseInt(tx.mosaics[0].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
+              }
+        
+             })(); // async()
+            }else { //モザイクが空の場合
+               if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
+                  dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
+                  dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量 
+               }else {
+         　        　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
+                    dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
+               }
             }
-        
-            })(); // async()
-          }else { //モザイクが空の場合
-             if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
-               dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
-               dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量 
-             }else {
-         　   　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
-               dom_amount.innerHTML = `<font color="#008000">💰➡️🥳 : </font>`;     // 　数量 
-             }
-           }
-         
-      
+            
             dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
-         }
-        
-            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
+         }           
             dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+         
+         
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
   
             dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
