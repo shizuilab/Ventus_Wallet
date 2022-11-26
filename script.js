@@ -329,9 +329,11 @@ transactionHttp
             dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
  
            }  //モザイクの数だけ繰り返す
+             
+             dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
           } // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
             
-            dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
+            
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
             dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
             dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
