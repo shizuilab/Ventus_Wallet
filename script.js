@@ -168,7 +168,7 @@ accountHttp.getAccountInfo(address)
     //ブロック生成の検知
     listener.newBlock()
     .subscribe(block=>{
-      console.log(block);    //ブロック生成 　表示OFF
+      //console.log(block);    //ブロック生成 　表示OFF
     });
     
     //承認トランザクションの検知
