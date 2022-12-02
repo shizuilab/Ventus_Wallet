@@ -1,6 +1,4 @@
-# Test_V(Ventus_Wallet）
-
-これはテスト用です。
+# (Ventus_Wallet）
 
 Ventus Wallet(ウェンタス　ウォレット)は、「Symbol × SSS Extension で作る dApps 入門」　をベースに作成した
 Symbolブラウザウォレットです。
