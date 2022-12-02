@@ -18,7 +18,7 @@ const nsRepo_M = repositoryFactory_M.createNamespaceRepository();
 //TEST_NET の場合
 
 const EPOCH_T = 1667250467;
-const NODE_URL_T = 'https://mikun-testnet.tk:3001';
+const NODE_URL_T = 'https://mikun-testnet2.tk:3001';
 const NET_TYPE_T = symbol.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
 
@@ -96,7 +96,8 @@ const dom_netType = document.getElementById('netType');  // network Type を表�
 const dom_addr = document.getElementById('wallet-addr');
 //dom_addr.innerText = address.pretty();                         // address.pretty() アドレスがハイフンで区切られた文字列で表示される
 dom_addr.innerText = address.address;                            // ハイフン無しでアドレスを表示
-  
+ 
+console.log("address= wallet-addr",address);//////////////////////////////////////////////////////////////////////////////////////////////////     
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
@@ -168,9 +169,22 @@ accountHttp.getAccountInfo(address)
     //ブロック生成の検知
     listener.newBlock()
     .subscribe(block=>{
-      //console.log(block);    //ブロック生成 　表示OFF
+    //  console.log(block);    //ブロック生成 　表示OFF
     });
-    
+           
+    //未承認トランザクションの検知
+    listener.unconfirmedAdded(address)
+    .subscribe(tx=>{
+        //受信後の処理を記述
+        console.log(tx);
+      　　// 未承認トランザクション音を鳴らす
+        var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
+        my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
+        my_audio.play();  //サウンドを再生 
+         var popup = document.getElementById('popup'); //ポップアップを表示
+             popup.classList.toggle('is-show'); 
+    });    
+         
     //承認トランザクションの検知
     listener.confirmed(address)
     .subscribe(tx=>{
@@ -184,23 +198,10 @@ accountHttp.getAccountInfo(address)
              popup.classList.toggle('is-show');
         window.setTimeout(function(){location.reload();},2000); // 2秒後にページをリロード
     });
-
-    //未承認トランザクションの検知
-    listener.unconfirmedAdded(address)
-    .subscribe(tx=>{
-        //受信後の処理を記述
-        console.log(tx);
-      　　// 未承認トランザクション音を鳴らす
-        var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
-        my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
-        my_audio.play();  //サウンドを再生 
-         var popup = document.getElementById('popup'); //ポップアップを表示
-             popup.classList.toggle('is-show'); 
-    });   
+  
   });
   
-  
-  // ////////////////////////
+  ///////////////////////////
   
                                   // トランザクション履歴を取得する
 const searchCriteria = {                                   
@@ -217,6 +218,7 @@ console.log(searchCriteria);    //////////////////
   
 console.log("transactionHttp=");/////////////////
 console.log(transactionHttp);   //////////////////
+     
 
 transactionHttp
   .search(searchCriteria)
@@ -240,6 +242,7 @@ transactionHttp
       const dom_recipient_address = document.createElement('div');
       const dom_mosaic = document.createElement('div');
       const dom_amount = document.createElement('div');
+      const dom_enc = document.createElement('div');
       const dom_message = document.createElement('div');
      
 
@@ -258,7 +261,7 @@ transactionHttp
       
       
       
-      　　　//console.log("timestamp=");                                                ///////////　　  　timestamp to Date 　　　　　　　//////////
+      　　　//console.log("timestamp="); //////////////////////////////////　　  　timestamp to Date 　　　　　/////////////////////////
       　　　const timestamp = EPOCH + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
       　　　const date = new Date(timestamp * 1000);
       　　　//console.log(date.getTime());
@@ -277,7 +280,8 @@ transactionHttp
      　　　 console.log(ymdhms);
       
      　　　 dom_date.innerHTML = `<font color="#7E00FF"><p style="text-align: right">${ymdhms}</p></font>`;    //　日付  右寄せ
-      
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         
      　　　 dom_tx.appendChild(dom_date);                     //　dom_date　をdom_txに追加
         
            dom_tx.appendChild(dom_txType);                    // dom_txType をdom_txに追加 
@@ -286,6 +290,7 @@ transactionHttp
       
  
         if (tx.type !== 16961 && tx.type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
+             
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
@@ -294,11 +299,11 @@ transactionHttp
           for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
             if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
                (async() => {
-                  const mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+                  let mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
           
-                  mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[0].id.id).toPromise();// 可分性の情報を取得する
+                  mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[i].id.id).toPromise();// 可分性の情報を取得する
           
-                  const div = mosaicInfo.divisibility; // 可分性
+                  let div = mosaicInfo.divisibility; // 可分性
       
                  if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
                      if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
@@ -315,7 +320,8 @@ transactionHttp
                      }
                          dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️😊 :<big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
                  }
-        
+              
+                    
                })(); // async()
             }else { //モザイクが空の場合
                if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
@@ -324,23 +330,30 @@ transactionHttp
                }else {
          　        　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
                     dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量 
-               }
+               }   
             }                                       
-            dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
-            dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+               
+               
                console.log("i=",i);
            }  //モザイクの数だけ繰り返す
              
-             dom_message.innerHTML = `<font color="#2f4f4f">Message : ${tx.message.payload}</font>`;     // 　メッセージ 
+             dom_message.innerHTML = `<font color="#2f4f4f">< Message ></font></br><font color="#4169e1">${tx.message.payload}</font>`;     // 　メッセージ 
           } // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
-            
-            
+                                                  
+         
+            if (tx.message.type === 1){
+              dom_enc.innerHTML = `<font color="#ff00ff">暗号化メッセージ</font>`;     // 暗号化メッセージの場合　
+              dom_tx.appendChild(dom_enc);
+            }
+                 
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
             dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
             dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
     }    //    tx をループ処理
   })
-}, 500)
+}, 1000)
 
 
 // Transaction Type を返す関数
@@ -437,6 +450,8 @@ function handleSSS() {
   const mosaic_ID = document.getElementById('form-mosaic_ID').value;
   const amount = document.getElementById('form-amount').value;
   const message = document.getElementById('form-message').value;
+  const enc = document.getElementById('form-enc').value;
+  const maxfee = document.getElementById('form-maxfee').value;
      
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
          EPOCH = EPOCH_M; 
@@ -450,36 +465,70 @@ function handleSSS() {
             NET_TYPE = NET_TYPE_T
             transactionHttp = transactionHttp_T;
         }
+ 
      
  (async() => {  
      mosaicInfo = await mosaicHttp.getMosaic(new symbol.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する 
      const div = mosaicInfo.divisibility; // 可分性
-  
-    const tx = symbol.TransferTransaction.create(        // トランザクションを生成
-     symbol.Deadline.create(EPOCH),
-     symbol.Address.createFromRawAddress(addr),
-     [
-       new symbol.Mosaic(
-         new symbol.MosaicId(mosaic_ID),
-         symbol.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
-       )
-     ],
-     symbol.PlainMessage.create(message),
-     NET_TYPE,
-     symbol.UInt64.fromUint(20000)
-    )
-      
-   window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
-   window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
-    console.log('signedTx', signedTx);
-    transactionHttp.announce(signedTx);
-        
-   })      
- })(); // async()  
+　　　
+     const alice = symbol.Address.createFromRawAddress(addr);   //アドレスクラスの生成
+     accountInfo = await accountHttp.getAccountInfo(alice).toPromise();  //　送信先アドレスの公開鍵を取得する
+     console.log("accontInfo=",accountInfo); 
+     
+     if (enc === "0"){                      //////////////// メッセージが平文の場合 ////////////////////////////////////
+    　 const tx = symbol.TransferTransaction.create(        // トランザクションを生成
+       symbol.Deadline.create(EPOCH),
+       symbol.Address.createFromRawAddress(addr),
+       [
+         new symbol.Mosaic(
+           new symbol.MosaicId(mosaic_ID),
+           symbol.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
+         )
+       ],
+       symbol.PlainMessage.create(message),
+       NET_TYPE,
+       symbol.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定 (0.05 XYM)
+      )
+          console.log("平文だよ。tx=",tx);
+          window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
+          window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+          console.log('signedTx', signedTx);
+          transactionHttp.announce(signedTx);
+          }) 
+     }else
+        if (enc === "1"){                ////////////// メッセージが暗号の場合 /////////////////////////////////////////////////
+             
+             const pubkey = accountInfo.publicKey;
+             window.SSS.setMessage(message, pubkey);
+             window.SSS.requestSignEncription().then((msg) => {
+                 setTimeout(() => {
+                   console.log({ msg });
+                   const tx = symbol.TransferTransaction.create(        // トランザクションを生成
+                   symbol.Deadline.create(EPOCH),
+                   symbol.Address.createFromRawAddress(addr),
+                   [
+                     new symbol.Mosaic(
+                       new symbol.MosaicId(mosaic_ID),
+                       symbol.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
+                     )
+                   ],
+                   msg,
+                   NET_TYPE,
+                   symbol.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定  
+                   )
+                   window.SSS.setTransaction(tx);               // SSSにトランザクションを登録
+                   window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求                   
+                   console.log('signedTx', signedTx);
+                   transactionHttp.announce(signedTx);    
+                   })
+                 }, 1000)      
+             });               
+      }     
+  })(); // async()  
     
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 // 未承認状態の時にpopup する
 // ポップアップのセッティング処理
 function popupSetting(){

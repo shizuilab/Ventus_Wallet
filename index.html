@@ -4,7 +4,7 @@
   <title>Ventus Wallet</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css" type="text/css"> 
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- <meta name="viewport" content="width=device-width,initial-scale=1"> -->
 </head>
 <body>
   
@@ -13,6 +13,7 @@
        <a href="https://chrome.google.com/webstore/detail/sss-extension/llildiojemakefgnhhkmiiffonembcan" target="_blank">/ SSS_Extension /</a>
        <a href="https://note.com/mahorobart/n/nd5f226887c2a" target="_blank">Ventusについて</a>
        <a href="https://github.com/mikunNEM/Ventus_Wallet">/ GitHub /</a>
+       <a href="https://symbol.fyi"> Explorer /</a>
   </div> 
   
   <h1>Ventus Wallet</h1>
@@ -31,7 +32,7 @@
         
         <div class="sender-card">
           <h2>Send</h2>
-          
+                    
           <div class="textfiled-wrapper">
             <div>Recipient Address / 宛先</div>
             <input type="text" id="form-addr" class="textfiled" />
@@ -39,20 +40,40 @@
           
           <div class="textfiled-wrapper">
             <div>Mosaic / モザイク</div>
-            <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select>    <!--   セレクトボックス     -->
+            <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select>         <!--   セレクトボックス     -->
           </div>
           
           <div class="textfiled-wrapper">
-            <div>Amount / 数量 </br>(maxfee 0.02xym)</div>
-            <input type="text" id="form-amount" class="textfiled" />
+            <div>Amount / 数量</div>
+            <input type="text" id="form-amount" class="textfiled" style="line-height:1"/>
           </div>
+        
           <div class="textfiled-wrapper">
             <div>Message / メッセージ</div>
-            <input type="text" id="form-message" class="textfiled" style="line-height:3;"/>
+            <input type="text" id="form-message" class="textfiled" style="line-height:3"/>
+          </div>  
+        
+          <div class="textfiled-wrapper">
+            <div></div>
+            <select id="form-enc">
+            <option value="0">Plain message　　　(平文)</option>
+            <option value="1">Encrypted message (暗号化)</option>       
+            </select>
           </div>
           
+          <div class="textfiled-wrapper">
+            <div>maxFee / 最大手数料</div>
+            <select id="form-maxfee">
+            <option value="0.02">0.02 xym (slow)</option>
+            <option value="0.04">0.04 xym</option>
+            <option value="0.07">0.07 xym</option>
+            <option value="0.10"> 0.10 xym (fast)</option>
+            </select>
+          </div>
+ 
+          </br>
           <div id="button-haichi">
-             <input type="button" onclick="handleSSS();" value="送信" class="button-sign"/>
+             <input type="button" onclick="handleSSS();" value="Send" class="button-sign"/>
           </div>
                     
         </div>
