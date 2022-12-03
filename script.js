@@ -291,7 +291,7 @@ transactionHttp
  
         if (tx.type !== 16961 && tx.type !== 16705){ // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
              
-           dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　宛先
+           dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　   宛先
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
           console.log('モザイク数=',tx.mosaics.length);
@@ -301,22 +301,23 @@ transactionHttp
                (async() => {
                   let mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
           
+                    console.log(mosaicNames);
                   mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[i].id.id).toPromise();// 可分性の情報を取得する
           
                   let div = mosaicInfo.divisibility; // 可分性
       
                  if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
                      if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
-                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
+                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big>　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`; 
                      }else{   　　　　　　　　　　　　　　　　　　　　　 //　ネームスペースがない場合
-                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
+                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
                      }    
                          dom_amount.innerHTML = `<font color="#FF0000"><big><strong>💁‍♀️➡️💰 : ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量               
                  }else {
                      if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合
-                         dom_mosaic.innerHTML = `<font color="#008000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small> </br><big><strong>  ${[mosaicNames][0][0].names[0].name}</strong></big></font>`; 
+                         dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big>　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`; 
                      }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
-                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :  <small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
+                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
                      }
                          dom_amount.innerHTML = `<font color="#008000"><big><strong>💰➡️😊 :<big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></font>`;     // 　数量            
                  }
@@ -339,15 +340,18 @@ transactionHttp
                console.log("i=",i);
            }  //モザイクの数だけ繰り返す
              
-             dom_message.innerHTML = `<font color="#2f4f4f">< Message ></font></br><font color="#4169e1">${tx.message.payload}</font>`;     // 　メッセージ 
+             if (tx.message.type === 1){
+                 dom_enc.innerHTML = `<font color="#ff00ff"><strong></br>暗号化メッセージ</strong></font>`;     // 暗号化メッセージの場合　
+                 dom_tx.appendChild(dom_enc);
+              
+                 dom_message.innerHTML = `<font color="#ff00ff">< Encrypted Message ></font><font color="#4169e1"></br>${tx.message.payload}</font>`;     // 　メッセージ    
+            }else{          // 平文の場合
+                 dom_message.innerHTML = `<font color="#2f4f4f"></br>< Message ></font><font color="#4169e1"></br>${tx.message.payload}</font>`;     // 　メッセージ  
+               }
+                         
           } // 'AGGREGATE_BONDED' 'AGGREGATE_COMPLETE' の時はスルーする
                                                   
-         
-            if (tx.message.type === 1){
-              dom_enc.innerHTML = `<font color="#ff00ff">暗号化メッセージ</font>`;     // 暗号化メッセージの場合　
-              dom_tx.appendChild(dom_enc);
-            }
-                 
+                         
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
             dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
             dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
