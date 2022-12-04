@@ -321,20 +321,26 @@ transactionHttp
                      }
                          dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></i></font>`;     // 　数量            
                  }
-              
+                    
+                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+                dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
                     
                })(); // async()
             }else { //モザイクが空の場合
                if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
                   dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
-                  dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量 
+                  dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量
+                    dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                    dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
                }else {
          　        　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
                     dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量 
+                      dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                      dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
                }   
             }                                       
-                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
-                dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+                
                
                
                console.log("i=",i);
