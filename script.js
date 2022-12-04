@@ -336,7 +336,6 @@ transactionHttp
             }                                       
                      dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                      dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-                     dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
                
                
                console.log("i=",i);
