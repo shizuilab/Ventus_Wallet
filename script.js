@@ -45,8 +45,7 @@ setTimeout(() => {    //指定した時間後に一度だけ動作する
   
 const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
   
-  console.log("activeAddress=");
-  console.log(address.address);
+  console.log("activeAddress=",address.address);
   
 const check_netType = address.address.charAt(0);     // 1文字目を抽出
 
@@ -78,11 +77,8 @@ const check_netType = address.address.charAt(0);     // 1文字目を抽出
         
           console.log("TEST_NET");
       }
-       console.log("check_netType=");
-       console.log(check_netType);
-  
-       
-         
+       console.log("check_netType=",check_netType);
+     
 
 const dom_netType = document.getElementById('netType');  // network Type を表示　
      
@@ -97,15 +93,24 @@ const dom_addr = document.getElementById('wallet-addr');
 //dom_addr.innerText = address.pretty();                         // address.pretty() アドレスがハイフンで区切られた文字列で表示される
 dom_addr.innerText = address.address;                            // ハイフン無しでアドレスを表示
  
-console.log("address= wallet-addr",address);//////////////////////////////////////////////////////////////////////////////////////////////////     
+console.log("address= wallet-addr",address);//////////////////////////////////////////////////////////////////////////////////////////////////  
+     
+const dom_explorer = document.getElementById('explorer');  // Wallet 右上のExplorerリンク
+if (NET_TYPE === NET_TYPE_T){     
+    dom_explorer.innerHTML = `<a href="https://testnet.symbol.fyi/accounts/${address.address}" target="_blank" rel="noopener noreferrer">/ Explorer </a>`; 
+   }else
+      if (NET_TYPE = NET_TYPE_M){
+         dom_explorer.innerHTML = `<a href="https://symbol.fyi/accounts/${address.address}" target="_blank" rel="noopener noreferrer">/ Explorer </a>`;      
+      }
+     
+     
+     
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
-        console.log("accountInfo=")
-        console.log(accountInfo);
+        console.log("accountInfo=",accountInfo)
      
-      console.log("モザイクの配列の大きさ=");
-      console.log(accountInfo.mosaics.length);
+        console.log("モザイクの配列の大きさ=",accountInfo.mosaics.length);
      
           //select要素を取得する
           const selectMosaic = document.getElementById('form-mosaic_ID');
@@ -145,15 +150,14 @@ accountHttp.getAccountInfo(address)
            selectMosaic.appendChild(option1);      
            
       }
-      //console.log("mosaic_data=");
-      //console.log(mosaic_data);        
+      //console.log("mosaic_data=",mosaic_data);     
         
     })(); // async() 
   })
      
                
  
-    //　リスナーでトランザクションを検知し、音を鳴らす
+    //////////////////////////////////////　リスナーでトランザクションを検知し、音を鳴らす //////////////////////////////////////////////////
   
  
  // nsRepo = repositoryFactory.createNamespaceRepository();
@@ -166,13 +170,13 @@ accountHttp.getAccountInfo(address)
 
     //Websocketが切断される事なく、常時監視するために、ブロック生成(約30秒毎)の検知を行う
 
-    //ブロック生成の検知
+    // ブロック生成の検知  /////////////////////////////////////////////////////////////////
     listener.newBlock()
     .subscribe(block=>{
     //  console.log(block);    //ブロック生成 　表示OFF
     });
            
-    //未承認トランザクションの検知
+    // 未承認トランザクションの検知  ////////////////////////////////////////////////////////
     listener.unconfirmedAdded(address)
     .subscribe(tx=>{
         //受信後の処理を記述
@@ -185,7 +189,7 @@ accountHttp.getAccountInfo(address)
              popup.classList.toggle('is-show'); 
     });    
          
-    //承認トランザクションの検知
+    // 承認トランザクションの検知  //////////////////////////////////////////////////////////
     listener.confirmed(address)
     .subscribe(tx=>{
         //受信後の処理を記述
@@ -201,7 +205,7 @@ accountHttp.getAccountInfo(address)
   
   });
   
-  ///////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
                                   // トランザクション履歴を取得する
 const searchCriteria = {                                   
@@ -213,35 +217,28 @@ const searchCriteria = {
   embedded: true,
 };
 
-console.log("searchCriteria=");  //////////////////
-console.log(searchCriteria);    //////////////////
-  
-console.log("transactionHttp=");/////////////////
-console.log(transactionHttp);   //////////////////
+console.log("searchCriteria=",searchCriteria);  //////////////////
+console.log("transactionHttp=",transactionHttp);   //////////////////
      
 
 transactionHttp
   .search(searchCriteria)
   .toPromise()
   .then((txs) => {
-    console.log("txs=");         /////////////////
-    console.log(txs);           /////////////////
-    const dom_txInfo = document.getElementById('wallet-transactions');
+    console.log("txs=",txs);         /////////////////
+     
+    const dom_txInfo = document.getElementById('wallet-transactions'); 
+    console.log("dom_txInfo=",dom_txInfo); ////////////////
     
-    console.log("dom_txInfo="); ////////////////
-    console.log(dom_txInfo);    ////////////////
-    
-    for (let tx of txs.data) {   //    txをループ処理
-      console.log("tx=");      ////////////////////
-      console.log(tx);
+    for (let tx of txs.data) {   ///////////////    tx を pageSize の回数繰り返す ///////////////////
+      console.log("tx=",tx);      ////////////////////
       const dom_tx = document.createElement('div');
       const dom_date = document.createElement('div');
       const dom_txType = document.createElement('div');
       const dom_hash = document.createElement('div');
       const dom_signer_address = document.createElement('div');
       const dom_recipient_address = document.createElement('div');
-      const dom_mosaic = document.createElement('div');
-      const dom_amount = document.createElement('div');
+      
       const dom_enc = document.createElement('div');
       const dom_message = document.createElement('div');
      
@@ -294,52 +291,58 @@ transactionHttp
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　   宛先
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
-          console.log('モザイク数=',tx.mosaics.length);
+          console.log('モザイク数=',tx.mosaics.length);  //////////////////////////////////////////////
      
           for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
-            if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)
+               const dom_mosaic = document.createElement('div');
+               const dom_amount = document.createElement('div');
+               
+               console.log("i=",i); 
+            if (tx.mosaics.length !== 0){ //モザイクが空でない(モザイク有りの場合)                 
                (async() => {
                   let mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
           
-                    console.log(mosaicNames);
-                  mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[i].id.id).toPromise();// 可分性の情報を取得する
-          
+                    //console.log(mosaicNames);
+                  mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[i].id.id).toPromise();// 可分性の情報を取得する      
+                  
                   let div = mosaicInfo.divisibility; // 可分性
-      
-                 if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
+                 
+                   
+                 if(tx.signer.address.address === address.address) {  // signerとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
+                      
                      if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
                          dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big>　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`; 
                      }else{   　　　　　　　　　　　　　　　　　　　　　 //　ネームスペースがない場合
                          dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
                      }    
-                         dom_amount.innerHTML = `<font color="#FF0000" size="+1">💁‍♀️➡️💰 :<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></i></font>`;     // 　数量               
-                 }else {
-                     if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合
+                         dom_amount.innerHTML = `<font color="#FF0000" size="+1">💁‍♀️➡️💰 :<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;     // 　数量               
+                 }else{                                         //  signer とウォレットアドレスが違う場合
+                      
+                     if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合                         
                          dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big>　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`; 
                      }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
-                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;
+                         dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　<small>(${tx.mosaics[i].id.id.toHex()})</small></font>`;                        
                      }
-                         dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong></i></font>`;     // 　数量            
+                         dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;     // 　数量                                 
                  }
                     
                })(); // async()
-            }else { //モザイクが空の場合
-               if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
-                  dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
-                  dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量
+            }else{   //モザイクが空の場合
+                 console.log("モザイクが空")
+                   if(tx.signer.address.address === address.address) {  // 送信アドレスとウォレットのアドレスが同じかどうかで絵文字の表示と色を変える
+                       dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
+                       dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量      
+                   }else{
+         　           　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
+                       dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量               
+                   }   
+             }
+                     
+                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
                     
-               }else {
-         　        　dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
-                    dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量 
-
-               }   
-            }                                       
-                     dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
-                     dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
                
-               
-               console.log("i=",i);
-           }  //モザイクの数だけ繰り返す
+          }  //モザイクの数だけ繰り返す
              
              if (tx.message.type === 1){
                  dom_enc.innerHTML = `<font color="#ff00ff"><strong></br>暗号化メッセージ</strong></font>`;     // 暗号化メッセージの場合　
@@ -494,7 +497,6 @@ function handleSSS() {
        NET_TYPE,
        symbol.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定 (0.05 XYM)
       )
-          console.log("平文だよ。tx=",tx);
           window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
           window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
           console.log('signedTx', signedTx);
