@@ -1,3 +1,6 @@
+const dom_version = document.getElementById('version'); 
+dom_version.innerText = 'v1.0.0　|　Powered by SYMBOL'; 
+
 const symbol = require('/node_modules/symbol-sdk');
 
 //const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
@@ -292,14 +295,11 @@ transactionHttp
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
           console.log('モザイク数=',tx.mosaics.length);  //////////////////////////////////////////////
-          console.log(tx.mosaics.length !== 0);
                   
           /////////// モザイクが空ではない場合   /////////////////　　モザイクが空の場合はこの for 文はスルーされる  //////////
           for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
                const dom_mosaic = document.createElement('div');
                const dom_amount = document.createElement('div');
-               
-               console.log("i=",i);
           
                (async() => {
                   let mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
@@ -544,12 +544,12 @@ function handleSSS() {
 // ポップアップのセッティング処理
 function popupSetting(){
   let popup = document.getElementById('popup');
-     console.log("popup=",popup);
+     //console.log("popup=",popup);
   if(!popup) return;
 
   let bgBlack = document.getElementById('bg-black');
-      console.log("bgBlack=",bgBlack);
-  //let closeBtn = document.getElementById('close-btn');
+      //console.log("bgBlack=",bgBlack);
+      //let closeBtn = document.getElementById('close-btn');
   let showBtn = document.getElementById('show-btn');
      console.log("showBtn=",showBtn);
 
@@ -561,10 +561,10 @@ function popupSetting(){
   // ポップアップ処理
   function popUp(elem){
     if(!elem) return;
-      console.log("elem=",elem);
+      //console.log("elem=",elem);
     elem.addEventListener('click', function(){
       popup.classList.toggle('is-show');
-      console.log("popup=",popup);
+      //console.log("popup=",popup);
     });
   }
 }

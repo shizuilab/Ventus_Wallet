@@ -10,7 +10,7 @@
   
   <div class="SSS_link">
        <font color=#ff00ff>Ventus Wallet(ウェンタス ウォレット)は自己責任でご利用ください</font>
-       <div style="color: red; display: inline-block; _display: inline;" id="explorer"></div>
+       <div style="display: inline-block; _display: inline;" id="explorer"></div>
        <a href="https://docs.sss-symbol.com/ja/" target="_blank">/ SSS_Extension /</a>
        <a href="https://note.com/mahorobart/n/nd5f226887c2a" target="_blank">Ventusについて</a>
        <a href="https://github.com/mikunNEM/Ventus_Wallet">/ GitHub /</a>       
@@ -21,7 +21,8 @@
   <div class="wrapper">
       <div class="left">
         <div class="account-card">
-            <h2>Account Info</h2>        
+            <h2>Account Info</h2>
+            <hr>
           <div class="container" style="color:#2f4f4f">   
             <div id="wallet-addr"></div>
           </div>
@@ -32,7 +33,8 @@
         
         <div class="sender-card">
           <h2>Send</h2>
-                    
+          <hr>
+          <br>
           <div class="textfiled-wrapper">
             <div>Recipient Address / 宛先</div>
             <input type="text" id="form-addr" class="textfiled" />
@@ -69,18 +71,20 @@
             <option value="0.07">0.07 xym</option>
             <option value="0.10"> 0.10 xym (fast)</option>
             </select>
-          </div>
- 
+          </div> 
           </br>
           <div id="button-haichi">
              <input type="button" onclick="handleSSS();" value="Send" class="button-sign"/>
-          </div>
-                    
+          </div>                    
         </div>
+    
+         <div id="version"></div>
+         
       </div>
       <div class="right">
         <div class="tx-card">
           <h2>Tx History</h2>
+          <hr>
           <div id="wallet-transactions"></div>
         </div>
       </div>
