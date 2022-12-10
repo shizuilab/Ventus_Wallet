@@ -1,7 +1,7 @@
 const dom_version = document.getElementById('version'); 
 dom_version.innerText = 'v1.0.0　|　Powered by SYMBOL'; 
 
-const symbol = require('/node_modules/symbol-sdk');
+const sym = require('/node_modules/symbol-sdk');
 
 //const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
 
@@ -9,10 +9,10 @@ const symbol = require('/node_modules/symbol-sdk');
 
 const EPOCH_M = 1615853185;
 const NODE_URL_M = 'https://symbol-mikun.net:3001';
-const NET_TYPE_M = symbol.NetworkType.MAIN_NET;
+const NET_TYPE_M = sym.NetworkType.MAIN_NET;
 const XYM_ID_M = '6BED913FA20223F8'; 
 
-const repositoryFactory_M = new symbol.RepositoryFactoryHttp(NODE_URL_M);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const repositoryFactory_M = new sym.RepositoryFactoryHttp(NODE_URL_M);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountHttp_M = repositoryFactory_M.createAccountRepository();
 const transactionHttp_M = repositoryFactory_M.createTransactionRepository();
 const mosaicHttp_M = repositoryFactory_M.createMosaicRepository();
@@ -22,10 +22,10 @@ const nsRepo_M = repositoryFactory_M.createNamespaceRepository();
 
 const EPOCH_T = 1667250467;
 const NODE_URL_T = 'https://mikun-testnet2.tk:3001';
-const NET_TYPE_T = symbol.NetworkType.TEST_NET;
+const NET_TYPE_T = sym.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
 
-const repositoryFactory_T = new symbol.RepositoryFactoryHttp(NODE_URL_T);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
+const repositoryFactory_T = new sym.RepositoryFactoryHttp(NODE_URL_T);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountHttp_T = repositoryFactory_T.createAccountRepository();
 const transactionHttp_T = repositoryFactory_T.createTransactionRepository();
 const mosaicHttp_T = repositoryFactory_T.createMosaicRepository();
@@ -34,19 +34,16 @@ const nsRepo_T = repositoryFactory_T.createNamespaceRepository();
 let EPOCH;
 let NODE_URL;
 let NET_TYPE;
-let XYM_ID;
-     
+let XYM_ID;     
 let repositoryFactory;
 let accountHttp;
 let transactionHttp;
 let mosaicHttp;
 let nsRepo;
 
-
-
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
-const address = symbol.Address.createFromRawAddress(window.SSS.activeAddress);
+const address = sym.Address.createFromRawAddress(window.SSS.activeAddress);
   
   console.log("activeAddress=",address.address);
   
@@ -111,8 +108,7 @@ if (NET_TYPE === NET_TYPE_T){
 accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
-        console.log("accountInfo=",accountInfo)
-     
+        console.log("accountInfo=",accountInfo)     
         console.log("モザイク保有数=",accountInfo.mosaics.length);
      
           //select要素を取得する
@@ -128,32 +124,24 @@ accountHttp.getAccountInfo(address)
            const option1 = document.createElement('option');
            
            const mosaic_dataX = {};
-           const mosaicNamesA = await nsRepo.getMosaicsNames([new symbol.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
+           const mosaicNamesA = await nsRepo.getMosaicsNames([new sym.MosaicId(m.id.id.toHex())]).toPromise(); //モザイクIDからネームスペースを取り出す
          if ([mosaicNamesA][0][0].names.length !== 0) {  //  ネームスペースがある場合
         
-            //mosaic_dataX.id = m.id.id.toHex();  // モザイクデータチェック用
             option1.value =   m.id.id.toHex();  // セレクトボックスvalue
-            //mosaic_dataX.name = [mosaicNamesA][0][0].names[0].name;  // モザイクデータチェック用
             option1.textContent = `${[mosaicNamesA][0][0].names[0].name} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`;  // セレクトボックスtext
-            //mosaic_data.push(mosaic_dataX);  // モザイクデータチェック用
-              
+                       
          }else{   //ネームスペースがない場合
               
-               //mosaic_dataX.id = m.id.toHex();   // モザイクデータチェック用
                option1.value =   m.id.id.toHex();  // セレクトボックスvalue
-               //mosaic_dataX.name = "";           // モザイクデータチェック用
-               option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext
-               //mosaic_data.push(mosaic_dataX);  // モザイクデータチェック用         
+               option1.textContent = `${m.id.id.toHex()} : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}`; // セレクトボックスtext        
          }             
         if (m.id.id.toHex() === XYM_ID) {
            const dom_xym = document.getElementById('wallet-xym')
            dom_xym.innerHTML = `<i>XYM Balance : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}</i>`
         }
            //select要素にoption要素を追加する
-           selectMosaic.appendChild(option1);      
-           
-      }
-      //console.log("mosaic_data=",mosaic_data);     
+           selectMosaic.appendChild(option1);                 
+      }    
         
     })(); // async() 
   })
@@ -166,8 +154,7 @@ accountHttp.getAccountInfo(address)
  // nsRepo = repositoryFactory.createNamespaceRepository();
   
   wsEndpoint = NODE_URL.replace('http', 'ws') + "/ws";
-  listener = new symbol.Listener(wsEndpoint,nsRepo,WebSocket);
-  
+  listener = new sym.Listener(wsEndpoint,nsRepo,WebSocket); 
   
   listener.open().then(() => {
 
@@ -212,17 +199,16 @@ accountHttp.getAccountInfo(address)
   
                                   // トランザクション履歴を取得する
 const searchCriteria = {                                   
-  group: symbol.TransactionGroup.Confirmed,
+  group: sym.TransactionGroup.Confirmed,
   address,
   pageNumber: 1,
   pageSize: 50,
-  order: symbol.Order.Desc,
+  order: sym.Order.Desc,
   embedded: true,
 };
-
+         
 console.log("searchCriteria=",searchCriteria);  //////////////////
 console.log("transactionHttp=",transactionHttp);   //////////////////
-     
 
 transactionHttp
   .search(searchCriteria)
@@ -259,12 +245,10 @@ transactionHttp
          
       dom_signer_address.innerHTML = `<font color="#2f4f4f">From : ${tx.signer.address.address}</font>`;    //  文字列の結合　送信者
       
-      
-      
-      　　　//console.log("timestamp="); //////////////////////////////////　　  　timestamp to Date 　　　　　/////////////////////////
+          
+      ////////////////////////////////////////////　　  　timestamp to Date 　　　　　/////////////////////////
       　　　const timestamp = EPOCH + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
       　　　const date = new Date(timestamp * 1000);
-      　　　//console.log(date.getTime());
       
      　　　 const yyyy = `${date.getFullYear()}`;
       　　　// .slice(-2)で文字列中の末尾の2文字を取得する
@@ -302,10 +286,9 @@ transactionHttp
                const dom_amount = document.createElement('div');
           
                (async() => {
-                  let mosaicNames = await nsRepo.getMosaicsNames([new symbol.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+                  let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
      
-                  mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[i].id.id).toPromise();// 可分性の情報を取得する      
-                  
+                  mosaicInfo = await mosaicHttp.getMosaic(tx.mosaics[i].id.id).toPromise();// 可分性の情報を取得する                     
                   let div = mosaicInfo.divisibility; // 可分性
                              
                        if(tx.recipientAddress.address !== address.address) {  // 受け取りアドレスとウォレットのアドレスが違う場合　
@@ -358,8 +341,7 @@ transactionHttp
                }
                          
           } // tx.type が 'TRANSFER' の場合
-                                                  
-                         
+                                                                          
             dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加              
             dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
             dom_txInfo.appendChild(dom_tx);                    // トランザクション情報を追加
@@ -368,7 +350,8 @@ transactionHttp
 }, 1000)
 
 
-// Transaction Type を返す関数
+// Transaction Type を返す関数  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-typescript-javascript/1.0.3/enums/TransactionType.html
   switch(type){
   　case 16720:
@@ -454,7 +437,10 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
   }
 }
 
-// handleSSS関数はトランザクションを作成し、window.SSS.setTransaction関数を実行しSSSにトランザクションを登録します。そしてwindow.SSS.requestSign関数を実行し、SSSを用いた署名をユーザ－に要求します。
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// handleSSS関数はトランザクションを作成し、window.SSS.setTransaction関数を実行しSSSにトランザクションを登録します。
+// そしてwindow.SSS.requestSign関数を実行し、SSSを用いた署名をユーザ－に要求します。
 
 function handleSSS() {      
   console.log('handle sss');
@@ -477,25 +463,24 @@ function handleSSS() {
             NET_TYPE = NET_TYPE_T
             transactionHttp = transactionHttp_T;
         }
- 
-     
+    
  (async() => {  
-     mosaicInfo = await mosaicHttp.getMosaic(new symbol.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する 
+     mosaicInfo = await mosaicHttp.getMosaic(new sym.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する 
      const div = mosaicInfo.divisibility; // 可分性
 　　　   
      if (enc === "0"){                      //////////////// メッセージが平文の場合 ////////////////////////////////////
-    　 const tx = symbol.TransferTransaction.create(        // トランザクションを生成
-       symbol.Deadline.create(EPOCH),
-       symbol.Address.createFromRawAddress(addr),
+    　 const tx = sym.TransferTransaction.create(        // トランザクションを生成
+       sym.Deadline.create(EPOCH),
+       sym.Address.createFromRawAddress(addr),
        [
-         new symbol.Mosaic(
-           new symbol.MosaicId(mosaic_ID),
-           symbol.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
+         new sym.Mosaic(
+           new sym.MosaicId(mosaic_ID),
+           sym.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
          )
        ],
-       symbol.PlainMessage.create(message),
+       sym.PlainMessage.create(message),
        NET_TYPE,
-       symbol.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定
+       sym.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定
       )
           window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
           window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
@@ -504,7 +489,7 @@ function handleSSS() {
           }) 
      }else
         if (enc === "1"){                ////////////// メッセージが暗号の場合 /////////////////////////////////////////////////
-             const alice = symbol.Address.createFromRawAddress(addr);   //アドレスクラスの生成
+             const alice = sym.Address.createFromRawAddress(addr);   //アドレスクラスの生成
              accountInfo = await accountHttp.getAccountInfo(alice).toPromise();  //　送信先アドレスの公開鍵を取得する
              console.log("accontInfo=",accountInfo);
              
@@ -513,18 +498,18 @@ function handleSSS() {
              window.SSS.requestSignEncription().then((msg) => {
                  setTimeout(() => {
                    console.log({ msg });
-                   const tx = symbol.TransferTransaction.create(        // トランザクションを生成
-                   symbol.Deadline.create(EPOCH),
-                   symbol.Address.createFromRawAddress(addr),
+                   const tx = sym.TransferTransaction.create(        // トランザクションを生成
+                   sym.Deadline.create(EPOCH),
+                   sym.Address.createFromRawAddress(addr),
                    [
-                     new symbol.Mosaic(
-                       new symbol.MosaicId(mosaic_ID),
-                       symbol.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
+                     new sym.Mosaic(
+                       new sym.MosaicId(mosaic_ID),
+                       sym.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
                      )
                    ],
                    msg,
                    NET_TYPE,
-                   symbol.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定  
+                   sym.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定  
                    )
                    window.SSS.setTransaction(tx);               // SSSにトランザクションを登録
                    window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求                   
@@ -543,27 +528,21 @@ function handleSSS() {
 // ポップアップのセッティング処理
 function popupSetting(){
   let popup = document.getElementById('popup');
-     //console.log("popup=",popup);
   if(!popup) return;
 
   let bgBlack = document.getElementById('bg-black');
-      //console.log("bgBlack=",bgBlack);
-      //let closeBtn = document.getElementById('close-btn');
   let showBtn = document.getElementById('show-btn');
      console.log("showBtn=",showBtn);
 
   // ポップアップ
   popUp(bgBlack);
-  //popUp(closeBtn);
   popUp(showBtn);
 
   // ポップアップ処理
   function popUp(elem){
     if(!elem) return;
-      //console.log("elem=",elem);
     elem.addEventListener('click', function(){
       popup.classList.toggle('is-show');
-      //console.log("popup=",popup);
     });
   }
 }
