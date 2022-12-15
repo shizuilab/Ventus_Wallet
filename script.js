@@ -43,6 +43,9 @@ let nsRepo;
 
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
+    console.log("SSS連携=",window.isAllowedSSS());
+    window.requestSSS();
+  
 const address = sym.Address.createFromRawAddress(window.SSS.activeAddress);
   
   console.log("activeAddress=",address.address);
@@ -534,7 +537,6 @@ function popupSetting(){
 
   let bgBlack = document.getElementById('bg-black');
   let showBtn = document.getElementById('show-btn');
-     console.log("showBtn=",showBtn);
 
   // ポップアップ
   popUp(bgBlack);
