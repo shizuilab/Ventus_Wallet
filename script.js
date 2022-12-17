@@ -1,5 +1,5 @@
 const dom_version = document.getElementById('version'); 
-dom_version.innerText = 'v1.0.1　|　Powered by SYMBOL'; 
+dom_version.innerText = 'v1.0.2　|　Powered by SYMBOL'; 
 
 const sym = require('/node_modules/symbol-sdk');
 
@@ -43,8 +43,8 @@ let nsRepo;
 
 setTimeout(() => {    //指定した時間後に一度だけ動作する
   
-    console.log("SSS連携=",window.isAllowedSSS());
-    window.requestSSS();
+    console.log("SSS_Link=",window.isAllowedSSS());
+    window.requestSSS();    // SSSと連携されてない場合、右下にメッセージが出る
   
 const address = sym.Address.createFromRawAddress(window.SSS.activeAddress);
   
@@ -112,7 +112,7 @@ accountHttp.getAccountInfo(address)
   .toPromise()
   .then((accountInfo) => {
         console.log("accountInfo=",accountInfo)     
-        console.log("モザイク保有数=",accountInfo.mosaics.length);
+        console.log("account_Mosaics =",accountInfo.mosaics.length);
      
           //select要素を取得する
           const selectMosaic = document.getElementById('form-mosaic_ID');
@@ -283,7 +283,7 @@ transactionHttp
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　   宛先
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
-          console.log('モザイク数=',tx.mosaics.length);  //////////////////////////////////////////////
+          console.log('Tx_Mosaics =',tx.mosaics.length);  //////////////////////////////////////////////
                   
           /////////// モザイクが空ではない場合   /////////////////　　モザイクが空の場合はこの for 文はスルーされる  //////////
           for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
