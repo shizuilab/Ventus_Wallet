@@ -1,6 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');  /* フォントのインポート */
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');   /* フォントのインポート */
 
+@media all and (min-width: 500px) {
+  .wrapper {
+    display: flex;
+  }
+  .left {
+    flex-grow: 1;
+  }
+  .right {
+    flex-grow: 1;
+  }
+}
+
 body {
   /* background: rgb(190, 34, 211); */
   background-image:url("https://data.comsa.io/user/b32ed69c-7a42-490d-83f1-3494875a69cc/asset/4dea6d31-3b1d-4f3f-b4a7-405b34c5014a.png");
@@ -119,6 +131,14 @@ h3 {
   cursor: pointer;
 }
 
+.button-decrypted{
+  background: #e6e6fa;
+  color: #ff00ff;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 476px;
+}
+
 .tx-card {
   background: rgb(255, 255, 255,0.8);
   border-radius: 16px;
@@ -152,13 +172,29 @@ h3 {
   word-wrap: break-word;
 }
 
+ul{
+   padding: 0;
+   margin: 0;
+}
+
+.decryption{
+    display: flex;
+    justify-content: space-between;
+}
+
+.decryption>li{
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
 .container {
   font-size: 24px;
   margin: 20px 20px 20px 0px;
 }
 
 .wrapper {
- display: flex;
+  display: flex;
   justify-content: space-between;
   margin: 25px 50px auto 50px;
 }
