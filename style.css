@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');  /* フォントのインポート */
-@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');   /* フォントのインポート */ 
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');   /* フォントのインポート */
 
 @media all and (min-width: 500px) {
   .wrapper {
@@ -13,19 +13,28 @@
   }
 }
 
-body {
-  /* background: rgb(190, 34, 211); */
+/* body { 
+  background: rgb(190, 34, 211); 
+  background: rgb(0, 0, 0);
   background-image:url("https://data.comsa.io/user/b32ed69c-7a42-490d-83f1-3494875a69cc/asset/4dea6d31-3b1d-4f3f-b4a7-405b34c5014a.png");
+  background-image:url("https://github.com/mikunNEM/Test_V/raw/main/src/sea.jpg");
+  background-image:url("https://github.com/mikunNEM/Test_V/raw/main/cyberpunk.jpeg");
   background-size: cover;
   background-attachment: fixed;
-}
+} */
 
 .SSS_link {
         background: rgb(255, 255, 255,0.8);
         font-size: 20px;
-        padding: 0px 50px 0px 50px;
+        padding: 0px 0px 0px 50px;
         text-align: right;
 }
+
+#selectCSS{
+  color: #007bff;
+  background-color: rgb(255, 255, 255,0);
+}
+
 
 /* ポップアップ */
 .popup {

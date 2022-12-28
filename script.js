@@ -1,5 +1,5 @@
-const dom_version = document.getElementById('version'); 
-dom_version.innerText = 'v1.0.3　|　Powered by SYMBOL';
+const dom_version = document.getElementById('version');
+dom_version.innerText = 'v1.0.4　|　Powered by SYMBOL';
 
 const sym = require('/node_modules/symbol-sdk');
 const op  = require("/node_modules/rxjs/operators");
@@ -107,7 +107,8 @@ if (NET_TYPE === NET_TYPE_T){
          dom_explorer.innerHTML = `<a href="https://symbol.fyi/accounts/${address.address}" target="_blank" rel="noopener noreferrer">/ Explorer </a>`;      
       }
      
-     
+      
+	
 ///////////////////////////////////////////////    アカウント情報を取得する     ////////////////////////////////////////////
 
 accountRepo.getAccountInfo(address)
@@ -144,8 +145,9 @@ accountRepo.getAccountInfo(address)
            dom_xym.innerHTML = `<i>XYM Balance : ${(parseInt(m.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })}</i>`
         }
            //select要素にoption要素を追加する
-           selectMosaic.appendChild(option1); 
-	    //  nftdrive(m);
+           selectMosaic.appendChild(option1);
+	      
+	     //  nftdrive(m);
       }    
 	   
     })(); // async() 
@@ -856,8 +858,8 @@ function Onclick_Decryption(PubKey,encryptedMessage){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                               //  NFTをデコードして表示する //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /*
+
 function appendImg(src){          //   取得した画像をimgタグに挿入するfunctionを定義
 
   (tag= document.createElement('img')).src = src;
@@ -935,7 +937,8 @@ function nftdrive(mosaic){
 				}
 				header = 1;
 			}
-
+                             
+			 console.log(nftData);
 			if(nftData.indexOf("data:image/") >= 0){
 				appendImg(nftData);
 			}
