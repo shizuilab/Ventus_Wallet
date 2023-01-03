@@ -1,17 +1,16 @@
 const dom_version = document.getElementById('version');
-dom_version.innerText = 'v1.0.4　|　Powered by SYMBOL';
+dom_version.innerText = 'v1.0.5　|　Powered by SYMBOL';
 
 const sym = require('/node_modules/symbol-sdk');
 const op  = require("/node_modules/rxjs/operators");
-
-//const GENERATION_HASH = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
 
 //MAIN_NET の場合
 
 const EPOCH_M = 1615853185;
 const NODE_URL_M = 'https://symbol-mikun.net:3001';
 const NET_TYPE_M = sym.NetworkType.MAIN_NET;
-const XYM_ID_M = '6BED913FA20223F8'; 
+const XYM_ID_M = '6BED913FA20223F8';
+const GENERATION_HASH_M = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
 
 const repo_M = new sym.RepositoryFactoryHttp(NODE_URL_M);      // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountRepo_M = repo_M.createAccountRepository();
@@ -25,6 +24,7 @@ const EPOCH_T = 1667250467;
 const NODE_URL_T = 'https://mikun-testnet2.tk:3001';
 const NET_TYPE_T = sym.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
+const GENERATION_HASH_T = '49D6E1CE276A85B70EAFE52349AACCA389302E7A9754BCF1221E79494FC665A4';
 
 const repo_T = new sym.RepositoryFactoryHttp(NODE_URL_T);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountRepo_T = repo_T.createAccountRepository();
@@ -32,9 +32,10 @@ const txRepo_T = repo_T.createTransactionRepository();
 const mosaicRepo_T = repo_T.createMosaicRepository();
 const nsRepo_T = repo_T.createNamespaceRepository();
 
-let EPOCH;
-let NODE_URL;
-let NET_TYPE;
+let epochAdjustment;
+let generationHash;
+let NODE;
+let networkType;
 let XYM_ID;     
 let repo;
 let accountRepo;
@@ -54,9 +55,10 @@ const address = sym.Address.createFromRawAddress(window.SSS.activeAddress);
 const check_netType = address.address.charAt(0);     // 1文字目を抽出
 
    if (check_netType === 'N'){           //ネットワークの判別　 メインネット 
-       EPOCH = EPOCH_M;
-       NODE_URL = NODE_URL_M;
-       NET_TYPE = NET_TYPE_M;
+       epochAdjustment = EPOCH_M;
+       NODE = NODE_URL_M;
+       networkType = NET_TYPE_M;
+       generationHash = GENERATION_HASH_M;
        XYM_ID = XYM_ID_M;
      
        repo = repo_M;
@@ -68,9 +70,10 @@ const check_netType = address.address.charAt(0);     // 1文字目を抽出
       console.log("MAIN_NET");
    }else 
       if (check_netType === 'T'){      // テストネット
-          EPOCH = EPOCH_T;
-          NODE_URL = NODE_URL_T;
-          NET_TYPE = NET_TYPE_T;
+          epochAdjustment = EPOCH_T;
+          NODE = NODE_URL_T;
+          networkType = NET_TYPE_T;
+	  generationHash = GENERATION_HASH_T;
           XYM_ID = XYM_ID_T;
         
           repo = repo_T;
@@ -86,10 +89,10 @@ const check_netType = address.address.charAt(0);     // 1文字目を抽出
 
 const dom_netType = document.getElementById('netType');  // network Type を表示　
      
-  if (NET_TYPE === NET_TYPE_M){   
+  if (networkType === NET_TYPE_M){   
      dom_netType.innerHTML = '<font color="#ff00ff">< MAIN_NET ></font>'
   }else
-     if (NET_TYPE === NET_TYPE_T){
+     if (networkType === NET_TYPE_T){
         dom_netType.innerHTML = '<font color="ff8c00">< TEST_NET ></font>'
   }    
      
@@ -100,10 +103,10 @@ dom_addr.innerText = address.address;                            // ハイフン
 console.log("address= wallet-addr",address);//////////////////////////////////////////////////////////////////////////////////////////////////  
      
 const dom_explorer = document.getElementById('explorer');  // Wallet 右上のExplorerリンク
-if (NET_TYPE === NET_TYPE_T){     
+if (networkType === NET_TYPE_T){     
     dom_explorer.innerHTML = `<a href="https://testnet.symbol.fyi/accounts/${address.address}" target="_blank" rel="noopener noreferrer">/ Explorer </a>`; 
    }else
-      if (NET_TYPE = NET_TYPE_M){
+      if (networkType = NET_TYPE_M){
          dom_explorer.innerHTML = `<a href="https://symbol.fyi/accounts/${address.address}" target="_blank" rel="noopener noreferrer">/ Explorer </a>`;      
       }
      
@@ -158,7 +161,7 @@ accountRepo.getAccountInfo(address)
  
  // nsRepo = repo.createNamespaceRepository();
   
-  wsEndpoint = NODE_URL.replace('http', 'ws') + "/ws";
+  wsEndpoint = NODE.replace('http', 'ws') + "/ws";
   listener = new sym.Listener(wsEndpoint,nsRepo,WebSocket); 
   
   listener.open().then(() => {
@@ -229,7 +232,7 @@ txRepo
     let en = new Array(searchCriteria.pageSize);
     
     for (let tx of txs.data) {   ///////////////    tx を pageSize の回数繰り返す ///////////////////
-      console.log(`%ctx[${t}] =`,"color: blue",tx);      ////////////////////
+     // console.log(`%ctx[${t}] =`,"color: blue",tx);      //　トランザクションを表示　//////////////////
       const dom_tx = document.createElement('div');
       const dom_date = document.createElement('div');
       const dom_txType = document.createElement('div');
@@ -254,7 +257,7 @@ txRepo
       
           
       ////////////////////////////////////////////　　  　timestamp to Date 　　　　　/////////////////////////
-      　　　const timestamp = EPOCH + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
+      　　　const timestamp = epochAdjustment + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
       　　　const date = new Date(timestamp * 1000);
       
      　　　 const yyyy = `${date.getFullYear()}`;
@@ -268,7 +271,7 @@ txRepo
 
 　　　      const ymdhms = `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}`;
       
-     　　　 console.log(ymdhms);
+     　　　 //console.log(ymdhms);  // 日時を表示
       
      　　　 dom_date.innerHTML = `<font color="#7E00FF"><p style="text-align: right">${ymdhms}</p></font>`;    //　日付  右寄せ
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -285,7 +288,7 @@ txRepo
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　   宛先
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
-          console.log('Tx_Mosaics =',tx.mosaics.length);  //////////////////////////////////////////////
+          //console.log('Tx_Mosaics =',tx.mosaics.length);  ///  モザイクの数を表示 ///////////////////////////////////////////
                   
           /////////// モザイクが空ではない場合   /////////////////　　モザイクが空の場合はこの for 文はスルーされる  //////////
           for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
@@ -349,17 +352,17 @@ txRepo
 		     
 		 if (tx.recipientAddress.address !== tx.signer.address.address){    // 送信先アドレスと、送信元アドレスが異なる場合
 			if (tx.signer.address.address === address.address){
-				 console.log("%csigner と wallet address が同じ時",'color: blue')
+                                //console.log("%csigner と wallet address が同じ時",'color: blue')
 				 alice = sym.Address.createFromRawAddress(tx.recipientAddress.address);   //アドレスクラスの生成
 				
 			}else
                            if (tx.recipientAddress.address === address.address){ 
-				console.log("%crecipient と wallet address が同じ時",'color: blue')
+                                //console.log("%crecipient と wallet address が同じ時",'color: blue')
 			        alice = sym.Address.createFromRawAddress(tx.signer.address.address);   //アドレスクラスの生成			
 			} 
 			 			 
 		 }else{    // 送信先アドレスと、ウォレットアドレスが同じ場合
-			 console.log("%c送信アドレス と 送信元アドレスが同じ",'color: green')
+			 //console.log("%c送信アドレス と 送信元アドレスが同じ",'color: green')
 			 alice = sym.Address.createFromRawAddress(tx.recipientAddress.address);   //アドレスクラスの生成
 		         PubKey = window.SSS.activePublicKey;
 		 }
@@ -372,7 +375,7 @@ txRepo
 		       enc_message1.PubKey = PubKey;
 		     	      		       
 		       en[t] = enc_message1; 
-		       console.table(en);
+		      // console.table(en);
 		       		       
 	               dom_message.innerHTML = `<input type="button" id="${PubKey}" value="${tx.message.payload}" onclick="Onclick_Decryption(this.id, this.value);" class="button-decrypted"/></div>`;     // 　メッセージ    
                
@@ -496,25 +499,26 @@ function handleSSS() {
   const maxfee = document.getElementById('form-maxfee').value;
      
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
-         EPOCH = EPOCH_M; 
+         epochAdjustment = EPOCH_M; 
          // XYM_ID = XYM_ID_M;
-         NET_TYPE = NET_TYPE_M;
+         networkType = NET_TYPE_M;
          txRepo = txRepo_M;
      }else
         if (addr.charAt(0) === 'T'){ //TESTNET の場合
-            EPOCH = EPOCH_T; 
+            epochAdjustment = EPOCH_T; 
             // XYM_ID = XYM_ID_T;
-            NET_TYPE = NET_TYPE_T
+            networkType = NET_TYPE_T
             txRepo = txRepo_T;
         }
     
  (async() => {  
      mosaicInfo = await mosaicRepo.getMosaic(new sym.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する 
      const div = mosaicInfo.divisibility; // 可分性
-　　　   
+　　
+   if (address1.length === 0){ // アグリゲートTxの配列が空の場合    < transfer>
      if (enc === "0"){                      //////////////// メッセージが平文の場合 ////////////////////////////////////
     　 const tx = sym.TransferTransaction.create(        // トランザクションを生成
-       sym.Deadline.create(EPOCH),
+       sym.Deadline.create(epochAdjustment),
        sym.Address.createFromRawAddress(addr),
        [
          new sym.Mosaic(
@@ -523,7 +527,7 @@ function handleSSS() {
          )
        ],
        sym.PlainMessage.create(message),
-       NET_TYPE,
+       networkType,
        sym.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定
       )
           window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
@@ -543,7 +547,7 @@ function handleSSS() {
                  setTimeout(() => {
                    console.log({ msg });
                    const tx = sym.TransferTransaction.create(        // トランザクションを生成
-                   sym.Deadline.create(EPOCH),
+                   sym.Deadline.create(epochAdjustment),
                    sym.Address.createFromRawAddress(addr),
                    [
                      new sym.Mosaic(
@@ -552,7 +556,7 @@ function handleSSS() {
                      )
                    ],
                    msg,
-                   NET_TYPE,
+                   networkType,
                    sym.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定  
                    )
                    window.SSS.setTransaction(tx);               // SSSにトランザクションを登録
@@ -562,7 +566,48 @@ function handleSSS() {
                    })
                  }, 1000)      
              });               
-      }     
+      }
+   }else{            //////////    aggregate Tx   //////////////
+                  innerTx = [];
+                  for (let i=0; i<address1.length; i++){
+			  innerTx[i] = sym.TransferTransaction.create(
+                              undefined, //Deadline
+                              sym.Address.createFromRawAddress(address1[i]), //送信先
+                              [
+                                  new sym.Mosaic(
+                                      new sym.MosaicId(mosaic_ID),
+                                      sym.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用  
+                                      )
+                              ],
+                              sym.PlainMessage.create(message),
+                              networkType
+                         );
+                  }
+
+                  publicAccount = sym.PublicAccount.createFromPublicKey(
+                    window.SSS.activePublicKey,
+                    networkType
+                  );
+
+                  for (let i=0; i<address1.length; i++){
+                      innerTx[i] = innerTx[i].toAggregate(publicAccount)
+                  }
+
+                  aggregateTx = sym.AggregateTransaction.createComplete(
+                    sym.Deadline.create(epochAdjustment),  //Deadline
+                    innerTx,
+                    networkType,
+                    [],
+                    sym.UInt64.fromUint(1000000*Number(maxfee)*20)          //最大手数料 2XYM
+                  )
+
+                 window.SSS.setTransaction(aggregateTx);               // SSSにトランザクションを登録        
+                 window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+                 console.log('signedTx', signedTx);
+                 txRepo.announce(signedTx);
+                 })  
+   }
+	 
   })(); // async()  
     
 }
@@ -604,9 +649,10 @@ function selectboxChange() {
   const check_netType = address.address.charAt(0);     // 1文字目を抽出
 
    if (check_netType === 'N'){           //ネットワークの判別　 メインネット 
-       EPOCH = EPOCH_M;
-       NODE_URL = NODE_URL_M;
-       NET_TYPE = NET_TYPE_M;
+       epochAdjustment = EPOCH_M;
+       NODE = NODE_URL_M;
+       networkType = NET_TYPE_M;
+       generationHash = GENERATION_HASH_M;
        XYM_ID = XYM_ID_M;
      
        repo = repo_M;
@@ -618,9 +664,10 @@ function selectboxChange() {
       console.log("MAIN_NET");
    }else 
       if (check_netType === 'T'){      // テストネット
-          EPOCH = EPOCH_T;
-          NODE_URL = NODE_URL_T;
-          NET_TYPE = NET_TYPE_T;
+          epochAdjustment = EPOCH_T;
+          NODE = NODE_URL_T;
+          networkType = NET_TYPE_T;
+	  generationHash = GENERATION_HASH_T;
           XYM_ID = XYM_ID_T;
         
           repo = repo_T;
@@ -667,7 +714,7 @@ txRepo
     let en = new Array(searchCriteria.pageSize);
 	
     for (let tx of txs.data) {   ///////////////    tx を pageSize の回数繰り返す ///////////////////
-      console.log("tx=",tx);      ////////////////////
+     // console.log("tx=",tx);      /////////// トランザクションを表示 /////////
       const dom_tx = document.createElement('div');
       const dom_date = document.createElement('div');
       const dom_txType = document.createElement('div');
@@ -694,7 +741,7 @@ txRepo
       
           
       ////////////////////////////////////////////　　  　timestamp to Date 　　　　　/////////////////////////
-      　　　const timestamp = EPOCH + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
+      　　　const timestamp = epochAdjustment + (parseInt(tx.transactionInfo.timestamp.toHex(), 16)/1000);   /////////////// Unit64 を 16進数に　変換したあと10進数に変換　
       　　　const date = new Date(timestamp * 1000);
       
      　　　 const yyyy = `${date.getFullYear()}`;
@@ -708,7 +755,7 @@ txRepo
 
 　　　      const ymdhms = `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}`;
       
-     　　　 console.log(ymdhms);
+     　　//　 console.log(ymdhms);  // 日付を表示
       
      　　　 dom_date.innerHTML = `<font color="#7E00FF"><p style="text-align: right">${ymdhms}</p></font>`;    //　日付  右寄せ
           //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -724,7 +771,7 @@ txRepo
            dom_recipient_address.innerHTML = `<font color="#2f4f4f">To :   ${tx.recipientAddress.address}</font>`; //  文字列の結合　   宛先
            dom_tx.appendChild(dom_recipient_address);         // dom_recipient_address をdom_txに追加
             
-          console.log('モザイク数=',tx.mosaics.length);  //////////////////////////////////////////////
+        //  console.log('モザイク数=',tx.mosaics.length);  //////////////////////////////////////////////
                   
           /////////// モザイクが空ではない場合   /////////////////　　モザイクが空の場合はこの for 文はスルーされる  //////////
           for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
@@ -787,17 +834,17 @@ txRepo
 		     
 		 if (tx.recipientAddress.address !== tx.signer.address.address){    // 送信先アドレスと、送信元アドレスが異なる場合
 			if (tx.signer.address.address === address.address){
-				 console.log("%csignerとwallet addressが同じ時",'color: blue')
+                                 //console.log("%csignerとwallet addressが同じ時",'color: blue')
 				 alice = sym.Address.createFromRawAddress(tx.recipientAddress.address);   //アドレスクラスの生成
 				
 			}else
                            if (tx.recipientAddress.address === address.address){ 
-				console.log("%crecipient とwallet addressが同じ時",'color: blue')
+                                //console.log("%crecipient とwallet addressが同じ時",'color: blue')
 			        alice = sym.Address.createFromRawAddress(tx.signer.address.address);   //アドレスクラスの生成			
 			} 
 			 			 
 		 }else{    // 送信先アドレスと、ウォレットアドレスが同じ場合
-			 console.log("%c送信アドレスと送信元アドレスが同じ",'color: green')
+                         //console.log("%c送信アドレスと送信元アドレスが同じ",'color: green')
 			 alice = sym.Address.createFromRawAddress(tx.recipientAddress.address);   //アドレスクラスの生成
 		         PubKey = window.SSS.activePublicKey;
 		 }
@@ -810,7 +857,7 @@ txRepo
 		       enc_message1.PubKey = PubKey;
 		     	      		       
 		       en[t] = enc_message1; 
-		       console.table(en);
+		       //console.table(en);
 		       		       
 	               dom_message.innerHTML = `<input type="button" id="${PubKey}" value="${tx.message.payload}" onclick="Onclick_Decryption(this.id, this.value);" class="button-decrypted"/></div>`;     // 　メッセージ    
                
@@ -848,8 +895,10 @@ function Onclick_Decryption(PubKey,encryptedMessage){
     window.SSS.requestSignDecription().then((data) => {
             console.log(data);
 	    
-	    swal(`${encryptedMessage}
+	    swal(`暗号化メッセージ < Encrypted Message >
+	    ${encryptedMessage}
 	    
+	    復号化メッセージ < Decrypted Message >
 	    -- >>　${data}`); // ポップアップで表示
     })		
 }
