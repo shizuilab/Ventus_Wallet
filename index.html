@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <title>Ventus Wallet</title>
+  <title>Test Ventus Wallet</title>
   <link rel="stylesheet" href="./css/BGimg_ventus.css" type="text/css" media="all" id="switchCSS" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css" type="text/css">
@@ -73,7 +73,7 @@
 　     </select>   
   </div> 
   
-  <h1>Ventus Wallet</h1>
+  <h1>Test Ventus Wallet</h1>
   <h3><div id="netType"></div></h3>  
   <div class="wrapper">
       <div class="left">
@@ -141,28 +141,40 @@
               //FileReaderの定義
               const reader = new FileReader();
               let address1 = [];
-              
+              let address2 = [];
+              let file;
               // 選択したファイルのファイル名を出力する
  　　　　　　   　　　　　$('input').on('change', function () {
-        　　　　　　　　　　　var file = $(this).prop('files')[0];
+        　　　　　　　　　　　let file = $(this).prop('files')[0];
         　　　　　　　　　　　$('p1').text(file.name);
+                          address1.length = 0;
+                          address2.length = 0; 
    　　　　　　　　　　　 });
                         
               input.addEventListener('change', (e) => {
-                  const file = e.target.files[0];
-                  console.log("file=",file);
-                    if (typeof file === "undefined"){
-                       address1.length = 0; // ファイル選択が取り消された場合、配列を削除
-                       $('p1').text("選択されていません");
-                    }      
+                  const file1 = e.target.files[0];
+                  console.log("file1=",file1);
+                    if (typeof file1 === "undefined"){
+                       address1.length = 0;
+                       address2.length = 0; // ファイル選択が取り消された場合、配列を削除
+                       $('p1').text("選択されていません"); 
+                       file = file1;
+                    }
+                
                   //ファイルの種類を絞る
-                  if (file.type === 'text/csv') {                    　                   
+                  if (file1.type === 'text/csv') {                    　                   
                      reader.onload = () => {
                        //console.log(reader.result);
-                       address1 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
+                       address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
+                       
+                        for (let i = 0; i < address2.length; ++i) {  
+                             let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                             address1[i] = cells[1];                //アドレスだけを格納
+                       }
+                       
                        console.log(address1);
                      }
-                     reader.readAsText(file);
+                     reader.readAsText(file1);
                   }
               });        
           </script>
