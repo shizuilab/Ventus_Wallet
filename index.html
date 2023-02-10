@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <title>Ventus Wallet</title>
+  <title>Ventus Wallet(ウェンタスウォレット)</title>
   <link rel="stylesheet" href="./css/BGimg_ventus.css" type="text/css" media="all" id="switchCSS" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css" type="text/css">
@@ -70,7 +70,7 @@
            <option value="ventus">Ventus</option>
            <option value="cyberpunk">CyberPunk</option>
            <option value="sea">Sea</option>
-　     </select>   
+　     </select>
   </div> 
   
   <h1>Ventus Wallet</h1>
@@ -93,22 +93,22 @@
           <hr>
           <br>
           <div class="textfiled-wrapper">
-            <div>To: Address / 宛先</div>
+            <div>宛　　先　(To:)</div>
             <input type="text" id="form-addr" class="textfiled" />
           </div>
           
           <div class="textfiled-wrapper">
-            <div>Mosaic　　/ モザイク</div>
+            <div>モザイク　(Mosaic)</div>
             <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select>         <!--   セレクトボックス     -->
           </div>
           
           <div class="textfiled-wrapper">
-            <div>Amount 　/ 数量</div>
+            <div>数　　量　(Amount)</div>
             <input type="text" id="form-amount" class="textfiled" style="line-height:1"/>
           </div>
         
           <div class="textfiled-wrapper">
-            <div>Message　/ メッセージ</div>
+            <div>メッセージ(Message)</div>
             <input type="text" id="form-message" class="textfiled" style="line-height:3"/>
           </div>  
         
@@ -121,7 +121,7 @@
           </div>
           
           <div class="textfiled-wrapper">
-            <div>maxFee / 最大手数料 / aggregateTx (x20)</div>
+            <div>最大手数料 / maxFee / aggregateTx = (x20)</div>
             <select id="form-maxfee">
               <option value="0.02">0.02 xym (slow)</option>
               <option value="0.04">0.04 xym</option>
@@ -194,7 +194,7 @@
             <div style="text-align: right">
             <div style="display: inline-block; _display: inline;">Page:</div>
               
-              <select id="page_num1" onchange="selectboxChange();">
+              <select id="page_num1" onchange="select_Page();">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
