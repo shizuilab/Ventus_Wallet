@@ -91,7 +91,7 @@
         <div class="sender-card">
           <h2>Send</h2>
           <hr>
-          <br>
+          <a href="https://bit.ly/41uG3VR" target="_blank"><p style="text-align:right"><b>📖SYMBOLタウンリスト　</b></p></a>
           <div class="textfiled-wrapper">
             <div>宛　　先　(To:)</div>
             <input type="text" id="form-addr" class="textfiled" />
@@ -121,7 +121,7 @@
           </div>
           
           <div class="textfiled-wrapper">
-            <div>最大手数料 / maxFee / aggregateTx = (x20)</div>
+            <div>最大手数料 / maxFee / aggregateTx (x20)</div>
             <select id="form-maxfee">
               <option value="0.02">0.02 xym (slow)</option>
               <option value="0.04">0.04 xym</option>
@@ -144,12 +144,12 @@
               let address2 = [];
               let file;
               // 選択したファイルのファイル名を出力する
- 　　　　　　   　　　　　$('input').on('change', function () {
-        　　　　　　　　　　　let file = $(this).prop('files')[0];
-        　　　　　　　　　　　$('p1').text(file.name);
+                       $('input').on('change', function () {
+                          let file = $(this).prop('files')[0];
+                          $('p1').text(file.name);
                           address1.length = 0;
                           address2.length = 0; 
-   　　　　　　　　　　　 });
+                       });
                         
               input.addEventListener('change', (e) => {
                   const file1 = e.target.files[0];
@@ -172,7 +172,7 @@
                              address1[i] = cells[1];                //アドレスだけを格納
                        }
                        
-                       console.log(address1);
+                       console.log("address1=",address1);
                      }
                      reader.readAsText(file1);
                   }
