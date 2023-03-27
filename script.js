@@ -1563,6 +1563,31 @@ txRepo
               dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く          	  		  		  	  
 	        }
 
+          if (tx.type === 17229){       // tx.type が 'MOSAIC_SUPPLY_REVOCATION' の場合	  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            const dom_mosaic = document.createElement('div');
+            const dom_amount = document.createElement('div');
+    
+           (async() => {
+              let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaic.id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+     
+              mosaicInfo = await mosaicRepo.getMosaic(tx.mosaic.id.id).toPromise();// 可分性の情報を取得する                     
+              let div = mosaicInfo.divisibility; // 可分性      
+               
+                       if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合                         
+                            dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big></font>`;
+                       }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
+                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<strong>${tx.mosaic.id.id.toHex()}</strong></font>`;
+                       }
+                       dom_amount.innerHTML = `<font color="#3399FF" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(tx.mosaic.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量                
+           })(); // async() 
+         
+            dom_recipient_address.innerHTML = `<div class="copy_container"><font color="#2f4f4f">回収先 :　${tx.sourceAddress.address}</font><input type="image" src="src/copy.png" class="copy_bt" height="20px" id="${tx.sourceAddress.address}" onclick="Onclick_Copy(this.id);" /></div>`;
+            dom_tx.appendChild(dom_recipient_address);
+            dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+            dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加                                                           
+            dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く          	  		  		  	  
+          }
+
           if (tx.type === 16974){       // tx.type が 'ADDRESS_ALIAS' の場合   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////        
             (async() => {
               let alias_Action; 
