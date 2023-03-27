@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <title>Ventus Wallet(ウェンタスウォレット)</title>
+  <title>Ventus Wallet (ウェンタスウォレット)</title>
   <link rel="stylesheet" href="./css/BGimg_ventus.css" type="text/css" media="all" id="switchCSS" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"> -->
   <link rel="stylesheet" href="style.css" type="text/css">
   <meta http-equiv="content-type" charset="UTF-8">
-  <!-- <meta name="viewport" content="width=device-width,initial-scale=1"> -->
-   
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  
+  
   <script src="js/jquery-3.6.3.min.js"></script>
   <script src="js/js.cookie.js"></script>
   <script>
@@ -57,21 +60,22 @@
   </script>
 </head>
 <body> 
-  
+
+ 
   <div class="SSS_link">
        <a href="./Terms_of_use.html" target="_blank">利用規約</a>
        <a href="https://note.com/mikun_nem/n/n5c21f4af8930/" target="_blank">/ 使い方</a>
        <div style="display: inline-block; _display: inline;" id="explorer"></div>
        <a href="https://docs.sss-symbol.com/ja/" target="_blank">/ SSS_Extension /</a>
        <a href="https://note.com/mahorobart/n/nd5f226887c2a" target="_blank">Ventusについて</a>
-       <a href="https://github.com/mikunNEM/Ventus_Wallet" target="_blank">/ GitHub </a> 
        <a href="https://symbol-community.com" target="_blank">/ Symbol_Community_Web /</a>
        <select id="selectCSS">
            <option value="ventus">Ventus</option>
            <option value="cyberpunk">CyberPunk</option>
            <option value="sea">Sea</option>
-　     </select>
+       </select>
   </div> 
+
   
   <h1>Ventus Wallet</h1>
   <h3><div id="netType"></div></h3>  
@@ -93,22 +97,22 @@
           <hr>
           <a href="https://bit.ly/41uG3VR" target="_blank"><p style="text-align:right"><b>📖SYMBOLタウンリスト　</b></p></a>
           <div class="textfiled-wrapper">
-            <div>宛　　先　(To:)</div>
-            <input type="text" id="form-addr" class="textfiled" />
+            <div>宛　　先　 /　To:</div>
+            <input type="text" id="form-addr" class="textfiled" placeholder="　　　　 address  or  alias / namespace"/>
           </div>
           
           <div class="textfiled-wrapper">
-            <div>モザイク　(Mosaic)</div>
+            <div>モザイク　 /　Mosaic</div>
             <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select>         <!--   セレクトボックス     -->
           </div>
           
           <div class="textfiled-wrapper">
-            <div>数　　量　(Amount)</div>
+            <div>数　　量　 /　Amount</div>
             <input type="text" id="form-amount" class="textfiled" style="line-height:1"/>
           </div>
         
           <div class="textfiled-wrapper">
-            <div>メッセージ(Message)</div>
+            <div>メッセージ /　Message</div>
             <input type="text" id="form-message" class="textfiled" style="line-height:3"/>
           </div>  
         
@@ -131,10 +135,10 @@
           </div> 
    
          <label>
-             <input type="file" id="upload-file">ファイルを選択(.csv)       <!-- address ファイルを選択 --> 
+             <input type="file" id="upload-file">Address List (.csv)       <!-- address ファイルを選択 --> 
          </label>
          <div style="display: inline-block; _display: inline;"> 
-           <p1>選択されていません</p1>
+           <p1>not selected</p1>
          </div>
           <script>           
               const input = document.getElementById('upload-file');
@@ -157,7 +161,7 @@
                     if (typeof file1 === "undefined"){
                        address1.length = 0;
                        address2.length = 0; // ファイル選択が取り消された場合、配列を削除
-                       $('p1').text("選択されていません"); 
+                       $('p1').text("not selected"); 
                        file = file1;
                     }
                 
@@ -185,7 +189,8 @@
         </div>
     
          <div id="version"></div>
-         
+         <div style="text-align: left">　　<button id="js-show-popup_m" style="background-color: aquamarine;border-radius: 10px;">Mosaic</button>
+         <button id="js-show-popup_n" style="background-color: aquamarine;border-radius: 10px;">Namespace</button></div>
       </div>
       <div class="right">
         <div class="tx-card">
@@ -215,14 +220,350 @@
       </div>
   </div>
 
-　 <div id="popup" class="popup">
+  <!--   popup  ユニコーン   ----------------------------------->
+  <div id="popup" class="popup">
     <div class="popup-inner">
       <div class="img"><img src="unicorn2.gif" alt="ポップアップ画像"></div>
     </div><!-- .popup-inner -->
     <div id="bg-black" class="bg-black"></div>
   </div><!-- #popup -->
+
+
+<!--    popup  モザイク作成   ------------------------------------>
+  <div id="js-popup_m" class="popup_m">
+    <div class="popup_m-inner">
+      <div class="close-btn" id="js-close-btn_m"><i class="fas fa-times"></i></div>
+      <div class="Form">
+        <h4>Mosaic</h4>
+        <div class="Form-Item">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">発行量</span></br><small>(Supply Amount)</small></p>
+          <input type="text" class="Form-Item-Input" id="SupplyAmount" placeholder="　1 〜 8999999999000000">
+        </div>
+        <div class="Form-Item">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">有効期限</span><small>&nbsp;&nbsp;　約30秒 = 1 (Block)</br>　&nbsp;(Duration)　　　　無期限 = 0</small></p>
+          <input type="text" class="Form-Item-Input" id="Duration1" placeholder=" 　0 〜 315360000 (Block)" onchange="ex_date1();"/>
+          <div id="ex_date1" style="text-align:right"></div>
+        </div>
+        <div class="Form-Item">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">可分性</span></br><small>　(Divisibility)　　　小数点以下の桁数</small></p>
+         <div class="Form-Item-Input" style="text-align: center">
+          <select class="divisibility" id="Divisibility">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select></div>
+        </div>
+        <div class="Form-Item">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">制限可</span></br><small>&nbsp;(Restrictable)</small></p>
+          <div class="toggle3">
+            <input type="checkbox" name="check3" value="Restrictable"  id="Restrictable" />
+          </div>
+        </div>
+        <div class="Form-Item">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">供給量可変</span></br><small>(Supply Mutable)</small></p>
+          <div class="toggle1">
+            <input type="checkbox" name="check1" value="Supply_M" id="Supply_M" />
+          </div>
+        </div>
+        <div class="Form-Item">  
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">転送可</span></br><small>&nbsp;(Transferable)</small></p>
+          <div class="toggle2">
+            <input type="checkbox" name="check2" value="Transferable" id="Transferable" />
+          </div>
+        </div>
+        <div class="Form-Item">  
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">回収可</span></br><small>　(Revokable)</small></p>
+          <div class="toggle4">
+            <input type="checkbox" name="check4" value="Revokable" id="Revokable" />
+          </div>
+        </div>
+        <div class="Form-Item">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">最大手数料</span></p>
+          <div class="Form-Item-Input" style="text-align: center">
+            <select class="re_maxFee" id="re_maxFee">
+              <option value="0.04">0.04 xym (slow)</option>
+              <option value="0.05">0.05 xym</option>
+              <option value="0.07">0.07 xym</option>
+              <option value="0.1">0.1 xym (fast)</option>
+            </select></div>
+        </div>
+        <input type="button" onclick="Onclick_mosaic();" class="Form-Btn" id="js-popup_m" value="作成"/>
+        <br>
+        <div style="text-align:center">レンタル手数料&nbsp; 50 XYM</div>
+        <br>
+        <div style="text-align:right"><button id="js-show-popup_r" style="background-color: aquamarine;border-radius: 10px;">モザイク回収</button></div>
+        <div style="text-align:center"><i><b><big>発行したモザイク</big></b></i></div>
+        <br>
+        <table id="ms_table"></table>
+      </div>
+    </div>
+    <div class="black-background_m" id="js-black-bg_m"></div>
+  </div>
+
+<!-- ------------------------------------------->
+
+<!--    popup  namespace 作成   -->
+<div id="js-popup_n" class="popup_n">
+  <div class="popup_n-inner">
+    <div class="close-btn" id="js-close-btn_n"><i class="fas fa-times"></i></div>
+    <div class="Form2">
+      <h4>Namespace</h4>
+      <div class="Form-Item2">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">有効期限</span><small></br>　&nbsp;(Duration)&nbsp;&nbsp;　約30日 = 86,400</br>　　　　　　　　約1年 = 1,051,200</br>　　　　　　　　約5年 = 5,256,000</small></p>
+        <input type="text" class="Form-Item-Input_N" id="Duration2" placeholder=" 　86400 〜 5256000 (Block)" onchange="ex_date2();feeCalc();"/>
+        <div id="ex_date2" style="text-align:right"></div>
+      </div>
+      <div class="Form-Item2">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">ネームスーペース</span></br></p>
+        <input type="text" class="Form-Item-Input_N" id="Namespace" placeholder="" onchange="ns_check();"/>
+      </div>
+      <div class="Form-Item2">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">最大手数料</span></p>
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="re_maxFee" id="re_maxFee">
+            <option value="0.02">0.02 xym (slow)</option>
+            <option value="0.04">0.04 xym</option>
+            <option value="0.07">0.07 xym</option>
+            <option value="0.1">0.1 xym (fast)</option>
+          </select></div>
+      </div>
+
+      <div id="ns_fee" style="text-align:center"></div>
+      <input type="button" onclick="Onclick_Namespace();" class="Form-Btn" id="js-popup_n" value="作成 / 更新"/>
+        <br>
+        <br>
+        <div style="text-align:right"><button id="js-show-popup_L" style="background-color: aquamarine;border-radius: 10px;">エイリアスリンク</button></div>
+        <div style="text-align:center"><i><b><big>所有ネームスペース</big></b></i></div>
+        <br>
+        <table id="ns_table"></table>
+        <br>
+        <div>※ 期限が切れた後、ネームスペース更新期限まで30日間(86400ブロック)の猶予期間があります。テストネットは、猶予期間 1日(2880ブロック)です。</div>
+     <!-- <dl id="account_append_info"></dl> -->
+    </div>
+  </div>
+  <div class="black-background_n" id="js-black-bg_n"></div>
+</div>
+
+<!-- ------- popup revokable mosaic ---------------->
+
+<div id="js-popup_r" class="popup_r">
+  <div class="popup_r-inner">
+    <div class="close-btn" id="js-close-btn_r"><i class="fas fa-times"></i></div>
+    <div class="Form_r">
+      <h4>モザイク回収</h4>
+      <div class="Form-Item_r">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">ホルダーアドレス</span></p>
+        <input type="text" class="Form-Item-Input_r" id="holderAddress"/>
+      </div>
+      <div class="Form-Item_r">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">モザイクID</span></br></p>
+        <input type="text" class="Form-Item-Input_r" id="re_mosaic_ID"/>
+      </div>
+      <div class="Form-Item_r">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">数量</span></br></p>
+        <input type="text" class="Form-Item-Input_r" id="re_amount"/>
+      </div>
+      <div class="Form-Item_r">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">最大手数料</span></br></p>
+       <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="re_maxFee" id="re_maxFee">
+            <option value="0.02">0.02 xym (slow)</option>
+            <option value="0.04">0.04 xym</option>
+            <option value="0.07">0.07 xym</option>
+            <option value="0.1">0.1 xym (fast)</option>
+          </select></div>
+      </div>
+      <input type="button" onclick="revoke_mosaic();" class="Form-Btn" id="js-popup_r" value="回収"/>
+              
+    </div>
+  </div>
+  <div class="black-background_r" id="js-black-bg_r"></div>
+</div>
+
+<!-- ------- popup エイリアスリンク ---------------->
+
+<div id="js-popup_L" class="popup_L">
+  <div class="popup_L-inner">
+    <div class="close-btn" id="js-close-btn_L"><i class="fas fa-times"></i></div>
+    <div class="Form_L">
+      <h4>エイリアスリンク</h4>
+      <div class="Form-Item_L">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">ネームスペース</span></p>
+        <input type="text" class="Form-Item-Input_L" id="Link_Namespace"/>
+      </div>
+
+      <div class="Form-Item_L">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">エイリアスタイプ</span></br></p>
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="alias_type" id="alias_type">
+            <option value="0">アドレスにリンク</option>
+            <option value="1">モザイクにリンク</option>
+            <option value="2">アドレスからリンク解除</option>
+            <option value="3">モザイクからリンク解除</option>
+          </select></div>
+      </div>
+
+      <div class="Form-Item_L">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">アドレス / モザイクID</span></br></p>
+        <input type="text" class="Form-Item-Input_L" id="Link_Address"/>
+      </div>
+
+      <!-- <div class="Form-Item_L">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">モザイクID</span></br></p>
+        <input type="text" class="Form-Item-Input_L" id="Link_Mosaic_ID"/>
+      </div>  -->
+
+      <div class="Form-Item_L">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">最大手数料</span></br></p>
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="re_maxFee" id="re_maxFee">
+            <option value="0.02">0.02 xym (slow)</option>
+            <option value="0.04">0.04 xym</option>
+            <option value="0.07">0.07 xym</option>
+            <option value="0.1">0.1 xym (fast)</option>
+          </select></div>
+      </div>
+
+      <input type="button" onclick="alias_Link();" class="Form-Btn" id="js-popup_L" value="リンク / リンク解除"/>
+              
+    </div>
+  </div>
+  <div class="black-background_L" id="js-black-bg_L"></div>
+</div>
+
+
+<!-- -------------------------------------------------->
+
+<script>
+
+  function popupImage_m() {  //  モザイク　ポップアップ
+  var popup_m = document.getElementById('js-popup_m');
+  if(!popup_m) return;
+  var blackBg = document.getElementById('js-black-bg_m');
+  var closeBtn = document.getElementById('js-close-btn_m');
+  var showBtn = document.getElementById('js-show-popup_m');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_m.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_m();
+
+////////////////////////////////////////////////
+
+function popupImage_n() {  //  Namespace　ポップアップ
+  var popup_n = document.getElementById('js-popup_n');
+  if(!popup_n) return;
+  var blackBg = document.getElementById('js-black-bg_n');
+  var closeBtn = document.getElementById('js-close-btn_n');
+  var showBtn = document.getElementById('js-show-popup_n');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_n.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_n();
+
+////////////////////////////////////////////////
+
+function popupImage_r() {  //  回収
+  var popup_r = document.getElementById('js-popup_r');
+  if(!popup_r) return;
+  var blackBg = document.getElementById('js-black-bg_r');
+  var closeBtn = document.getElementById('js-close-btn_r');
+  var showBtn = document.getElementById('js-show-popup_r');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_r.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_r();
+
+////////////////////////////////////////////////
+
+function popupImage_L() {  //  エイリアスリンク
+  var popup_L = document.getElementById('js-popup_L');
+  if(!popup_L) return;
+  var blackBg = document.getElementById('js-black-bg_L');
+  var closeBtn = document.getElementById('js-close-btn_L');
+  var showBtn = document.getElementById('js-show-popup_L');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_L.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_L();
+
+
+
+//トグルスイッチ
+$(".toggle1").on("click", function() {
+  $(".toggle1").toggleClass("checked");
+  if(!$('input[name="check1"]').prop("checked")) {
+    $(".toggle1 input").prop("checked", true);
+  } else {
+    $(".toggle1 input").prop("checked", false);
+  }
+});
+$(".toggle2").on("click", function() {
+  $(".toggle2").toggleClass("checked");
+  if(!$('input[name="check2"]').prop("checked")) {
+    $(".toggle2 input").prop("checked", true);
+  } else {
+    $(".toggle2 input").prop("checked", false);
+  }
+});
+$(".toggle3").on("click", function() {
+  $(".toggle3").toggleClass("checked");
+  if(!$('input[name="check3"]').prop("checked")) {
+    $(".toggle3 input").prop("checked", true);
+  } else {
+    $(".toggle3 input").prop("checked", false);
+  }
+});
+$(".toggle4").on("click", function() {
+  $(".toggle4").toggleClass("checked");
+  if(!$('input[name="check4"]').prop("checked")) {
+    $(".toggle4 input").prop("checked", true);
+  } else {
+    $(".toggle4 input").prop("checked", false);
+  }
+});
+
+
+</script>
+
  
-  <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.3.js"></script>
+  <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
   <script type="text/javascript" src="script.js"></script>
 </body>
