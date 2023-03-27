@@ -354,10 +354,9 @@ accountRepo.getAccountInfo(address)
                    // <table> を <body> の中に追加
                    body.appendChild(tbl);
                    // tbl の border 属性を 2 に設定
-                   tbl.setAttribute("border", "1");    
-
+                   tbl.setAttribute("border", "1"); 
               });
-
+                          
 
               //// ネームスペース //////////////
               nsRepo.search({ownerAddress:accountInfo.address}) /////    保有ネームスペース
@@ -502,12 +501,6 @@ accountRepo.getAccountInfo(address)
                    body.appendChild(tbl);
                    // tbl の border 属性を 2 に設定
                    tbl.setAttribute("border", "1");
-
-
-              //  if(ddNamespace !== ""){
-              //    $("#account_append_info").append('<dt>ルートネームスペース</dt>'+ ddNamespace);
-              //  }
-               // console.log("ddNamespace=",ddNamespace);/////
               });
             })
           });
@@ -1940,7 +1933,6 @@ function Onclick_Namespace(){
   
 
   // ルートネームスペースをレンタルする
-  setTimeout(() => {
       const tx = sym.NamespaceRegistrationTransaction.createRootNamespace(
           sym.Deadline.create(epochAdjustment),
           Namespace,
@@ -1949,16 +1941,44 @@ function Onclick_Namespace(){
           sym.UInt64.fromUint(1000000*Number(maxFee))   
       )
 
-      console.log("tx=",tx);
+      window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
+      window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+      console.log('signedTx', signedTx);
+      txRepo.announce(signedTx);
+      }) 
+
+}
+
+
+//  サブネームスペースを取得する /////////////////////////////////////////////////////////////
+function Onclick_subNamespace(){
+  
+  const rootNamespace = document.getElementById("rootNamespace").value;
+  const subNamespace = document.getElementById("subNamespace").value;
+  const maxFee = document.getElementById("re_maxFee").value;
+  
+  console.log("rootNamespace=",rootNamespace);
+  console.log("subNamespace=",subNamespace);
+  
+
+      const tx = sym.NamespaceRegistrationTransaction.createSubNamespace(
+          sym.Deadline.create(epochAdjustment),
+          subNamespace,
+          rootNamespace,
+          networkType,
+          sym.UInt64.fromUint(1000000*Number(maxFee))   
+      )
 
       window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
       window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
       console.log('signedTx', signedTx);
       txRepo.announce(signedTx);
-      })
-  }, 1000)   
+      }) 
 
 }
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                 エイリアスリンク　　
