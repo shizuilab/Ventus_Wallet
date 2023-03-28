@@ -193,7 +193,14 @@ accountRepo.getAccountInfo(address)
                        // <td> の内容として、その <td> を表の行の末尾に追加
                        var cell = document.createElement("td");                                                   
                           switch(j){
-                            case 0:   //モザイク名
+                            case 0:   //モザイクID
+                              if (i === -1){
+                                  var cellText = document.createTextNode("モザイクID");
+                                 break;
+                              }                             
+                                 var cellText = document.createTextNode(mosaic.data[i].id.id.toHex());                           
+                                 break;                
+                            case 1:   //ネームスペース名
                               if (i === -1){
                                   var cellText = document.createTextNode("ネームスペース名");
                                   break;
@@ -201,16 +208,9 @@ accountRepo.getAccountInfo(address)
                               if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合                       
                                   var cellText = document.createTextNode([mosaicNames][0][0].names[0].name);
                               }else{   // ネームスペースが無い場合
-                                  var cellText = document.createTextNode("N/A"); 
+                                    var cellText = document.createTextNode("N/A"); 
                               }
-                              break;                     
-                            case 1:   //モザイクID
-                              if (i === -1){
-                                  var cellText = document.createTextNode("モザイクID");
-                                  break;
-                              }                             
-                                  var cellText = document.createTextNode(mosaic.data[i].id.id.toHex());                           
-                                  break;  
+                                  break;       
                             case 2:   // 供給量
                               if (i === -1){
                                   var cellText = document.createTextNode("供給量");
@@ -424,7 +424,7 @@ accountRepo.getAccountInfo(address)
                                   break;
                               }                        
                               var cellText = document.createTextNode(Nnames1[i]); 
-                              break;                     
+                              break;
                             case 1:   //ネームスペース名
                               if (i === -1){
                                   var cellText = document.createTextNode("ネームスペースID");
