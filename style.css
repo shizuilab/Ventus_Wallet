@@ -88,7 +88,7 @@ h2 {
   color:rgb(205, 0, 255);
   font-size: 3rem;
   font-family: 'Itim', cursive;
-  margin: 0px 0px 15px 30px;
+  margin: 0px 0px 0px 30px;
 }
 
 h3 {
@@ -123,6 +123,13 @@ h4 {
   border-radius: 16px;
   margin: 0px 16px 16px 16px;
   padding: 16px 18px 18px 18px;
+  position: relative;
+}
+
+.account-card #m_ns_button {
+  position: absolute;
+  top: 30px; 
+  right: 30px;
 }
 
 .sender-card {
