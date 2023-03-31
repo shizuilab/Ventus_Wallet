@@ -317,7 +317,12 @@ accountRepo.getAccountInfo(address)
                               }
                               if (mosaic.data[i].flags.revokable === true){
                                   var cellText = document.createTextNode("　🟢");
-                                  select_revoke.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+                                  if(mosaic.data[i].duration.compact() === 0){ // ステータスが無効なモザイクを排除
+                                    select_revoke.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+                                  }else
+                                     if (endHeight - zip[0].height.compact() > 0){ // ステータスが無効なモザイクを排除
+                                        select_revoke.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+                                     }
                               }else
                                  if (mosaic.data[i].flags.revokable === false){
                                      var cellText = document.createTextNode("　❌");
