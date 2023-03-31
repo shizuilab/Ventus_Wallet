@@ -811,7 +811,7 @@ hr {
 
 /********************************************************/
 
-  .re_maxFee {
+.re_maxFee {
     width: 220px;
     height: 35px;
     margin-top: 5px;
@@ -823,7 +823,7 @@ hr {
     }
     }
  
-    .alias_type {
+.alias_type {
       width: 240px;
       height: 35px;
       margin-top: 5px;
@@ -835,6 +835,17 @@ hr {
       }
       }
 
+.select1 {
+        width: 240px;
+        height: 35px;
+        margin-top: 5px;
+        margin-bottom: auto;
+        }
+        @media screen and (max-width: 480px) {
+        .select1 {
+       /* margin-top: 8px;*/
+        }
+        }
 
 /**********************************************************/
 /* モーダルウィンドウ  sub Namespace  */

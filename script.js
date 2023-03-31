@@ -401,6 +401,7 @@ accountRepo.getAccountInfo(address)
                 console.log("ns_data=",ns.data);
 
                 console.log("ネームスペースの数",ns.data.length);
+                   const select_ns = [];   // セレクトボックス初期化　（エイリアスリンク/ネームスペース）
 
                    var body = document.getElementById("ns_table");
 
@@ -423,8 +424,11 @@ accountRepo.getAccountInfo(address)
                                   var cellText = document.createTextNode("ネームスペース名");
                                   break;
                               }                        
-                              var cellText = document.createTextNode(Nnames1[i]); 
-                              break;
+                              var cellText = document.createTextNode(Nnames1[i]);
+                                if (i > -1){
+                                  select_ns.push({value:Nnames1[i],name:Nnames1[i]}); //セレクトボックス用の連想配列を作る                              
+                                }     
+                                  break;
                             case 1:   //ネームスペース名
                               if (i === -1){
                                   var cellText = document.createTextNode("ネームスペースID");
@@ -489,18 +493,35 @@ accountRepo.getAccountInfo(address)
                             }  
                        cell.appendChild(cellText);
                        row.appendChild(cell);
-                     }
-                       
+                     }                     
                      // 表の本体の末尾に行を追加
                      tblBody.appendChild(row);
                    }
-                 
                    // <tbody> を <table> の中に追加
                    tbl.appendChild(tblBody);
                    // <table> を <body> の中に追加
                    body.appendChild(tbl);
                    // tbl の border 属性を 2 に設定
                    tbl.setAttribute("border", "1");
+
+
+                   console.log("select_ns:",select_ns); // ネームスペース　セレクトボックス ///////
+
+                   const jsSelectBox = document.querySelector('.Namespace_select');
+                   const selectWrap = document.createElement('div');
+                   selectWrap.classList.add('selectrap');
+                   const select = document.createElement('select');
+
+                   select.classList.add('select1');
+                   select_ns.forEach((v) => {
+                     const option = document.createElement('option');
+                     option.value = v.value;
+                     option.textContent = v.name;
+                     select.appendChild(option);
+                   });
+                 //  selectWrap.appendChild(select);
+                   jsSelectBox.appendChild(select);
+
               });
             })
           });
@@ -1829,7 +1850,7 @@ function Onclick_mosaic(){
   const transferable = document.getElementById("Transferable").checked;
   const restrictable = document.getElementById("Restrictable").checked;
   const revokable = document.getElementById("Revokable").checked;
-  const maxFee = document.getElementById("re_maxFee").value;
+  const maxFee = document.getElementById("re_maxFee_m").value;
 
   console.log("duration=",duration);
   console.log("supplyMutable=",supplyMutable);
@@ -1996,7 +2017,7 @@ function Onclick_subNamespace(){
 
 function alias_Link(){
 
-  const Namespace = document.getElementById("Link_Namespace").value;
+  const Namespace = document.querySelector(".select1").value;
   const Address_Mosaic = document.getElementById("Link_Address").value;
   //const Mosaic_ID = document.getElementById("Link_Mosaic_ID").value;
   const maxFee = document.getElementById("re_maxFee").value;

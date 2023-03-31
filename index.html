@@ -284,7 +284,7 @@
         <div class="Form-Item">
           <p class="Form-Item-Label"><span class="Form-Item-Label-Required">最大手数料</span></p>
           <div class="Form-Item-Input" style="text-align: center">
-            <select class="re_maxFee" id="re_maxFee">
+            <select class="re_maxFee" id="re_maxFee_m">
               <option value="0.04">0.04 xym (slow)</option>
               <option value="0.05">0.05 xym</option>
               <option value="0.07">0.07 xym</option>
@@ -318,7 +318,7 @@
         <div id="ex_date2" style="text-align:right"></div>
       </div>
       <div class="Form-Item2">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">ネームスーペース</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">ネームスペース</span></br></p>
         <input type="text" class="Form-Item-Input_N" id="Namespace" placeholder="" onchange="ns_check();"/>
       </div>
       <div class="Form-Item2">
@@ -354,10 +354,13 @@
     <div class="close-btn" id="js-close-btn_sn"><i class="fas fa-times"></i></div>
     <div class="Form_sn">
       <h4>Sub Namespace</h4>
+      
       <div class="Form-Item_sn">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">ルートネームスペース</span></p>
         <input type="text" class="Form-Item-Input_sn" id="rootNamespace"/>
       </div>
+
+
       <div class="Form-Item_sn">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">サブネームスーペース</span></br></p>
         <input type="text" class="Form-Item-Input_sn" id="subNamespace" placeholder=""/>
@@ -377,7 +380,7 @@
         <br>
         <br>
         <br>
-        <div>※ ルートネームスペースをレンタルしている限り、サブネームスペースは使用できます。</div>
+        <div>※ ルートネームスペースのレンタル有効期限が切れると、サブネームスペースも期限が切れます。</div>
     </div>
   </div>
   <div class="black-background_sn" id="js-black-bg_sn"></div>
@@ -427,15 +430,16 @@
   <div class="popup_L-inner">
     <div class="close-btn" id="js-close-btn_L"><i class="fas fa-times"></i></div>
     <div class="Form_L">
-      <h4>エイリアスリンク</h4>
+      <h4>エイリアスリンク</h4>   
       <div class="Form-Item_L">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">ネームスペース</span></p>
-        <input type="text" class="Form-Item-Input_L" id="Link_Namespace"/>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">ネームスペース</span></br></p>
+        <div class="Form-Item-Input_L" style="text-align: center">
+          <div class="Namespace_select"></div>
+        </div>
       </div>
-
       <div class="Form-Item_L">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">エイリアスタイプ</span></br></p>
-        <div class="Form-Item-Input" style="text-align: center">
+        <div class="Form-Item-Input_L" style="text-align: center">
           <select class="alias_type" id="alias_type">
             <option value="0">アドレスにリンク</option>
             <option value="1">モザイクにリンク</option>
@@ -456,7 +460,7 @@
 
       <div class="Form-Item_L">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">最大手数料</span></br></p>
-        <div class="Form-Item-Input" style="text-align: center">
+        <div class="Form-Item-Input_L" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee">
             <option value="0.02">0.02 xym (slow)</option>
             <option value="0.04">0.04 xym</option>
