@@ -164,7 +164,7 @@ accountRepo.getAccountInfo(address)
               console.log("ファイナライズブロック=",zip[1].height.compact());
 
 
-              //// モザイク　//////////////////
+             /////////////   モザイク　////////////////////////////////////////////////
 
               mosaicRepo.search({ownerAddress:accountInfo.address})
               .subscribe(async mosaic=>{
@@ -173,7 +173,7 @@ accountRepo.getAccountInfo(address)
 
                 console.log("モザイクの数",mosaic.data.length);
 
-
+                   const select_revoke = []; //　セレクトボックス初期化 (モザイク回収)
                    var body = document.getElementById("ms_table");
 
                    // <table> 要素と <tbody> 要素を作成　/////////////////////////////////////////////////////
@@ -242,7 +242,7 @@ accountRepo.getAccountInfo(address)
                                   break;
                               }
                               if (mosaic.data[i].duration.compact() === 0){
-                                  var cellText = document.createTextNode("----------------");
+                                  var cellText = document.createTextNode("---　無期限　---");
                               }else{
                                    var endHeight = mosaic.data[i].startHeight.compact() + mosaic.data[i].duration.compact()   
                                    var remainHeight = endHeight - zip[0].height.compact();    
@@ -256,7 +256,7 @@ accountRepo.getAccountInfo(address)
                                   break;
                               }
                               if (mosaic.data[i].duration.compact() === 0){
-                                  var cellText = document.createTextNode("　無期限");
+                                  var cellText = document.createTextNode("　　🟢");
                               }else
                                  if (mosaic.data[i].duration.compact() > 0){
                                      var endHeight = mosaic.data[i].startHeight.compact() + mosaic.data[i].duration.compact()
@@ -317,6 +317,7 @@ accountRepo.getAccountInfo(address)
                               }
                               if (mosaic.data[i].flags.revokable === true){
                                   var cellText = document.createTextNode("　🟢");
+                                  select_revoke.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
                               }else
                                  if (mosaic.data[i].flags.revokable === false){
                                      var cellText = document.createTextNode("　❌");
@@ -355,10 +356,27 @@ accountRepo.getAccountInfo(address)
                    body.appendChild(tbl);
                    // tbl の border 属性を 2 に設定
                    tbl.setAttribute("border", "1"); 
+                   console.log("select_revoke=",select_revoke);
+
+                   const jsSelectBox_rev = document.querySelector('.revoke_select');
+                  // const selectWrap_rev = document.createElement('div');
+                  // selectWrap.classList.add('selectrap_rev');
+                   const select = document.createElement('select');
+
+                   select.classList.add('select1');
+                   select_revoke.forEach((v) => {
+                     const option = document.createElement('option');
+                     option.value = v.value;
+                     option.textContent = v.name;
+                     select.appendChild(option);
+                   });
+                 //  selectWrap.appendChild(select);
+                   jsSelectBox_rev.appendChild(select);
+
               });
                           
 
-              //// ネームスペース //////////////
+              //// ネームスペース //////////////////////////////////////////////////////////////////////////////
               nsRepo.search({ownerAddress:accountInfo.address}) /////    保有ネームスペース
               .subscribe(async ns=>{
 
@@ -508,8 +526,8 @@ accountRepo.getAccountInfo(address)
                    console.log("select_ns:",select_ns); // ネームスペース　セレクトボックス ///////
 
                    const jsSelectBox = document.querySelector('.Namespace_select');
-                   const selectWrap = document.createElement('div');
-                   selectWrap.classList.add('selectrap');
+                 //  const selectWrap = document.createElement('div');
+                 //  selectWrap.classList.add('selectrap');
                    const select = document.createElement('select');
 
                    select.classList.add('select1');
