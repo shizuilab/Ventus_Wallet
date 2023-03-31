@@ -363,7 +363,7 @@ accountRepo.getAccountInfo(address)
                   // selectWrap.classList.add('selectrap_rev');
                    const select = document.createElement('select');
 
-                   select.classList.add('select1');
+                   select.classList.add('select_r');
                    select_revoke.forEach((v) => {
                      const option = document.createElement('option');
                      option.value = v.value;
@@ -1939,7 +1939,7 @@ function Onclick_mosaic(){
 async function revoke_mosaic(){
 
   const holderAddress = document.getElementById("holderAddress").value;
-  const mosaic_ID = document.getElementById("re_mosaic_ID").value;
+  const mosaic_ID = document.querySelector(".select_r").value;
   const amount = document.getElementById("re_amount").value;
   const maxFee = document.getElementById("re_maxFee").value;
 
