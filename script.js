@@ -1121,14 +1121,15 @@ function getTransactionType (type) { // https://symbol.github.io/symbol-sdk-type
 
 function handleSSS() {      
   console.log('handle sss');
-  const addr = document.getElementById('form-addr').value;
+  let addr = document.getElementById('form-addr').value;
   const mosaic_ID = document.getElementById('form-mosaic_ID').value;
   const amount = document.getElementById('form-amount').value;
   const message = document.getElementById('form-message').value;
   const enc = document.getElementById('form-enc').value;
   const maxfee = document.getElementById('form-maxfee').value;
 
-  console.log("1063 misaic_ID: ",mosaic_ID);
+        addr = addr.replace(/-/g,"");  // ハイフンを削除する
+
      
      if (addr.charAt(0) === 'N'){  // MAINNET の場合 
          epochAdjustment = EPOCH_M; 
