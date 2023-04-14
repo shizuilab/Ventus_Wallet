@@ -8,7 +8,7 @@ const rxjs = require("/node_modules/rxjs");
 //MAIN_NET の場合
 
 const EPOCH_M = 1615853185;
-const NODE_URL_M = 'https://symbol-mikun.net:3001';
+const NODE_URL_M = 'https://symbol-main-1.nemtus.com:3001';
 const NET_TYPE_M = sym.NetworkType.MAIN_NET;
 const XYM_ID_M = '6BED913FA20223F8';
 const GENERATION_HASH_M = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6';
