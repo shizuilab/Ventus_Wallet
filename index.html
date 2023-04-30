@@ -105,7 +105,7 @@
         <div class="sender-card">
           <h2>Send</h2>
           <hr>
-          <a href="https://bit.ly/41uG3VR" target="_blank"><p style="text-align:right"><b>📖SYMBOLタウンリスト　</b></p></a>
+         <!-- <a href="https://bit.ly/41uG3VR" target="_blank"><p style="text-align:right"><b>📖SYMBOLタウンリスト　</b></p></a> -->
           <div class="textfiled-wrapper">
             <div>宛　　先　 /　To:</div>
             <input type="text" id="form-addr" class="textfiled" placeholder="　　　　 address  or  alias / namespace"/>
@@ -244,16 +244,16 @@
       <div class="Form">
         <h4>Mosaic</h4>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">発行量</span></br><small>(Supply Amount)</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">供給量</span></p>
           <input type="text" class="Form-Item-Input" id="SupplyAmount" placeholder="　1 〜 8999999999000000">
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">有効期限</span><small>&nbsp;&nbsp;　約30秒 = 1 (Block)</br>　&nbsp;(Duration)　　　　無期限 = 0</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">有効期限</span><small>&nbsp;&nbsp;　約30秒 = 1 (Block)</br>　　　　　　　　　　無期限 = 0</small></p>
           <input type="text" class="Form-Item-Input" id="Duration1" placeholder=" 　0 〜 315360000 (Block)" onchange="ex_date1();"/>
           <div id="ex_date1" style="text-align:right"></div>
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">可分性</span></br><small>　(Divisibility)　　　小数点以下の桁数</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">可分性</span><small>　小数点以下の桁数</small></p>
          <div class="Form-Item-Input" style="text-align: center">
           <select class="divisibility" id="Divisibility">
             <option value="0">0</option>
@@ -266,25 +266,25 @@
           </select></div>
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">制限可</span></br><small>&nbsp;(Restrictable)</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">制限可</span>　⚠️</p>
           <div class="toggle3">
             <input type="checkbox" name="check3" value="Restrictable"  id="Restrictable" />
           </div>
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">供給量可変</span></br><small>(Supply Mutable)</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">供給量可変</span>　⬇️⬆️</p>
           <div class="toggle1">
             <input type="checkbox" name="check1" value="Supply_M" id="Supply_M" />
           </div>
         </div>
         <div class="Form-Item">  
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">転送可</span></br><small>&nbsp;(Transferable)</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">転送可</span>　➡️</p>
           <div class="toggle2">
             <input type="checkbox" name="check2" value="Transferable" id="Transferable" />
           </div>
         </div>
         <div class="Form-Item">  
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">回収可</span></br><small>　(Revokable)</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">回収可</span>　♻︎</p>
           <div class="toggle4">
             <input type="checkbox" name="check4" value="Revokable" id="Revokable" />
           </div>
@@ -299,10 +299,12 @@
               <option value="0.1">0.1 xym (fast)</option>
             </select></div>
         </div>
+        <br>
         <input type="button" onclick="Onclick_mosaic();" class="Form-Btn" id="js-popup_m" value="作成"/>
         <br>
         <div style="text-align:center">レンタル手数料&nbsp; 50 XYM</div>
         <br>
+        <div style="text-align:right"><button id="js-show-popup_sup" class="popup_sub_button">供給量変更</button></div><br>
         <div style="text-align:right"><button id="js-show-popup_r" class="popup_sub_button">モザイク回収</button></div>
         <div style="text-align:center"><i><b><big>発行したモザイク</big></b></i></div>
         <br>
@@ -350,7 +352,7 @@
         <br>
         <table id="ns_table"></table>
         <br>
-        <div>※ 期限が切れた後、ネームスペース更新期限まで30日間(86400ブロック)の猶予期間があります。テストネットは、猶予期間 1日(2880ブロック)です。</div>
+        <div>※ ステータスが無効❌になった後、ネームスペース更新期限まで30日間(86400ブロック)の猶予期間があります。テストネットは、猶予期間 1日(2880ブロック)です。</div>
     </div>
   </div>
   <div class="black-background_n" id="js-black-bg_n"></div>
@@ -370,7 +372,7 @@
 
 
       <div class="Form-Item_sn">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">サブネームスーペース</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">サブネームスペース</span></br></p>
         <input type="text" class="Form-Item-Input_sn" id="subNamespace" placeholder=""/>
       </div>
       <div class="Form-Item_sn">
@@ -388,10 +390,61 @@
         <br>
         <br>
         <br>
-        <div>※ ルートネームスペースのレンタル有効期限が切れると、サブネームスペースも期限が切れます。</div>
+        <div>※ ルートネームスペースのレンタル有効期限と、サブネームスペースのレンタル有効期限は同じです。
+          <br>※ サブネームスペースは２階層まで登録出来ます。
+          <br>
+          <br><登録例>
+          <br>ルートネームスペース AAA　 　　/　サブネームスペース BBB
+          <br>ルートネームスペース AAA.BBB　/　サブネームスペース CCC
+        </div>
     </div>
   </div>
   <div class="black-background_sn" id="js-black-bg_sn"></div>
+</div>
+
+<!--    popup  モザイク供給量変更   ------------------------------------>
+<div id="js-popup_sup" class="popup_sup">
+  <div class="popup_sup-inner">
+    <div class="close-btn" id="js-close-btn_sup"><i class="fas fa-times"></i></div>
+    <div class="Form_sup">
+      <h4>モザイク供給量変更</h4>
+
+      <div class="Form-Item">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">モザイク ID</span></p>
+        <div class="Form-Item-Input_sup" style="text-align: center">
+          <div class="select_mosaic_sup"></div>
+        </div>
+      </div>
+      
+      <div class="Form-Item">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">減少　/　 増加</span></p>
+        <div style="text-align: right">　　　　　　　　　減少⬇️</div>
+        <div class="toggle5">
+          <input type="checkbox" name="check5" value="change_sup"  id="change_sup" />
+        </div>
+        <div style="text-align: left">⬆️増加</div>
+      </div>
+
+      <div class="Form-Item">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">変更量</span></p>
+        <input type="text" class="Form-Item-Input" id="change_Amount"/>
+      </div>
+     
+      <div class="Form-Item">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">最大手数料</span></p>
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="re_maxFee" id="re_maxFee_sup">
+            <option value="0.04">0.02 xym (slow)</option>
+            <option value="0.05">0.04 xym</option>
+            <option value="0.07">0.07 xym</option>
+            <option value="0.1">0.1 xym (fast)</option>
+          </select></div>
+      </div>
+      <br>
+      <input type="button" onclick="mosaic_supply();" class="Form-Btn" id="js-popup_sup" value="変更"/>
+    </div>
+  </div>
+  <div class="black-background_sup" id="js-black-bg_sup"></div>
 </div>
 
 
@@ -494,37 +547,46 @@
     <div class="Form_Meta">
       <h4>Metadata</h4>
       <div class="Form-Item_Meta">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">Type</span></br></p>
-        <div class="Form-Item-Input_Meta" style="text-align: center">
-          <select class="Meta_type" id="Meta_type" onchange="MetaKey_select();">
-            <option value="-1">--- Select ---</option>
-            <option value="0">Account</option>
-            <option value="1">Mosaic</option>
-            <option value="2">Namespace</option>
-          </select></div>
-      </div>
-      <div class="Form-Item_Meta">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">Metadata Key</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">メタデータ キー</span></br></p>
         <div class="Form-Item-Input_Meta" style="text-align: center">
         <div class="Meta_select"></div>
         </div>
       </div>  
       <div class="Form-Item_Meta">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">Address<br>Mosaic ID<br>Namespace</span></p>
-        <input type="text" class="Form-Item-Input_Meta" id="Meta_to"/>
-      </div>      
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">タイプ</span></br></p>
+        <div class="Form-Item-Input_Meta" style="text-align: center">
+          <select class="Meta_type" id="Meta_type" onchange="MetaKey_select();">
+            <option value="-1">--- Select ---</option>
+            <option value="0">Account (Address)</option>
+            <option value="1">Mosaic</option>
+            <option value="2">Namespace</option>
+          </select></div>
+          <div id="meta_address"></div>
+      </div>
       <div class="Form-Item_Meta">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">value</span></br></p>
-        <input type="text" class="Form-Item-Input_Meta" id="Meta_value"/>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">モザイク ID</span></p>
+        <div class="Form-Item-Input_Meta" style="text-align: center">
+          <div class="select_mosaicID"></div>
+        </div>
+      </div>
+      <div class="Form-Item_Meta">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">ネームスペース</span></p>
+        <div class="Form-Item-Input_Meta" style="text-align: center">
+          <div class="Namespace_select_N"></div>
+        </div>
+      </div>            
+      <div class="Form-Item_Meta">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">value(値)</span></br></p>
+        <input type="text" class="Form-Item-Input_Meta_value" id="Meta_value"/>
       </div>
       <div class="Form-Item_Meta">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">最大手数料</span></br></p>
-        <div class="Form-Item-Input" style="text-align: center">
+        <div class="Form-Item-Input_Meta" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_Meta">
             <option value="0.03">0.03 xym (slow)</option>
-            <option value="0.04">0.04 xym</option>
             <option value="0.07">0.07 xym</option>
-            <option value="0.1">0.1 xym (fast)</option>
+            <option value="0.1">0.1 xym</option>
+            <option value="0.2">0.2 xym (fast)</option>
           </select></div>
       </div>
       <input type="button" onclick="Metadata();" class="Form-Btn" id="js-popup_Meta" value="登録 / 更新"/>
@@ -533,7 +595,12 @@
       <br>
       <div style="text-align:center"><i><b><big>メタデータ エントリー</big></b></i></div>
       <br>      
-        <table id="Meta_table"></table>        
+        <table id="Meta_table"></table>
+        <br>
+        <div>※タイプがAccountの場合は、現在のAccountに登録されます。タイプがMosaicの場合は モザイク ID を選択、タイプがNamespaceの場合は ネームスペース を選択してください。
+          <br>※日本語の場合 341文字(1023バイト) まで、半角英数字の場合 1024文字 まで登録出来ます。
+          <br>※トランザクションがアナウンスされない時は、最大手数料を上げて試してください。
+        </div>        
     </div>
   </div>
   <div class="black-background_Meta" id="js-black-bg_Meta"></div>
@@ -561,6 +628,27 @@
   }
 }
 popupImage_m();
+
+////////////////////////////////////////////////
+
+function popupImage_sup() {  //  供給量変更　ポップアップ
+  var popup_sup = document.getElementById('js-popup_sup');
+  if(!popup_sup) return;
+  var blackBg = document.getElementById('js-black-bg_sup');
+  var closeBtn = document.getElementById('js-close-btn_sup');
+  var showBtn = document.getElementById('js-show-popup_sup');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_sup.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_sup();
 
 ////////////////////////////////////////////////
 
@@ -702,7 +790,14 @@ $(".toggle4").on("click", function() {
     $(".toggle4 input").prop("checked", false);
   }
 });
-
+$(".toggle5").on("click", function() {
+  $(".toggle5").toggleClass("checked");
+  if(!$('input[name="check4"]').prop("checked")) {
+    $(".toggle5 input").prop("checked", true);
+  } else {
+    $(".toggle5 input").prop("checked", false);
+  }
+});
 
 </script>
 
