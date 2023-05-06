@@ -67,7 +67,6 @@
 </head>
 <body> 
 
- 
   <div class="SSS_link">
        <a href="./Terms_of_use.html" target="_blank">利用規約</a>
        <a href="https://note.com/mikun_nem/n/n5c21f4af8930/" target="_blank">/ 使い方</a>
@@ -83,7 +82,6 @@
        </select>
   </div> 
 
-  
   <h1>Ventus Wallet</h1>
   <h3><div id="netType"></div></h3>  
   <div class="wrapper">
@@ -107,27 +105,27 @@
           <hr>
          <!-- <a href="https://bit.ly/41uG3VR" target="_blank"><p style="text-align:right"><b>📖SYMBOLタウンリスト　</b></p></a> -->
           <div class="textfiled-wrapper">
-            <div>宛　　先　 /　To:</div>
+            <div>宛　　先</div>
             <input type="text" id="form-addr" class="textfiled" placeholder="　　　　 address  or  alias / namespace"/>
           </div>
           
           <div class="textfiled-wrapper">
-            <div>モザイク　 /　Mosaic</div>
+            <div>モザイク</div>
             <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select>         <!--   セレクトボックス     -->
           </div>
           
           <div class="textfiled-wrapper">
-            <div>数　　量　 /　Amount</div>
+            <div>数　　量</div>
             <input type="text" id="form-amount" class="textfiled" style="line-height:1"/>
           </div>
         
           <div class="textfiled-wrapper">
-            <div>メッセージ /　Message</div>
+            <div>メッセージ</div>
             <input type="text" id="form-message" class="textfiled" style="line-height:3"/>
           </div>  
         
           <div class="textfiled-wrapper">
-            <div></div>
+            <div>平文 / 暗号化メッセージ</div>
             <select id="form-enc">
             <option value="0">Plain message　　　(平文)</option>
             <option value="1">Encrypted message (暗号化)</option>       
@@ -135,69 +133,20 @@
           </div>
           
           <div class="textfiled-wrapper">
-            <div>最大手数料 / maxFee / aggregateTx (x20)</div>
+            <div>最大手数料</div>
             <select id="form-maxfee">
               <option value="0.02">0.02 xym (slow)</option>
               <option value="0.04">0.04 xym</option>
               <option value="0.07">0.07 xym</option>
               <option value="0.10"> 0.10 xym (fast)</option>
             </select>
-          </div> 
-   
-         <label class="Address_List">
-             <input type="file" id="upload-file">Address List (.csv)       <!-- address ファイルを選択 --> 
-         </label>
-         <div style="display: inline-block; _display: inline;"> 
-           <p1>not selected</p1>
-         </div>
-          <script>           
-              const input = document.getElementById('upload-file');
-              //FileReaderの定義
-              const reader = new FileReader();
-              let address1 = [];
-              let address2 = [];
-              let file;
-              // 選択したファイルのファイル名を出力する
-                       $('input').on('change', function () {
-                          let file = $(this).prop('files')[0];
-                          $('p1').text(file.name);
-                          address1.length = 0;
-                          address2.length = 0; 
-                       });
-                        
-              input.addEventListener('change', (e) => {
-                  const file1 = e.target.files[0];
-                  console.log("file1=",file1);
-                    if (typeof file1 === "undefined"){
-                       address1.length = 0;
-                       address2.length = 0; // ファイル選択が取り消された場合、配列を削除
-                       $('p1').text("not selected"); 
-                       file = file1;
-                    }
-                
-                  //ファイルの種類を絞る
-                  if (file1.type === 'text/csv') {                    　                   
-                     reader.onload = () => {
-                       //console.log(reader.result);
-                       address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
-                       
-                        for (let i = 0; i < address2.length; ++i) {  
-                             let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
-                             address1[i] = cells[1];                //アドレスだけを格納
-                       }
-                       
-                       console.log("address1=",address1);
-                     }
-                     reader.readAsText(file1);
-                  }
-              });        
-          </script>
-         
+          </div>          
+          <br>
           <div id="button-haichi">
              <input type="button" onclick="handleSSS();" value="Send" class="button-sign"/>
-          </div>                    
+          </div>
+          <div id="agg_button" style="text-align: left">　　<button id="js-show-popup_agg" class="btn-gradient-radius">Aggregate Tx</button></div>                    
         </div>
-    
          <div id="version"></div>
       </div>
       <div class="right">
@@ -606,6 +555,77 @@
   <div class="black-background_Meta" id="js-black-bg_Meta"></div>
 </div>
 
+
+<!-- ------- popup aggregate ---------------->
+
+<div id="js-popup_agg" class="popup_agg">
+  <div class="popup_agg-inner">
+    <div class="close-btn" id="js-close-btn_agg"><i class="fas fa-times"></i></div>
+    <div class="Form_agg">
+      <h4>Aggregate Tx</h4>
+      
+      <div class="Form-Item_agg">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">モザイク</span></br></p>
+        <div class="Form-Item-Input_agg" style="text-align: center">
+        <div class="mosaic_ID2"></div>         <!--   セレクトボックス     -->
+        </div>
+      </div>
+      <p style="text-align:center">　　　　　　　　保有モザイク数によって読み込みに時間が掛かります。</p>
+
+      <div class="Form-Item_agg">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">数　量</span></br></p>
+        <input type="text" class="Form-Item-Input_agg" id="form-amount2"/>
+      </div>
+    
+      <div class="Form-Item_agg">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">メッセージ</span></br></p>
+        <input type="text" class="Form-Item-Input_agg" id="form-message2"/>
+      </div>  
+    
+      <!--   <div class="textfiled-wrapper">
+        <div></div>
+        <select id="form-enc">
+        <option value="0">Plain message　　　(平文)</option>
+        <option value="1">Encrypted message (暗号化)</option>       
+        </select>
+      </div>  -->
+
+
+      <div class="Form-Item_agg">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">最大手数料</span></br></p>
+       <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="re_maxFee" id="form-maxFee2">
+            <option value="0.4">0.4 xym (slow)</option>
+            <option value="0.8">0.8 xym</option>
+            <option value="1.4">1.4 xym</option>
+            <option value="2">2 xym (fast)</option>
+          </select></div>
+      </div>
+      <br>
+      <br>
+      <div style="text-align: center;">CSVファイルを選択してください<br><br>
+      <label class="Address_List">
+          <input type="file" id="upload-file">Address List (.csv)       <!-- address ファイルを選択 --> 
+      </label>
+       <div style="display: inline-block; _display: inline;"> 
+         <p1>選択されていません</p1>
+       </div>
+      </div>
+      <br>
+      <input type="button" onclick="handleSSS();" class="Form-Btn" id="js-popup_agg" value="一括送信"/>
+      <br>
+      <br>
+      <p style="text-align:center">
+        ~ csvファイルの例 ~<br><br>
+        <img src="src/agg_csv.png">
+        <br><br><a href="https://www.microsoft.com/ja-jp/microsoft-365/excel" target="_blank">Excel</a>を開き、A列には任意の名前を、B列にはアドレス、またはネームスペースを入力して CSVファイルを作成してください。
+      </p>          
+    </div>
+  </div>
+  <div class="black-background_agg" id="js-black-bg_agg"></div>
+</div>
+
 <!-- -------------------------------------------------->
 
 <script>
@@ -755,6 +775,28 @@ function popupImage_L() {  //  エイリアスリンク
 }
 popupImage_L();
 
+////////////////////////////////////////////////
+
+function popupImage_agg() {  //  aggregate　ポップアップ
+  var popup_agg = document.getElementById('js-popup_agg');
+  if(!popup_agg) return;
+  var blackBg = document.getElementById('js-black-bg_agg');
+  var closeBtn = document.getElementById('js-close-btn_agg');
+  var showBtn = document.getElementById('js-show-popup_agg');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_agg.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_agg();
+
+////////////////////////////////////////////////
 
 
 //トグルスイッチ
@@ -800,10 +842,82 @@ $(".toggle5").on("click", function() {
 });
 
 </script>
-
  
   <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
   <script type="text/javascript" src="script.js"></script>
+  <script>  
+    // aggregate送信用ファイルを読み込み　エラーチェック　         
+    const input = document.getElementById('upload-file');       
+    //FileReaderの定義
+    const reader = new FileReader();
+    let address1 = [];
+    let address2 = [];
+    let file;
+    // 選択したファイルのファイル名を出力する
+             $('input').on('change', function () {
+                let file = $(this).prop('files')[0];
+                $('p1').text(file.name);
+                address1.length = 0;
+                address2.length = 0; 
+             });
+              
+    input.addEventListener('change', (e) => {
+        const file1 = e.target.files[0];
+        console.log("%cfile1===","color: red",file1);
+          if (typeof file1 === "undefined"){
+             address1.length = 0;
+             address2.length = 0; // ファイル選択が取り消された場合、配列を削除
+             $('p1').text("選択されていません"); 
+             file = file1;
+          }
+      
+        //ファイルの種類を絞る
+        if (file1.type === 'text/csv') {                   
+           reader.onload = () => {
+             address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
+             (async() => {  
+               for (let i = 0; i < address2.length; ++i) {  
+                   let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                   address1[i] = cells[1];                //アドレスだけを格納
+                   // 余分なハイフンやスペースを削除
+                   address1[i] = address1[i].replace(/-/g,"");  // ハイフンを削除する
+                   address1[i] = address1[i].replace(/ /g,"");  // スペース削除
+                   address1[i] = address1[i].replace(/　/g,""); //　スペース削除
+
+                   if (address1[i].length !== 39){  // 39文字以外の処理                  
+                        const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
+                        //console.log(`namespaceId[${i}]===`,namespaceId);
+                        const ns_check = await nsRepo.getLinkedAddress(namespaceId)
+                           .toPromise()
+                           .catch(() => swal(`Namespace or Address Error!! [No.${i+1}]`,address1[i]));
+                        
+                        console.log(`%cns_check[${i}]`,"color: red",ns_check);
+                        if (ns_check !== true){ // Namespace がリンクされている場合
+                           address1[i] = ns_check.address;   // Namspace をアドレスに変更
+                        }
+                   }
+               }
+                                          
+               for (let i = 0; i < address1.length; ++i){
+                    if (address1[i].length === 39){  // 39文字の場合
+                      if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T"){
+                        const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
+                          .toPromise()
+                          .catch(() => swal(`Address Error!! [No.${i+1}]`,address1[i]));         // アドレス　有無のチェック
+                      }else{ //先頭が NまたはTでない場合
+                          swal(`Address Error!! [No.${i+1}]`,address1[i]);         // アドレス　有無のチェック
+                      }
+                    }
+               } 
+             })(); // async() 
+
+               console.log("address1=",address1);
+           }
+           reader.readAsText(file1);
+        }
+    });
+   </script> 
+
 </body>
 </html>
