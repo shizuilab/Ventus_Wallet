@@ -5,14 +5,15 @@
   <link rel="stylesheet" href="./css/BGimg_ventus.css" type="text/css" media="all" id="switchCSS" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link type="text/css" rel="stylesheet" href="./css/simplePagination.css"/>
   <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"> -->
   <link rel="stylesheet" href="style.css" type="text/css">
   <meta http-equiv="content-type" charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   
   
-  <script src="js/jquery-3.6.3.min.js"></script>
-  <script src="js/js.cookie.js"></script>
+  <script src="./js/jquery-3.6.3.min.js"></script>
+  <script src="./js/js.cookie.js"></script>
   <script>
     // CSSのURLを定義
     var defaulturl= './css/BGimg_ventus.css'
@@ -167,6 +168,16 @@
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
               </select> 
             </div> 
      
@@ -278,7 +289,7 @@
       </div>
       <div class="Form-Item2">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">ネームスペース</span></br></p>
-        <input type="text" class="Form-Item-Input_N" id="Namespace" placeholder="" onchange="ns_check();"/>
+        <input type="text" class="Form-Item-Input_N" id="Namespace" placeholder=""/>
       </div>
       <div class="Form-Item2">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">最大手数料</span></p>
@@ -343,8 +354,8 @@
           <br>※ サブネームスペースは２階層まで登録出来ます。
           <br>
           <br><登録例>
-          <br>ルートネームスペース AAA　 　　/　サブネームスペース BBB
-          <br>ルートネームスペース AAA.BBB　/　サブネームスペース CCC
+          <br>ルートネームスペース aaa　 　　/　サブネームスペース bbb   →    aaa.bbb
+          <br>ルートネームスペース aaa.bbb　/　サブネームスペース ccc   →   aaa.bbb.ccc
         </div>
     </div>
   </div>
@@ -528,7 +539,8 @@
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">value(値)</span></br></p>
         <input type="text" class="Form-Item-Input_Meta_value" id="Meta_value"/>
       </div>
-      <div class="Form-Item_Meta">
+
+ <!-- <div class="Form-Item_Meta">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">最大手数料</span></br></p>
         <div class="Form-Item-Input_Meta" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_Meta">
@@ -537,18 +549,48 @@
             <option value="0.1">0.1 xym</option>
             <option value="0.2">0.2 xym (fast)</option>
           </select></div>
-      </div>
+      </div> -->
+      
       <input type="button" onclick="Metadata();" class="Form-Btn" id="js-popup_Meta" value="登録 / 更新"/>
+      <br>
+      <div style="text-align:center">fee Multiprier = 100</div>
+      <div id="Meta_fee1" style="text-align:right"></div>
       <br>
       <br>
       <br>
       <div style="text-align:center"><i><b><big>メタデータ エントリー</big></b></i></div>
-      <br>      
+
+      <div style="text-align: right">
+        <div style="display: inline-block; _display: inline;">Page:</div>
+          
+          <select id="page_num_meta" onchange="select_Page_meta();">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+          </select> 
+        </div>
+        <br> 
         <table id="Meta_table"></table>
         <br>
         <div>※タイプがAccountの場合は、現在のAccountに登録されます。タイプがMosaicの場合は モザイク ID を選択、タイプがNamespaceの場合は ネームスペース を選択してください。
           <br>※日本語の場合 341文字(1023バイト) まで、半角英数字の場合 1024文字 まで登録出来ます。
-          <br>※トランザクションがアナウンスされない時は、最大手数料を上げて試してください。
         </div>        
     </div>
   </div>
@@ -570,7 +612,7 @@
         <div class="mosaic_ID2"></div>         <!--   セレクトボックス     -->
         </div>
       </div>
-      <p style="text-align:center">　　　　　　　　保有モザイク数によって読み込みに時間が掛かります。</p>
+      <p style="text-align:center">　　　　　　　　　　　　　　　　　　保有モザイク数が多いと読み込みに時間が掛かります。</p>
 
       <div class="Form-Item_agg">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">数　量</span></br></p>
@@ -591,9 +633,8 @@
       </div>  -->
 
 
-      <div class="Form-Item_agg">
+    <!--  <div class="Form-Item_agg">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">最大手数料</span></br></p>
-       <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="form-maxFee2">
             <option value="0.4">0.4 xym (slow)</option>
@@ -601,8 +642,14 @@
             <option value="1.4">1.4 xym</option>
             <option value="2">2 xym (fast)</option>
           </select></div>
-      </div>
+      </div>  -->
       <br>
+      <div class="Form-Item_agg">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">CSVのエラーチェック</span></br></p>
+      <div class="toggle6">
+        <input type="checkbox" name="check6" value="csv_check" id="csv_check" />
+      </div>
+      </div>
       <br>
       <div style="text-align: center;">CSVファイルを選択してください<br><br>
       <label class="Address_List">
@@ -611,15 +658,23 @@
        <div style="display: inline-block; _display: inline;"> 
          <p1>選択されていません</p1>
        </div>
+      <div id='kurukuru'></div>
       </div>
+      <br>  
+      <input type="button" onclick="handleSSS_agg();" class="Form-Btn" id="js-popup_agg" value="一括送信"/>
       <br>
-      <input type="button" onclick="handleSSS();" class="Form-Btn" id="js-popup_agg" value="一括送信"/>
+      <div style="text-align:center">fee Multiprier = 100</div>
+      <div id="agg_fee1" style="text-align:right"></div>
+      <br>
       <br>
       <br>
       <p style="text-align:center">
-        ~ csvファイルの例 ~<br><br>
+        ~~~~~~~~~　　csvファイルの例　　~~~~~~~~~<br><br>
         <img src="src/agg_csv.png">
         <br><br><a href="https://www.microsoft.com/ja-jp/microsoft-365/excel" target="_blank">Excel</a>を開き、A列には任意の名前を、B列にはアドレス、またはネームスペースを入力して CSVファイルを作成してください。
+        <br>1つのファイルに100件まで登録出来ます。
+        <br>アカウント制限があるアドレスが含まれていると、一括送信がエラーとなる場合があります。
+
       </p>          
     </div>
   </div>
@@ -834,21 +889,76 @@ $(".toggle4").on("click", function() {
 });
 $(".toggle5").on("click", function() {
   $(".toggle5").toggleClass("checked");
-  if(!$('input[name="check4"]').prop("checked")) {
+  if(!$('input[name="check5"]').prop("checked")) {
     $(".toggle5 input").prop("checked", true);
   } else {
     $(".toggle5 input").prop("checked", false);
   }
 });
 
+$(".toggle6").toggleClass("checked");     // 初期値はON にする
+  if(!$('input[name="check6"]').prop("checked")) {
+    $(".toggle6 input").prop("checked", true);
+  } else {
+    $(".toggle6 input").prop("checked", false);
+  }
+$(".toggle6").on("click", function() {   // agg トグルスイッチをクリックした場合
+  $(".toggle6").toggleClass("checked");
+  if(!$('input[name="check6"]').prop("checked")) {
+    $(".toggle6 input").prop("checked", true);
+  } else {
+    $(".toggle6 input").prop("checked", false);
+  }
+});
+
+////////////////////////////////////////////////
+//  jQuery ページネーションプラグイン
+////////////////////////////////////////////////
+
+/* $(function() {
+    $("Meta_table").pagination({
+        items: 100,
+        itemsOnPage: 10,
+        cssStyle: 'light-theme'
+    });
+}); */
+
+////////////////////////////////////////////////
+// クルクル回るgif を表示
+////////////////////////////////////////////////
+/* ------------------------------
+ 表示用の関数
+ ------------------------------ */
+ function dispLoading(msg){
+  // 引数なしの場合、メッセージは非表示。
+  if(msg === undefined ) msg = "";
+  
+  // 画面表示メッセージを埋め込み
+  var innerMsg = "<div id='innerMsg'>" + msg + "</div>";  
+
+  // ローディング画像が非表示かどうかチェックし、非表示の場合のみ出力。
+  if($("#nowLoading").length == 0){
+    $("#kurukuru").append("<div id='nowLoading'>" + innerMsg + "</div>");
+  }
+}
+ 
+/* ------------------------------
+ 表示ストップ用の関数
+ ------------------------------ */
+function removeLoading(){
+  $("#nowLoading").remove();
+}  
+
+
 </script>
  
   <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <!-- <script type="text/javascript" src="./js/jquery.simplePagination.js"></script> -->
   <script type="text/javascript" src="script.js"></script>
   <script>  
     // aggregate送信用ファイルを読み込み　エラーチェック　         
-    const input = document.getElementById('upload-file');       
+    const input = document.getElementById('upload-file');
     //FileReaderの定義
     const reader = new FileReader();
     let address1 = [];
@@ -860,6 +970,8 @@ $(".toggle5").on("click", function() {
                 $('p1').text(file.name);
                 address1.length = 0;
                 address2.length = 0; 
+                csv_check = document.getElementById("csv_check").checked;  // csvファイルチェックのフラグ
+                console.log("%ccsv_check===","color: red",csv_check);
              });
               
     input.addEventListener('change', (e) => {
@@ -871,47 +983,93 @@ $(".toggle5").on("click", function() {
              $('p1').text("選択されていません"); 
              file = file1;
           }
-      
+        
         //ファイルの種類を絞る
         if (file1.type === 'text/csv') {                   
            reader.onload = () => {
              address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
-             (async() => {  
-               for (let i = 0; i < address2.length; ++i) {  
-                   let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
-                   address1[i] = cells[1];                //アドレスだけを格納
-                   // 余分なハイフンやスペースを削除
-                   address1[i] = address1[i].replace(/-/g,"");  // ハイフンを削除する
-                   address1[i] = address1[i].replace(/ /g,"");  // スペース削除
-                   address1[i] = address1[i].replace(/　/g,""); //　スペース削除
+             
+            (async() => {
+              console.log("CSV チェック =========",csv_check);
+              if (csv_check === true){  
+                dispLoading(`アドレスにエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
+                 for (let i = 0; i < address2.length; ++i) {  
+                     let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                     address1[i] = cells[1];                //アドレスだけを格納
+                     // 余分なハイフンやスペースを削除
+                     if (address1[i].length === 45){                 //ハイフン有りのアドレスの場合
+                        address1[i] = address1[i].replace(/-/g,"");  // ハイフンを削除する
+                     }
+                     address1[i] = address1[i].replace(/ /g,"");  // スペース削除
+                     address1[i] = address1[i].replace(/　/g,""); //　スペース削除
 
-                   if (address1[i].length !== 39){  // 39文字以外の処理                  
-                        const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
-                        //console.log(`namespaceId[${i}]===`,namespaceId);
-                        const ns_check = await nsRepo.getLinkedAddress(namespaceId)
-                           .toPromise()
-                           .catch(() => swal(`Namespace or Address Error!! [No.${i+1}]`,address1[i]));
+                     if (address1[i].length !== 39){  // 39文字以外の処理                  
+                          const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
+                          const ns_check = await nsRepo.getLinkedAddress(namespaceId)
+                             .toPromise()
+                             .catch(() => swal(`Namespace or Address Error!!`,`[No.${i+1}]
+
+                             ${address1[i]}`));
                         
-                        console.log(`%cns_check[${i}]`,"color: red",ns_check);
-                        if (ns_check !== true){ // Namespace がリンクされている場合
-                           address1[i] = ns_check.address;   // Namspace をアドレスに変更
-                        }
-                   }
-               }
-                                          
+                          console.log(`%cns_check[${i}]`,"color: red",ns_check);
+                          if (ns_check !== true){ // Namespace がリンクされている場合
+                             address1[i] = ns_check.address;   // Namspace をアドレスに変更
+                          }
+                     }
+                 }
+                             
+               const res1 = [];
                for (let i = 0; i < address1.length; ++i){
                     if (address1[i].length === 39){  // 39文字の場合
                       if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T"){
                         const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
                           .toPromise()
-                          .catch(() => swal(`Address Error!! [No.${i+1}]`,address1[i]));         // アドレス　有無のチェック
+                          .catch(() => swal(`Address Error!!`,`[No.${i+1}]
+
+                          ${address1[i]}`));                                                   // アドレス　有無のチェック
+
+                           alice = sym.Address.createFromRawAddress(address1[i]);                //アカウント制限チェック
+                           res = await resAccountRepo.getAccountRestrictions(alice)
+                                 .toPromise()
+                                 .catch(() => console.log(`制限無し[${i+1}]`)); 
+                              
+                            if (res !== undefined){
+                                res1.push(`[No.${i+1}]  
+                                ${res.address.address}
+
+                                `);
+                                swal(`アカウント制限有り`,`${res1}`);
+
+                                for (j = 0; j < res.restrictions.length; ++j ){
+                                   console.log(`restrictions[${i}][${j}]`,res.restrictions[j]);
+                                }                           
+                            }
+
                       }else{ //先頭が NまたはTでない場合
-                          swal(`Address Error!! [No.${i+1}]`,address1[i]);         // アドレス　有無のチェック
+                        swal(`Address Error!!`,`[No.${i+1}]
+
+                        ${address1[i]}`);        // アドレス　有無のチェック
                       }
                     }
                } 
-             })(); // async() 
+               removeLoading();  //  ローディング画像を非表示
+              }else{    // エラーチェックしない
+                for (let i = 0; i < address2.length; ++i) {  
+                     let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                     address1[i] = cells[1];                //アドレスだけを格納
+                     // 余分なハイフンやスペースを削除
+                     if (address1[i].length === 45){                 //ハイフン有りのアドレスの場合
+                        address1[i] = address1[i].replace(/-/g,"");  // ハイフンを削除する
+                     }
+                     address1[i] = address1[i].replace(/ /g,"");  // スペース削除
+                     address1[i] = address1[i].replace(/　/g,""); //　スペース削除  
+                     
+                 }
+              }
 
+
+            })(); // async() 
+            
                console.log("address1=",address1);
            }
            reader.readAsText(file1);
