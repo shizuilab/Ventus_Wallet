@@ -1,5 +1,5 @@
 const dom_version = document.getElementById('version');
-dom_version.innerHTML = `v1.0.18　|　Powered by SYMBOL`;
+dom_version.innerHTML = `v1.0.21　|　Powered by SYMBOL`;
 
 const sym = require('/node_modules/symbol-sdk');
 const op  = require("/node_modules/rxjs/operators");
@@ -21,6 +21,7 @@ const nsRepo_M = repo_M.createNamespaceRepository();
 const nwRepo_M = repo_M.createNetworkRepository();
 const chainRepo_M = repo_M.createChainRepository();
 const blockRepo1_M = repo_M.createBlockRepository();
+const nodeRepo_M = repo_M.createNodeRepository();
 const metaRepo_M = repo_M.createMetadataRepository();
 const metaService_M = new sym.MetadataTransactionService(metaRepo_M);
 const resMosaicRepo_M = repo_M.createRestrictionMosaicRepository();
@@ -46,6 +47,7 @@ const nsRepo_T = repo_T.createNamespaceRepository();
 const nwRepo_T = repo_T.createNetworkRepository();
 const chainRepo_T = repo_T.createChainRepository();
 const blockRepo1_T = repo_T.createBlockRepository();
+const nodeRepo_T = repo_T.createNodeRepository();
 const metaRepo_T = repo_T.createMetadataRepository();
 const metaService_T = new sym.MetadataTransactionService(metaRepo_T);
 const resMosaicRepo_T = repo_T.createRestrictionMosaicRepository();
@@ -65,6 +67,7 @@ let nsRepo;
 let nwRepo;
 let chainRepo;
 let blockRepo1;
+let nodeRepo;
 let EXPLORER;
 let grace_block;
 let metaRepo;
@@ -103,6 +106,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
        nwRepo = nwRepo_M;
        chainRepo = chainRepo_M;
        blockRepo1 = blockRepo1_M;
+       nodeRepo = nodeRepo_M;
        EXPLORER = EXPLORER_M;
        grace_block = 86400;
        metaRepo = metaRepo_M;
@@ -127,6 +131,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
           nwRepo = nwRepo_T;
           chainRepo = chainRepo_T;
           blockRepo1 = blockRepo1_T;
+          nodeRepo = nodeRepo_T;
           EXPLORER = EXPLORER_T;
           grace_block = 2880;
           metaRepo = metaRepo_T;
@@ -185,14 +190,15 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
               $("#finalized_chain_height").html(   //  確定ブロック
                 "[ <a target='_blank' href='" + EXPLORER + "/blocks/" + zip[1].height.compact() + "'>" + zip[1].height.compact() + "</a> ]　日時: " + dispTimeStamp(Number(zip[1].timestamp.toString()),epochAdjustment)
               );
-              console.log("ブロック高=",zip[0].height.compact());
-              console.log("ファイナライズブロック=",zip[1].height.compact());
+              console.log("%c現在のブロック高=","color: red",zip[0].height.compact());
+              console.log("%cファイナライズブロック=","color: red",zip[1].height.compact());
 
 
              /////////////   モザイク　テーブル////////////////////////////////////////////////
 
               mosaicRepo.search({ownerAddress:accountInfo.address,
-                                 pageSize: 100,
+                                 pageNumber: 1,
+                                 pageSize: 50,
                                  order: sym.Order.Desc
                                 })
               .subscribe(async mosaic=>{
@@ -260,8 +266,11 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                                   var cellText = document.createTextNode("供給量");
                               break;
                               }
-                             var supply1 = mosaic.data[i].supply.compact()/(10 ** mosaic.data[i].divisibility);
-                                 supply1 = supply1.toLocaleString();
+                             var supply1 = mosaic.data[i].supply.compact()/(10 ** mosaic.data[i].divisibility);                                
+                                 supply1 = supply1.toLocaleString(undefined, {
+                                  minimumFractionDigits: mosaic.data[i].divisibility,
+                                  maximumFractionDigits: mosaic.data[i].divisibility,
+                                });
 
                               var cellText = document.createTextNode(supply1); 
                               break; 
@@ -276,7 +285,10 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                                 }
                               }
                               balance = balance/(10 ** mosaic.data[i].divisibility);   // 可分性を考慮
-                              balance = balance.toLocaleString();
+                              balance = balance.toLocaleString(undefined, {
+                                minimumFractionDigits: mosaic.data[i].divisibility,
+                                maximumFractionDigits: mosaic.data[i].divisibility,
+                              });
 
                               var cellText = document.createTextNode(balance);
                               break;
@@ -455,19 +467,22 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                           
 
               //// ネームスペース テーブル　//////////////////////////////////////////////////////////////////////////////
+ 
               nsRepo.search({ownerAddress:accountInfo.address,
-                             PageNumber: 1,
-                             pageSize: 100,
-                            // order: sym.Order.Desc  //何故かメインネットでエラーが出る　　t が not defined
+                             pageNumber: 1,
+                             pageSize: 50,
+                             order: sym.Order.Desc
                             }) /////    保有ネームスペース
               .subscribe(async ns=>{
-
+                
                 console.log("{ownerAddress:accountInfo.address}: ",{ownerAddress:accountInfo.address});
 
                 var Nnames1 = new Array(ns.data.length);
                 var i=0;
                 var ddNamespace = new Array(ns.data.length);
                 for(const nsInfo of ns.data){  
+
+                //  console.log("%cnsInfo==","color: blue",nsInfo)
                   if(nsInfo.levels.length == 1){ //ルートネームスペース
 
                     const Nnames = await nsRepo.getNamespacesNames([nsInfo.levels[nsInfo.levels.length - 1]]).toPromise();
@@ -484,6 +499,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                     var remainHeight = nsInfo.endHeight.compact() - zip[0].height.compact();
                       //  console.log("期限が終了するブロック: " + nsInfo.endHeight.compact());  
                       //  console.log("あと残りのブロック: " + remainHeight);
+
                     t = dispTimeStamp(zip[0].timestamp.compact() + (remainHeight * 30000),epochAdjustment)
                  // t = dispTimeStamp(nsInfo.endHeight.compact() * 30000,epochAdjustment);
                  // ddNamespace += '<dd>' + namespace + ' [期限: ' + t + ']</dd>';
@@ -493,13 +509,14 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                   if(nsInfo.levels.length == 2){ //サブネームスペース                
                     const Nnames = await nsRepo.getNamespacesNames([nsInfo.levels[nsInfo.levels.length - 1]]).toPromise();
                     Nnames1[i] = Nnames[1].name + "." + Nnames[0].name;
-                    ddNamespace[i] = t; 
+                    //console.log("%cNnames[i]================","color: red",Nnames[i])
+                    //ddNamespace[i] = t; 
                   }
 
                   if(nsInfo.levels.length == 3){ //サブネームスペース                
                     const Nnames = await nsRepo.getNamespacesNames([nsInfo.levels[nsInfo.levels.length - 1]]).toPromise();
                     Nnames1[i] = Nnames[2].name + "." + Nnames[1].name + "." + Nnames[0].name;
-                    ddNamespace[i] = t; 
+                   //ddNamespace[i] = t; 
                   }
 
                   i=++i;
@@ -653,6 +670,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
               });
             })
           });
+
     /////////////////////// Meta data テーブル　/////////////////////////////////////////////////////////////// 
                   
                  metaRepo
@@ -946,6 +964,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
          //const dom_mosaic = document.createElement('div');
          const dom_account = document.createElement('div');
          const dom_restriction = document.createElement('div');
+         const dom_NFT = document.createElement('div');
 	    
          dom_txType.innerHTML = `<p style="text-align: right; line-height:100%;&"><font color="#0000ff">< ${getTransactionType(tx.type)} ></font></p>`;        //　 　Tx Type
                  
@@ -1042,9 +1061,12 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 		            // console.log("%ci モザイクが空では無い場合の処理　iだよ　",'color: red',i);
                 })(); // async() 
                
+                nftdrive(tx.mosaics[i].id,dom_NFT); // nftdrive NFT画像表示
+                comsa(tx.mosaics[i].id,dom_NFT);    // comsa NFT画像表示
+
                 dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                 dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-                                   
+                dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加                  
               }  //モザイクの数だけ繰り返す
              //})(); // async() 
 	
@@ -1323,12 +1345,11 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                                                          	                                                                              
                  const dom_amount = document.createElement('div');
           
-                
-
     		        if (aggTx[0].innerTransactions[0].type === 16724){  // TRANSFER の場合
                   
                      const dom_mosaic = document.createElement('div');
                      const dom_aggTx = document.createElement('div');
+                     const dom_NFT = document.createElement('div');
 
                      let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
      
@@ -1354,7 +1375,14 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 		                      }
 
                           if (aggTx[0].innerTransactions[0].message !== undefined){     // １つ目、2つ目のインナートランザクションにメッセージがあれば表示する。
-                              dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[0].message.payload}</font>`;     // 　メッセージ              
+                              dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[0].message.payload}</font>`;     // 　メッセージ
+                              if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.0"}` || aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.1"}`){
+                                dom_NFT.innerHTML = `<font color="#4169e1">< Mosaic ID ></br>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}`;
+                                comsa(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NFT画像表示
+                              }
+                              if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-ncft-1.1"}`){
+                                comsaNCFT(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NCFT画像表示
+                              }
                           }else
                              if (aggTx[0].innerTransactions[1].message !== undefined){
                                  dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[1].message.payload}</font>`;     // メッセージ
@@ -1362,9 +1390,12 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                         
                         dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
 
+                        nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id,dom_NFT); // nftdrive NFT画像表示 
+                          
                         dom_tx.appendChild(dom_aggTx);                     // dom_aggTx をdom_txに追加
                         dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
-                        dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加   
+                        dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+                        dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加
 	              }   
 
                 if (aggTx[0].innerTransactions[0].type === 16717){ // MOSAIC_REGISTRATION の場合
@@ -1975,6 +2006,7 @@ txRepo
          //const dom_mosaic = document.createElement('div');
          const dom_account = document.createElement('div');
          const dom_restriction = document.createElement('div');
+         const dom_NFT = document.createElement('div');
 	    
          dom_txType.innerHTML = `<p style="text-align: right; line-height:100%;&"><font color="#0000ff">< ${getTransactionType(tx.type)} ></font></p>`;        //　 　Tx Type
                  
@@ -2071,9 +2103,12 @@ txRepo
 		            // console.log("%ci モザイクが空では無い場合の処理　iだよ　",'color: red',i);
                 })(); // async() 
                
+                nftdrive(tx.mosaics[i].id,dom_NFT); // nftdrive NFT画像表示
+                comsa(tx.mosaics[i].id,dom_NFT);    // comsa NFT画像表示
+
                 dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                 dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-                                   
+                dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加                  
               }  //モザイクの数だけ繰り返す
              //})(); // async() 
 	
@@ -2352,12 +2387,11 @@ txRepo
                                                          	                                                                              
                  const dom_amount = document.createElement('div');
           
-                
-
     		        if (aggTx[0].innerTransactions[0].type === 16724){  // TRANSFER の場合
                   
                      const dom_mosaic = document.createElement('div');
                      const dom_aggTx = document.createElement('div');
+                     const dom_NFT = document.createElement('div');
 
                      let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
      
@@ -2383,7 +2417,13 @@ txRepo
 		                      }
 
                           if (aggTx[0].innerTransactions[0].message !== undefined){     // １つ目、2つ目のインナートランザクションにメッセージがあれば表示する。
-                              dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[0].message.payload}</font>`;     // 　メッセージ              
+                              dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[0].message.payload}</font>`;     // 　メッセージ
+                              if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.0"}`){
+                                comsa(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NFT画像表示
+                              }
+                              if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-ncft-1.1"}`){
+                                comsaNCFT(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NCFT画像表示
+                              }
                           }else
                              if (aggTx[0].innerTransactions[1].message !== undefined){
                                  dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[1].message.payload}</font>`;     // メッセージ
@@ -2391,9 +2431,12 @@ txRepo
                         
                         dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
 
+                        nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id,dom_NFT); // nftdrive NFT画像表示 
+                          
                         dom_tx.appendChild(dom_aggTx);                     // dom_aggTx をdom_txに追加
                         dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
-                        dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加   
+                        dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+                        dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加
 	              }   
 
                 if (aggTx[0].innerTransactions[0].type === 16717){ // MOSAIC_REGISTRATION の場合
@@ -2485,6 +2528,590 @@ txRepo
 	    t = ++t;
     }    // tx の数だけループ処理 
   })	// txRepo.search(searchCriteria).subscribe(async txs => 
+
+}
+
+///////////////////////////////////////////  　　　　発行した  Mosaic ページ切り替え       /////////////////////////////////
+
+function select_Page_mosa1(){
+
+  const page_num_mosa1 = document.getElementById('page_num_mosa1').value;  /////////  セレクトボックスから、Page No を取得  ///////////////////////
+
+  const dom_ms = document.getElementById('ms_table'); 
+  if (dom_ms !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_ms.firstChild){
+        dom_ms.removeChild(dom_ms.firstChild);
+    }
+  }
+
+  const dom_re = document.querySelector('.revoke_select'); 
+  if (dom_re !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_re.firstChild){
+        dom_re.removeChild(dom_re.firstChild);
+    }
+  }
+
+  const dom_mo = document.querySelector('.select_mosaicID'); 
+  if (dom_mo !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_mo.firstChild){
+        dom_mo.removeChild(dom_mo.firstChild);
+    }
+  }
+
+  const dom_sup = document.querySelector('.select_mosaic_sup'); 
+  if (dom_sup !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_sup.firstChild){
+        dom_sup.removeChild(dom_sup.firstChild);
+    }
+  }
+
+
+  accountRepo.getAccountInfo(sym.Address.createFromRawAddress(window.SSS.activeAddress))
+  .toPromise()
+  .then((accountInfo) => {
+        console.log("accountInfo=",accountInfo)     
+        console.log("account_Mosaics =",accountInfo.mosaics.length);
+
+  //ブロック
+  chainRepo.getChainInfo().subscribe(chain=>{  //////////   
+
+    rxjs.zip(
+      blockRepo1.getBlockByHeight(chain.height),
+      blockRepo1.getBlockByHeight(chain.latestFinalizedBlock.height),
+    ).subscribe(zip => {
+
+      $("#chain_height").html(    //  最新ブロック
+        "[ <a target='_blank' href='" + EXPLORER + "/blocks/" + zip[0].height.compact() + "'>" + zip[0].height.compact() + "</a> ]　日時: " + dispTimeStamp(Number(zip[0].timestamp.toString()),epochAdjustment)
+      );
+      $("#finalized_chain_height").html(   //  確定ブロック
+        "[ <a target='_blank' href='" + EXPLORER + "/blocks/" + zip[1].height.compact() + "'>" + zip[1].height.compact() + "</a> ]　日時: " + dispTimeStamp(Number(zip[1].timestamp.toString()),epochAdjustment)
+      );
+      console.log("ブロック高=",zip[0].height.compact());
+      console.log("ファイナライズブロック=",zip[1].height.compact());
+
+  
+  mosaicRepo.search({ownerAddress: sym.Address.createFromRawAddress(window.SSS.activeAddress),
+    pageNumber: page_num_mosa1,
+    pageSize: 50,
+    order: sym.Order.Desc
+   })
+.subscribe(async mosaic=>{
+
+console.log("mosaic_data=",mosaic.data);
+
+console.log("モザイクの数",mosaic.data.length);
+
+const select_revoke = []; //　セレクトボックス初期化 (モザイク回収)
+const select_mosaicID = []; //　セレクトボックス初期化 (モザイクID)
+const select_mosaic_sup =[]; //　セレクトボックス初期化 (モザイクID 供給量変更)
+var body = document.getElementById("ms_table");
+
+// <table> 要素と <tbody> 要素を作成　/////////////////////////////////////////////////////
+var tbl = document.createElement("table");
+var tblBody = document.createElement("tbody");
+let mosaicNames;
+// すべてのセルを作成
+for (var i = -1; i < mosaic.data.length; i++) {  // ネームスペースの数だけ繰り返す
+if (i > -1){
+mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(mosaic.data[i].id.id.toHex())]).toPromise(); // モザイクIDからNamespaceの情報を取得する
+}
+// 表の行を作成
+var row = document.createElement("tr");
+
+for (var j = 0; j < 11; j++) {
+// <td> 要素とテキストノードを作成し、テキストノードを
+// <td> の内容として、その <td> を表の行の末尾に追加
+var cell = document.createElement("td");                                                   
+switch(j){
+case 0:   //モザイクID
+ if (i === -1){
+     var cellText = document.createTextNode("モザイクID");
+     select_mosaicID.push({value:"--- Select ---",name:"--- Select ---"}); //セレクトボックス用の連想配列を作る
+     select_mosaic_sup.push({value:"--- Select ---",name:"--- Select ---"}); //セレクトボックス用の連想配列を作る
+ break;
+ }                             
+    var cellText = document.createTextNode(mosaic.data[i].id.id.toHex());
+    if (mosaic.data[i].duration.compact() === 0){ // ステータスが無効なモザイクを排除                               
+       select_mosaicID.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+       if (mosaic.data[i].flags.supplyMutable === true){ // 供給量可変　🟢
+         select_mosaic_sup.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+       }
+   }else
+      if (endHeight - zip[0].height.compact() > 0){ // ステータスが無効なモザイクを排除
+         select_mosaicID.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+         if (mosaic.data[i].flags.supplyMutable === true){ // 供給量可変　🟢
+           select_mosaic_sup.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+         }
+      }
+ break;                
+case 1:   //ネームスペース名
+ if (i === -1){
+     var cellText = document.createTextNode("ネームスペース名");
+ break;
+ } 
+ if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合                       
+     var cellText = document.createTextNode([mosaicNames][0][0].names[0].name);
+ }else{   // ネームスペースが無い場合
+       var cellText = document.createTextNode("N/A"); 
+ }
+ break;       
+case 2:   // 供給量
+ if (i === -1){
+     var cellText = document.createTextNode("供給量");
+ break;
+ }
+var supply1 = mosaic.data[i].supply.compact()/(10 ** mosaic.data[i].divisibility);
+    supply1 = supply1.toLocaleString();
+
+ var cellText = document.createTextNode(supply1); 
+ break; 
+case 3:   //残高
+ if (i === -1){
+     var cellText = document.createTextNode("残高");
+     break;
+ }                             
+ for (var k = 0; k < accountInfo.mosaics.length; k++){ 
+   if (accountInfo.mosaics[k].id.id.toHex() === mosaic.data[i].id.id.toHex()){ // accountInfoのamount データを探す
+      var balance = accountInfo.mosaics[k].amount.compact();
+   }
+ }
+ balance = balance/(10 ** mosaic.data[i].divisibility);   // 可分性を考慮
+ balance = balance.toLocaleString();
+
+ var cellText = document.createTextNode(balance);
+ break;
+case 4:   //有効期限
+ if (i === -1){
+     var cellText = document.createTextNode("有効期限");
+     break;
+ }
+ if (mosaic.data[i].duration.compact() === 0){
+     var cellText = document.createTextNode("---　無期限　---");
+ }else{
+      var endHeight = mosaic.data[i].startHeight.compact() + mosaic.data[i].duration.compact()   
+      var remainHeight = endHeight - zip[0].height.compact();    
+           t = dispTimeStamp(zip[0].timestamp.compact() + (remainHeight * 30000),epochAdjustment)                  
+      var cellText = document.createTextNode(t);
+ }
+ break;
+case 5:   // ステータス
+ if (i === -1){
+     var cellText = document.createTextNode("ステータス");
+     break;
+ }
+ if (mosaic.data[i].duration.compact() === 0){
+     var cellText = document.createTextNode("　　🟢");
+ }else
+    if (mosaic.data[i].duration.compact() > 0){
+        var endHeight = mosaic.data[i].startHeight.compact() + mosaic.data[i].duration.compact()
+        if (endHeight - zip[0].height.compact() > 0){
+          var cellText = document.createTextNode("　　🟢");
+        }else{
+         var cellText = document.createTextNode("　　❌");
+        }
+    }
+ break;
+case 6:   // 可分性
+ if (i === -1){
+     var cellText = document.createTextNode("可分性");
+     break;
+ }
+     var cellText = document.createTextNode(`　${mosaic.data[i].divisibility}`);
+ break;
+case 7:   //　制限可
+ if (i === -1){
+     var cellText = document.createTextNode("制限可");
+     break;
+ }
+ if (mosaic.data[i].flags.restrictable === true){
+     var cellText = document.createTextNode("　🟢");
+ }else
+    if (mosaic.data[i].flags.restrictable === false){
+        var cellText = document.createTextNode("　❌");
+    }                           
+ break;                                  
+case 8:  // 供給量可変
+ if (i === -1){
+     var cellText = document.createTextNode("供給量可変");
+     break;
+ }
+ if (mosaic.data[i].flags.supplyMutable === true){
+     var cellText = document.createTextNode("　　🟢");
+ }else
+    if (mosaic.data[i].flags.supplyMutable === false){
+        var cellText = document.createTextNode("　　❌");
+    }                              
+ break;      
+case 9:   // 転送可
+ if (i === -1){
+     var cellText = document.createTextNode("転送可");                                  
+     break;
+ }
+ if (mosaic.data[i].flags.transferable === true){
+     var cellText = document.createTextNode("　🟢");
+ }else
+    if (mosaic.data[i].flags.transferable === false){
+        var cellText = document.createTextNode("　❌");
+    }                                                    
+ break;      
+case 10:   // 回収可
+ if (i === -1){
+     var cellText = document.createTextNode("回収可");
+     break;
+ }
+ if (mosaic.data[i].flags.revokable === true){
+     var cellText = document.createTextNode("　🟢");
+     if(mosaic.data[i].duration.compact() === 0){ // ステータスが無効なモザイクを排除
+       select_revoke.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+     }else
+        if (endHeight - zip[0].height.compact() > 0){ // ステータスが無効なモザイクを排除
+           select_revoke.push({value:mosaic.data[i].id.id.toHex(),name:mosaic.data[i].id.id.toHex()}); //セレクトボックス用の連想配列を作る
+        }
+ }else
+    if (mosaic.data[i].flags.revokable === false){
+        var cellText = document.createTextNode("　❌");
+    }                           
+ break;      
+case 11:   // 編集
+ /////////////////////////////  保留  //////////
+ if (i === -1){
+     var cellText = document.createTextNode("");
+     break;
+ }
+ if (mosaic.data[i].duration.compact() === 0){
+     var cellText = document.createTextNode("");
+ }else
+    if (mosaic.data[i].duration.compact() > 0){
+        var endHeight = mosaic.data[i].startHeight.compact() + mosaic.data[i].duration.compact()
+        if (endHeight - zip[0].height.compact() > 0){
+            var cellText = document.createTextNode("");
+        }else{
+             var cellText = document.createTextNode("");
+        }
+ }
+ break;    
+}      
+cell.appendChild(cellText);
+row.appendChild(cell);
+}
+
+// 表の本体の末尾に行を追加
+tblBody.appendChild(row);
+}
+
+// <tbody> を <table> の中に追加
+tbl.appendChild(tblBody);
+// <table> を <body> の中に追加
+body.appendChild(tbl);
+// tbl の border 属性を 2 に設定
+tbl.setAttribute("border", "1"); 
+console.log("%cselect_revoke=","color: red",select_revoke);
+console.log("%cselect_mosaicID=","color: red",select_mosaicID);
+  console.log("%cselect_mosaic_sup=","color: red",select_mosaic_sup);
+
+  ////    セレクトボックス  (回収モザイク用)    ///////////////////////////////////////
+
+  const jsSelectBox_rev = document.querySelector('.revoke_select');
+  const select = document.createElement('select');
+
+  select.classList.add('select_r');
+  select_revoke.forEach((v) => {
+  const option = document.createElement('option');
+  option.value = v.value;
+  option.textContent = v.name;
+  select.appendChild(option);
+  });
+  jsSelectBox_rev.appendChild(select);
+
+  ////    select_mosaicID  (Metadata用)    ///////////////////////////////////////
+
+  const jsSelectBox_mosaicID = document.querySelector('.select_mosaicID');
+  const select_mo = document.createElement('select');
+
+  select_mo.classList.add('select_mo');
+  select_mosaicID.forEach((v) => {
+  const option = document.createElement('option');
+  option.value = v.value;
+  option.textContent = v.name;
+  select_mo.appendChild(option);
+  });
+  jsSelectBox_mosaicID.appendChild(select_mo);
+
+  /////   mosaic_ID セレクトボックス  (供給量変更用）///////////////////////////////
+
+  const jsSelectBox_sup = document.querySelector('.select_mosaic_sup');
+  const select_sup = document.createElement('select');
+
+  select_sup.classList.add('select_sup');
+  select_mosaic_sup.forEach((v) => {
+  const option = document.createElement('option');
+  option.value = v.value;
+  option.textContent = v.name;
+  select_sup.appendChild(option);
+  });
+  jsSelectBox_sup.appendChild(select_sup);                
+
+  });
+
+    })});
+  
+  });
+}
+
+///////////////////////////////////////////  　　　　発行した  Namespace ページ切り替え       /////////////////////////////////
+
+function select_Page_namespace(){
+
+  const page_num_namespace = document.getElementById('page_num_namespace').value;  /////////  セレクトボックスから、Page No を取得  ///////////////////////
+  
+  const dom_ns = document.getElementById('ns_table'); 
+  if (dom_ns !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_ns.firstChild){
+        dom_ns.removeChild(dom_ns.firstChild);
+    }
+  }
+
+  const dom_nse = document.querySelector('.Namespace_select'); 
+  if (dom_nse !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_nse.firstChild){
+        dom_nse.removeChild(dom_nse.firstChild);
+    }
+  }
+
+
+  accountRepo.getAccountInfo(sym.Address.createFromRawAddress(window.SSS.activeAddress))
+  .toPromise()
+  .then((accountInfo) => {
+        console.log("accountInfo=",accountInfo)     
+        console.log("account_Mosaics =",accountInfo.mosaics.length);
+
+     ////
+
+         //ブロック
+          chainRepo.getChainInfo().subscribe(chain=>{  //////////   
+
+            rxjs.zip(
+              blockRepo1.getBlockByHeight(chain.height),
+              blockRepo1.getBlockByHeight(chain.latestFinalizedBlock.height),
+            ).subscribe(zip => {
+
+              $("#chain_height").html(    //  最新ブロック
+                "[ <a target='_blank' href='" + EXPLORER + "/blocks/" + zip[0].height.compact() + "'>" + zip[0].height.compact() + "</a> ]　日時: " + dispTimeStamp(Number(zip[0].timestamp.toString()),epochAdjustment)
+              );
+              $("#finalized_chain_height").html(   //  確定ブロック
+                "[ <a target='_blank' href='" + EXPLORER + "/blocks/" + zip[1].height.compact() + "'>" + zip[1].height.compact() + "</a> ]　日時: " + dispTimeStamp(Number(zip[1].timestamp.toString()),epochAdjustment)
+              );
+              console.log("%c現在のブロック高=","color: red",zip[0].height.compact());
+              console.log("%cファイナライズブロック=","color: red",zip[1].height.compact());
+
+                          
+
+              //// ネームスペース テーブル　//////////////////////////////////////////////////////////////////////////////
+ 
+              nsRepo.search({ownerAddress:accountInfo.address,
+                             pageNumber: page_num_namespace,
+                             pageSize: 50,
+                             order: sym.Order.Desc
+                            }) /////    保有ネームスペース
+              .subscribe(async ns=>{
+
+                console.log("{ownerAddress:accountInfo.address}: ",{ownerAddress:accountInfo.address});
+
+                var Nnames1 = new Array(ns.data.length);
+                var i=0;
+                var ddNamespace = new Array(ns.data.length);
+                for(const nsInfo of ns.data){  
+
+                //  console.log("%cnsInfo==","color: blue",nsInfo)
+                  if(nsInfo.levels.length == 1){ //ルートネームスペース
+
+                    const Nnames = await nsRepo.getNamespacesNames([nsInfo.levels[nsInfo.levels.length - 1]]).toPromise();
+                          Nnames1[i] = Nnames[0].name;       
+
+                    var namespace = "";
+                    for(const namespaceName of Nnames){
+                      if(namespace != ""){
+                        namespace = "." + namespace;
+                      }
+                      namespace = namespaceName.name + namespace;
+                    }
+
+                    var remainHeight = nsInfo.endHeight.compact() - zip[0].height.compact();
+                      //  console.log("期限が終了するブロック: " + nsInfo.endHeight.compact());  
+                      //  console.log("あと残りのブロック: " + remainHeight);
+
+                    t = dispTimeStamp(zip[0].timestamp.compact() + (remainHeight * 30000),epochAdjustment)
+                 // t = dispTimeStamp(nsInfo.endHeight.compact() * 30000,epochAdjustment);
+                 // ddNamespace += '<dd>' + namespace + ' [期限: ' + t + ']</dd>';
+                    ddNamespace[i] = t;
+                  } 
+      
+                  if(nsInfo.levels.length == 2){ //サブネームスペース                
+                    const Nnames = await nsRepo.getNamespacesNames([nsInfo.levels[nsInfo.levels.length - 1]]).toPromise();
+                    Nnames1[i] = Nnames[1].name + "." + Nnames[0].name;
+                    //console.log("%cNnames[i]================","color: red",Nnames[i])
+                    //ddNamespace[i] = t; 
+                  }
+
+                  if(nsInfo.levels.length == 3){ //サブネームスペース                
+                    const Nnames = await nsRepo.getNamespacesNames([nsInfo.levels[nsInfo.levels.length - 1]]).toPromise();
+                    Nnames1[i] = Nnames[2].name + "." + Nnames[1].name + "." + Nnames[0].name;
+                   //ddNamespace[i] = t; 
+                  }
+
+                  i=++i;
+                }
+                
+                console.log("ns_data=",ns.data);
+
+                console.log("ネームスペースの数",ns.data.length);
+                   const select_ns = [];   // セレクトボックス初期化　（エイリアスリンク/ネームスペース）
+
+                   var body = document.getElementById("ns_table");
+
+                   // <table> 要素と <tbody> 要素を作成　/////////////////////////////////////////////////////
+                   var tbl = document.createElement("table");
+                   var tblBody = document.createElement("tbody");
+                 
+                   // すべてのセルを作成
+                   for (var i = -1; i < ns.data.length; i++) {  // ネームスペースの数だけ繰り返す
+                     // 表の行を作成
+                     var row = document.createElement("tr");
+
+                     for (var j = 0; j < 6; j++) {
+                       // <td> 要素とテキストノードを作成し、テキストノードを
+                       // <td> の内容として、その <td> を表の行の末尾に追加
+                       var cell = document.createElement("td");                                                   
+                          switch(j){
+                            case 0:   //ネームスペースID
+                              if (i === -1){
+                                  var cellText = document.createTextNode("ネームスペース名");
+                                  select_ns .push({value:"--- Select ---",name:"--- Select ---"}); //セレクトボックス用の連想配列を作る
+                                  break;
+                              }                        
+                              var cellText = document.createTextNode(Nnames1[i]);
+                                 if (zip[0].height.compact() < ns.data[i].endHeight.compact() - grace_block){  // ステータスが無効なネームスペースを排除
+                                    select_ns .push({value:Nnames1[i],name:Nnames1[i]}); //セレクトボックス用の連想配列を作る                              
+                                 }    
+                                  break;
+                            case 1:   //ネームスペース名
+                              if (i === -1){
+                                  var cellText = document.createTextNode("ネームスペースID");
+                                  break;
+                              }                            
+                              if (ns.data[i].levels.length === 1){ //　ルートネームスペースの時
+                                  var cellText = document.createTextNode(ns.data[i].levels[0].id.toHex());
+                              }else
+                                 if (ns.data[i].levels.length === 2){ //  サブネームスペース1の時
+                                     var cellText = document.createTextNode(ns.data[i].levels[1].id.toHex());
+                                 }else
+                                    if (ns.data[i].levels.length === 3){ //  サブネームスペース2の時
+                                       var cellText = document.createTextNode(ns.data[i].levels[2].id.toHex());
+                                    }
+                                 break;  
+                            case 2:   // 有効期限
+                              if (i === -1){
+                                  var cellText = document.createTextNode("更新期限");
+                                  break;
+                              }
+                              if (ns.data[i].levels.length !== 1){
+                                  var cellText = document.createTextNode("----------------");
+                              }else{
+                                  var cellText = document.createTextNode(ddNamespace[i]);
+                              }
+                              break; 
+                            case 3: 
+                              if (i === -1){
+                                  var cellText = document.createTextNode("ステータス");
+                                  break;
+                              }                         
+                              if (zip[0].height.compact() > ns.data[i].endHeight.compact() - grace_block){
+                                  var cellText = document.createTextNode("　　❌");
+                              }else
+                                 if (zip[0].height.compact() < ns.data[i].endHeight.compact() - grace_block){
+                                     var cellText = document.createTextNode("　　🟢");
+                                 }
+                              break;
+                            case 4:   // エイリアスタイプ
+                              if (i === -1){
+                                  var cellText = document.createTextNode("タイプ");
+                                  break;
+                              }
+                              if (ns.data[i].alias.type === 0){ 
+                                  var cellText = document.createTextNode("--------");
+                              }else
+                                 if (ns.data[i].alias.type === 1){
+                                  var cellText = document.createTextNode("Mosaic");
+                                 }else
+                                    if (ns.data[i].alias.type === 2){
+                                        var cellText = document.createTextNode("Address");
+                                    }
+                              break;
+                            case 5:   // エイリアス
+                              if (i === -1){
+                                  var cellText = document.createTextNode("🔗リンク🔗");
+                                  break;
+                              }
+                              if (ns.data[i].alias.type === 0){ 
+                                var cellText = document.createTextNode("--------------------------------------------------------");
+                              }else
+                                 if (ns.data[i].alias.type === 1){
+                                     var cellText = document.createTextNode(ns.data[i].alias.mosaicId.id.toHex());
+                                 }else
+                                    if (ns.data[i].alias.type === 2){
+                                        var cellText = document.createTextNode(ns.data[i].alias.address.address);
+                                    }
+                              break;    
+                            }  
+                       cell.appendChild(cellText);
+                       row.appendChild(cell);
+                     }                     
+                     // 表の本体の末尾に行を追加
+                     tblBody.appendChild(row);
+                   }
+                   // <tbody> を <table> の中に追加
+                   tbl.appendChild(tblBody);
+                   // <table> を <body> の中に追加
+                   body.appendChild(tbl);
+                   // tbl の border 属性を 2 に設定
+                   tbl.setAttribute("border", "1");
+
+
+                   console.log("%cselect_ns:","color: red",select_ns); // ネームスペース　セレクトボックス ///////
+
+                   const jsSelectBox = document.querySelector('.Namespace_select');
+                   let select = document.createElement('select');
+
+                   select.classList.add('select1');
+                   select_ns.forEach((v) => {
+                     const option = document.createElement('option');
+                     option.value = v.value;
+                     option.textContent = v.name;
+                     select.appendChild(option);
+                   });
+                   jsSelectBox.appendChild(select);
+
+
+                   /////   Namespace セレクトボックス  (Metadata用）
+
+                   const jsSelectBox_N = document.querySelector('.Namespace_select_N');
+                   const select_N = document.createElement('select');
+
+                   select_N.classList.add('select_N');
+                   select_ns.forEach((v) => {
+                     const option = document.createElement('option');
+                     option.value = v.value;
+                     option.textContent = v.name;
+                     select_N.appendChild(option);
+                   });
+                   jsSelectBox_N.appendChild(select_N);
+                
+                                 
+              });
+            })
+          });  
+     
+  })
 
 }
 
@@ -2984,8 +3611,6 @@ function Onclick_subNamespace(){
 }
 
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //                 エイリアスリンク　　
 ///////////////////////////////////////////////////////////////////////////////
@@ -3366,14 +3991,16 @@ function MetaKey_select(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                              //  NFTをデコードして表示する //
+                                              //  NFT (NFTDrive) をデコードして表示する //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
 
-function appendImg(src){          //   取得した画像をimgタグに挿入するfunctionを定義
+
+function appendImg(src,dom_NFT){          //   取得した画像をimgタグに挿入するfunctionを定義
 
   (tag= document.createElement('img')).src = src;
-  document.getElementsByTagName('body')[0].appendChild(tag);
+   tag.width = 200;
+  //document.getElementsByTagName('body')[0].appendChild(tag);
+  dom_NFT.appendChild(tag);
 }
 //////////////////////////////////////////////////////////////////////////////
 
@@ -3388,7 +4015,7 @@ fetch('https://nftdrive-explorer.info/black_list/',)
 });
 
 
-function nftdrive(mosaic){
+function nftdrive(mosaic,dom_NFT){
 	mosaicRepo.getMosaic(mosaic.id)
 	.pipe(
 		op.filter(mo=>{
@@ -3448,11 +4075,144 @@ function nftdrive(mosaic){
 				header = 1;
 			}
                              
-			 console.log(nftData);
+			 //console.log(nftData);
 			if(nftData.indexOf("data:image/") >= 0){
-				appendImg(nftData);
+        dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a><br><br>`
+				appendImg(nftData,dom_NFT);
 			}
 		}
 	});
 }
-*/
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                              //  NFT (COMSA) をデコードして表示する //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+function comsa(mosaic,dom_NFT){
+
+	mosaicRepo.getMosaic(mosaic.id)
+	.subscribe(async mo=>{
+
+		let meta = await metaRepo.search({
+			targetId:mo.id,
+			metadataType:sym.MetadataType.Mosaic,
+			pageSize:100
+		}).toPromise();
+
+		let comsaHeader = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'DA030AA7795EBE75');
+		if(comsaHeader !== undefined){
+
+			let headerJSON = JSON.parse(comsaHeader.metadataEntry.value);
+			let aggTxes1 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D77BFE313AF3EF1F');
+			let aggTxes2 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'AACFBE3CC93EABF3');
+			let aggTxes3 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'A0B069B710B3754C');
+			let aggTxes4 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D75B016AA9FAC056');
+
+			let aggTxes = JSON.parse(aggTxes1.metadataEntry.value);
+
+			if(aggTxes2 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes2.metadataEntry.value));
+			}
+
+			if(aggTxes3 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes3.metadataEntry.value));
+			}
+			
+			if(aggTxes4 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes4.metadataEntry.value));
+			}
+
+			let nftData = "";
+			let dataType = "data:" + headerJSON.mime_type + ";base64,";
+			for (let idx = 0; idx < aggTxes.length; idx++) {
+				const aggTx = await txRepo.getTransaction(aggTxes[idx],sym.TransactionGroup.Confirmed).toPromise();
+				for(let idx = 1; idx < aggTx.innerTransactions.length;idx++){
+					let payload = aggTx.innerTransactions[idx].message.payload;
+					nftData += payload.slice(6);
+				}
+			}
+      //console.log("%cmosaicID","color: red",mosaic.id.toHex());
+      dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < UNIQUE ></a><br><br>`
+			appendImg(dataType + nftData,dom_NFT);
+		}
+	});
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                              //  NCFT BUNDLE (COMSA) をデコードして表示する //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Buffer = require("/node_modules/buffer").Buffer;
+function comsaNCFT(mosaic,dom_NFT){
+  
+	mosaicRepo.getMosaic(mosaic.id)
+	.subscribe(async mo=>{
+		let meta = await metaRepo.search({
+			targetId:mo.id,
+			metadataType:sym.MetadataType.Mosaic,
+			pageSize:100
+		}).toPromise();
+
+		let comsaNcftHeader = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === '8E0823CEF8A40075');
+		if(comsaNcftHeader !== undefined){
+			needSample = false;
+			let headerJSON = JSON.parse(comsaNcftHeader.metadataEntry.value);
+			let aggTxes1 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D77BFE313AF3EF1F');
+			let aggTxes2 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'AACFBE3CC93EABF3');
+			let aggTxes3 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'A0B069B710B3754C');
+			let aggTxes4 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D75B016AA9FAC056');
+
+			let aggTxes = JSON.parse(aggTxes1.metadataEntry.value);
+
+			if(aggTxes2 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes2.metadataEntry.value));
+			}
+
+			if(aggTxes3 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes3.metadataEntry.value));
+			}
+			
+			if(aggTxes4 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes4.metadataEntry.value));
+			}
+
+			let nftData = "";
+			let dataType = "data:" + headerJSON.mime_type + ";base64,";
+			for(aggTx of aggTxes){
+
+				const data = {"transactionIds": [aggTx]}
+				const res =  await fetch(nodeRepo.url + "/transactions/confirmed", {
+					headers: {
+						"Content-Type": "application/json;charset=utf-8"
+					},
+					method: "POST",
+					body: JSON.stringify(data)
+				});
+				const json = await res.json();
+				const innerTxes = json[0].transaction.transactions;
+				let isSkip = true;
+				for(innerTx of innerTxes){
+					if(isSkip){
+						isSkip = false;
+						continue;
+					}
+					nftData += innerTx.transaction.message;
+				}
+			}
+			
+      // console.log("%cnftData","color: red",nftData)
+			//imgtarget++;
+      dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < BUNDLE ></a><br><br>`
+      appendImg(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+			//createImgTag(dataType  + Buffer.from(nftData, "hex").toString("base64") ,imgtarget,escape_html(decodeURIComponent( sym.Convert.decodeHex(headerJSON.title))));
+		}
+	});
+}
+
+

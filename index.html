@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="./css/BGimg_ventus.css" type="text/css" media="all" id="switchCSS" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-  <link type="text/css" rel="stylesheet" href="./css/simplePagination.css"/>
+  <!--<link type="text/css" rel="stylesheet" href="./css/simplePagination.css"/>-->
   <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"> -->
   <link rel="stylesheet" href="style.css" type="text/css">
   <meta http-equiv="content-type" charset="UTF-8">
@@ -267,6 +267,32 @@
         <div style="text-align:right"><button id="js-show-popup_sup" class="popup_sub_button">供給量変更</button></div><br>
         <div style="text-align:right"><button id="js-show-popup_r" class="popup_sub_button">モザイク回収</button></div>
         <div style="text-align:center"><i><b><big>発行したモザイク</big></b></i></div>
+
+        <div style="text-align: right">
+          <div style="display: inline-block; _display: inline;">Page:</div>  
+            <select id="page_num_mosa1" onchange="select_Page_mosa1();">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+            </select> 
+          </div> 
         <br>
         <table id="ms_table"></table>
       </div>
@@ -309,6 +335,32 @@
         <div style="text-align:right"><button id="js-show-popup_L" class="popup_sub_button">エイリアスリンク</button></div></br>
         <div style="text-align:right"><button id="js-show-popup_sn" class="popup_sub_button">サブネームスペース</button></div>
         <div style="text-align:center"><i><b><big>所有ネームスペース</big></b></i></div>
+
+        <div style="text-align: right">
+          <div style="display: inline-block; _display: inline;">Page:</div>  
+            <select id="page_num_namespace" onchange="select_Page_namespace();">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+            </select> 
+          </div> 
         <br>
         <table id="ns_table"></table>
         <br>
@@ -347,6 +399,7 @@
       </div>
       <input type="button" onclick="Onclick_subNamespace();" class="Form-Btn" id="js-popup_sn" value="作成"/>
         <br>
+        <div style="text-align:center">レンタル手数料&nbsp; 10 XYM</div>
         <br>
         <br>
         <br>
@@ -645,7 +698,7 @@
       </div>  -->
       <br>
       <div class="Form-Item_agg">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">CSVのエラーチェック</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">アドレスチェック</span></br></p>
       <div class="toggle6">
         <input type="checkbox" name="check6" value="csv_check" id="csv_check" />
       </div>
@@ -658,8 +711,10 @@
        <div style="display: inline-block; _display: inline;"> 
          <p1>選択されていません</p1>
        </div>
-      <div id='kurukuru'></div>
+      <div id="kurukuru"></div>
       </div>
+      <br>
+      <p2 id="address_list" style="overflow-wrap: break-word"></p2>
       <br>  
       <input type="button" onclick="handleSSS_agg();" class="Form-Btn" id="js-popup_agg" value="一括送信"/>
       <br>
@@ -980,7 +1035,8 @@ function removeLoading(){
           if (typeof file1 === "undefined"){
              address1.length = 0;
              address2.length = 0; // ファイル選択が取り消された場合、配列を削除
-             $('p1').text("選択されていません"); 
+             $('p1').text("選択されていません");
+             $('p2').text(""); // address_list 非表示
              file = file1;
           }
         
@@ -989,9 +1045,14 @@ function removeLoading(){
            reader.onload = () => {
              address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
              
+             if (address2[address2.length - 1] === ""){  // 改行の後 "" が最後の配列にある場合
+                 address2.pop();  //最後の配列要素を削除
+             }
+             
             (async() => {
               console.log("CSV チェック =========",csv_check);
-              if (csv_check === true){  
+              if (csv_check === true){
+                $('p2').text(""); // address_list 非表示  
                 dispLoading(`アドレスにエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
                  for (let i = 0; i < address2.length; ++i) {  
                      let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
@@ -1053,6 +1114,7 @@ function removeLoading(){
                     }
                } 
                removeLoading();  //  ローディング画像を非表示
+               swal(`アドレスチェック完了！`,"");
               }else{    // エラーチェックしない
                 for (let i = 0; i < address2.length; ++i) {  
                      let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
@@ -1065,6 +1127,8 @@ function removeLoading(){
                      address1[i] = address1[i].replace(/　/g,""); //　スペース削除  
                      
                  }
+                 const address_list = document.getElementById("address_list");
+                 address_list.innerHTML= `${address1}`;
               }
 
 
