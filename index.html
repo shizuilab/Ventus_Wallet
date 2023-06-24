@@ -68,27 +68,46 @@
 </head>
 <body> 
 
-  <div class="SSS_link">
-       <a href="./Terms_of_use.html" target="_blank">利用規約</a>
-       <a href="https://note.com/mikun_nem/n/n5c21f4af8930/" target="_blank">/ 使い方</a>
-       <div style="display: inline-block; _display: inline;" id="explorer"></div>
-       <a href="https://docs.sss-symbol.com/ja/" target="_blank">/ SSS_Extension /</a>
-       <a href="https://note.com/mahorobart/n/nd5f226887c2a" target="_blank">Ventusについて</a>
-       <a href="https://symbol-community.com" target="_blank">/ Symbol_Community_Web /</a>
-       <select id="selectCSS">
-           <option value="ventus">Ventus</option>
-           <option value="cyberpunk">CyberPunk</option>
-           <option value="sea">Sea</option>
-        <!--   <option value="sheva">Sheva</option>  -->
-       </select>
-  </div> 
+  <div id="nav-wrapper" class="nav-wrapper">
+    <div class="hamburger" id="js-hamburger">
+      <span class="hamburger__line hamburger__line--1"></span>
+      <span class="hamburger__line hamburger__line--2"></span>
+      <span class="hamburger__line hamburger__line--3"></span>
+    </div>
+    <nav class="sp-nav">
+      <ul>
+        <li>背景選択: <select id="selectCSS">
+          <option value="ventus">Ventus</option>
+          <option value="cyberpunk">CyberPunk</option>
+          <option value="sea">Sea</option>
+          <!-- <option value="sheva">Sheva</option> -->
+        </select></li>
+        <br>
+        <li><a href="./Terms_of_use.html" target="_blank">利用規約</a></li>
+        <li><a href="https://note.com/mikun_nem/n/n5c21f4af8930/" target="_blank">使い方</a></li>
+        <li><div id="explorer"></div></li>
+        <li><div id="xembook"></div></li>
+        <li><div id="hv_checker"></div></li>
+        <li><a href="https://docs.sss-symbol.com/ja/" target="_blank">SSS_Extension</a></li>
+        <li><a href="https://note.com/mahorobart/n/nd5f226887c2a" target="_blank">Ventusについて</a></li>
+        <li><a href="https://symbol-community.com" target="_blank">Symbol_Community_Web</a></li>
+        <li><a href="https://twitter.com/mikunNEM" target="_blank">VentusWallet 開発者</a></li>
+        <br>
+        <button id="js-show-popup_dona" class="btn btn-primary" style="font-size: 25px">開発者へ寄付</button>
+        <!-- <li><a href="./update.html" target="_blank">アップデート履歴</a></li> -->
+      </ul>
+    </nav>
+    <div class="black-bg" id="js-black-bg"></div>
+   </div>
+   <br>
 
   <h1>Ventus Wallet</h1>
   <h3><div id="netType"></div></h3>  
   <div class="wrapper">
       <div class="left">
         <div class="account-card">
-            <h2>Account Info</h2>
+        <!--  <h2><a href="#" onclick="alert(`test`);" class="accountInfo">Account Info</a></h2> -->
+           <h2><button id="js-show-popup_aInfo" class="accountInfo">Account Info</button></h2>
             <div id="m_ns_button" style="text-align: left">　　<button id="js-show-popup_m" class="btn-gradient-radius">Mosaic</button>
               <button id="js-show-popup_n" class="btn-gradient-radius">Namespace</button>
               <button id="js-show-popup_Meta" class="btn-gradient-radius">Metadata</button></div>
@@ -736,7 +755,102 @@
   <div class="black-background_agg" id="js-black-bg_agg"></div>
 </div>
 
-<!-- -------------------------------------------------->
+<!-- ------- popup accountInfo ---------------->
+
+<div id="js-popup_aInfo" class="popup_aInfo">
+  <div class="popup_aInfo-inner">
+    <div class="close-btn" id="js-close-btn_aInfo"><i class="fas fa-times"></i></div>
+    <div class="Form_aInfo">
+      <h4>Account Info</h4>
+      <div class="Form-Item_aInfo">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_aInfo">アドレス</span></p>
+        <div type="text" class="Form-Item-Input_aInfo" id="aInfo-addr"></div>
+      </div>
+      <div class="Form-Item_aInfo">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_aInfo">公開鍵</span></p>
+        <div type="text" class="Form-Item-Input_aInfo" id="aInfo-pubkey"></div>
+      </div>
+      <div class="Form-Item_aInfo">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_aInfo">インポータンス</span></p>
+        <div type="text" class="Form-Item-Input_aInfo" id="importance"></div>
+      </div>
+
+      <h4>🌾 Harvesting 🌾</h4>
+      <div id=hv_status style="text-align: center;font-size: 20px"></div>
+      <br>
+      <div id=hv_node style="text-align: center;font-size: 20px"></div>
+     <div class="container">
+       <div class="card mt-3 mb-3">
+         <div class="card-body">
+           <div style="text-align: right"><button type=“button” class="btn-gradient-radius" onclick="window.open('https://symbol-tools.com/symbolTools/view/tool/nodeList.html')">ノードリスト</button></div>
+            <div class="mb-3">
+             <label for="node" class="form-label">委任ノード 選択</label>
+             <input type="text" class="form-control" id="node" placeholder="例）symbol-mikun.net　　　（HTTPSノードのみ）">
+          <!--  <div class="alert alert-primary mt-3" role="alert">
+               <div id="tx"></div>
+            </div> -->
+             <br>
+             <div class="d-grid gap-2 col-6 mx-auto mt-3">
+               <div style="text-align: center;"><button class="btn btn-primary" id="txBtn" type="button">ハーベスト開始　/　ノード変更 </button></div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>              
+    <br>  
+    <table id="harvest"  class="table" style="width:35%;margin: auto;text-align: center">
+      <thead><tr>
+        <th>日時</th>
+        <th>区分</th>
+        <th>数量</th>
+      </tr></thead>
+    </table>
+    <br>
+    <dl>
+      <dd id="harvests_footer" style="text-align: center"><a id="harvests_more" href="javascript:void(0)">さらに読み込む</a></dd>
+    </dl>
+    </div>
+  </div>
+  <div class="black-background_aInfo" id="js-black-bg_aInfo"></div>
+
+</div>
+
+
+<!-- ------- popup donation ---------------->
+
+<div id="js-popup_dona" class="popup_dona">
+  <div class="popup_dona-inner">
+    <div class="close-btn" id="js-close-btn_dona"><i class="fas fa-times"></i></div>
+    <div class="Form_dona">
+      <h4>開発者へ寄付</h4>
+      <div style="text-align: center">NBOGLHXSI7FDRAO2CMZV5PQZ5UHZ3IED67ULPSY</div>
+      <br>
+      <div class="Form-Item_dona">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">XYM 数量</span></br></p>
+        <input type="text" class="Form-Item-Input_dona" id="dona_amount"/>
+      </div>
+      <div class="Form-Item_dona">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">メッセージ</span></br></p>
+        <input type="text" class="Form-Item-Input_dona" id="dona_message"/>
+      </div>
+      <div class="Form-Item_dona">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">最大手数料</span></br></p>
+       <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
+        <div class="Form-Item-Input" style="text-align: center">
+          <select class="re_maxFee" id="dona_maxFee">
+            <option value="0.02">0.02 xym (slow)</option>
+            <option value="0.04">0.04 xym</option>
+            <option value="0.07">0.07 xym</option>
+            <option value="0.1">0.1 xym (fast)</option>
+          </select></div>
+      </div>
+      <input type="button" onclick="handleSSS_dona();" class="Form-Btn" id="js-popup_dona" value="送信"/>
+              
+    </div>
+  </div>
+  <div class="black-background_dona" id="js-black-bg_dona"></div>
+</div>
 
 <script>
 
@@ -908,6 +1022,47 @@ popupImage_agg();
 
 ////////////////////////////////////////////////
 
+function popupImage_aInfo() {  //  accountInfo　ポップアップ
+  var popup_aInfo = document.getElementById('js-popup_aInfo');
+  if(!popup_aInfo) return;
+  var blackBg = document.getElementById('js-black-bg_aInfo');
+  var closeBtn = document.getElementById('js-close-btn_aInfo');
+  var showBtn = document.getElementById('js-show-popup_aInfo');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_aInfo.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_aInfo();
+
+////////////////////////////////////////////////
+
+function popupImage_dona() {  //  donation　ポップアップ
+  var popup_dona = document.getElementById('js-popup_dona');
+  if(!popup_dona) return;
+  var blackBg = document.getElementById('js-black-bg_dona');
+  var closeBtn = document.getElementById('js-close-btn_dona');
+  var showBtn = document.getElementById('js-show-popup_dona');
+
+  closePopUp(blackBg);
+  closePopUp(closeBtn);
+  closePopUp(showBtn);
+  function closePopUp(elem) {
+    if(!elem) return;
+    elem.addEventListener('click', function() {
+      popup_dona.classList.toggle('is-show');
+    });
+  }
+}
+popupImage_dona();
+
+////////////////////////////////////////////////
 
 //トグルスイッチ
 $(".toggle1").on("click", function() {

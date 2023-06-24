@@ -1,5 +1,20 @@
+window.onload = function () {     // ハンバーガーメニュー
+  var nav = document.getElementById('nav-wrapper');
+  var hamburger = document.getElementById('js-hamburger');
+  var blackBg = document.getElementById('js-black-bg');
+
+  hamburger.addEventListener('click', function () {
+      nav.classList.toggle('open');
+  });
+  blackBg.addEventListener('click', function () {
+      nav.classList.remove('open');
+  });
+};
+
+let harvestPageNumber = 0;
+
 const dom_version = document.getElementById('version');
-dom_version.innerHTML = `v1.0.21　|　Powered by SYMBOL`;
+dom_version.innerHTML = `v1.0.23　|　Powered by SYMBOL`;
 
 const sym = require('/node_modules/symbol-sdk');
 const op  = require("/node_modules/rxjs/operators");
@@ -16,6 +31,7 @@ const GENERATION_HASH_M = '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31
 const repo_M = new sym.RepositoryFactoryHttp(NODE_URL_M);      // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountRepo_M = repo_M.createAccountRepository();
 const txRepo_M = repo_M.createTransactionRepository();
+const receiptRepo_M = repo_M.createReceiptRepository();
 const mosaicRepo_M = repo_M.createMosaicRepository();
 const nsRepo_M = repo_M.createNamespaceRepository();
 const nwRepo_M = repo_M.createNetworkRepository();
@@ -27,12 +43,13 @@ const metaService_M = new sym.MetadataTransactionService(metaRepo_M);
 const resMosaicRepo_M = repo_M.createRestrictionMosaicRepository();
 const resAccountRepo_M = repo_M.createRestrictionAccountRepository();
 const EXPLORER_M = "https://symbol.fyi";
+const totalChainImportance = 78429286;
 
 //TEST_NET の場合
 
 const EPOCH_T = 1667250467;
 //const EPOCH_T = 1672735883;  //Canade
-const NODE_URL_T = 'https://mikun-testnet.tk:3001';
+const NODE_URL_T = 'https://mikun-testnet2.tk:3001';
 const NET_TYPE_T = sym.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
 //const XYM_ID_T = '5282230404218E56';  //Canade CBDP
@@ -42,6 +59,7 @@ const GENERATION_HASH_T = '49D6E1CE276A85B70EAFE52349AACCA389302E7A9754BCF1221E7
 const repo_T = new sym.RepositoryFactoryHttp(NODE_URL_T);       // RepositoryFactoryはSymbol-SDKで提供されるアカウントやモザイク等の機能を提供するRepositoryを作成するためのもの
 const accountRepo_T = repo_T.createAccountRepository();
 const txRepo_T = repo_T.createTransactionRepository();
+const receiptRepo_T = repo_T.createReceiptRepository();
 const mosaicRepo_T = repo_T.createMosaicRepository();
 const nsRepo_T = repo_T.createNamespaceRepository();
 const nwRepo_T = repo_T.createNetworkRepository();
@@ -62,6 +80,7 @@ let XYM_ID;
 let repo;
 let accountRepo;
 let txRepo;
+let receiptRepo;
 let mosaicRepo;
 let nsRepo;
 let nwRepo;
@@ -101,6 +120,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
        repo = repo_M;
        accountRepo = accountRepo_M;
        txRepo = txRepo_M;
+       receiptRepo = receiptRepo_M;
        mosaicRepo = mosaicRepo_M;
        nsRepo = nsRepo_M;
        nwRepo = nwRepo_M;
@@ -126,6 +146,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
           repo = repo_T;
           accountRepo = accountRepo_T;
           txRepo = txRepo_T;
+          receiptRepo = receiptRepo_T;
           mosaicRepo = mosaicRepo_T;
           nsRepo = nsRepo_T;
           nwRepo = nwRepo_T;
@@ -159,11 +180,21 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
  console.log("address= wallet-addr",address);//////////////////////////////////////////////////////////////////////////////////////////////////  
      
- const dom_explorer = document.getElementById('explorer');  // Wallet 右上のExplorerリンク
+      const dom_explorer = document.getElementById('explorer');  // Wallet 右上のExplorerリンク
     
-      dom_explorer.innerHTML = `<a href="${EXPLORER}/accounts/${address.address}" target="_blank" rel="noopener noreferrer">/ Explorer </a>`; 
+          dom_explorer.innerHTML = `<a href="${EXPLORER}/accounts/${address.address}" target="_blank" rel="noopener noreferrer"> Explorer </a>`; 
 
-     
+      const dom_xembook = document.getElementById('xembook');  // Wallet 右上のxembookリンク
+    
+          dom_xembook.innerHTML = `<a href="https://xembook.github.io/xembook/?address=${window.SSS.activeAddress}" target="_blank" rel="noopener noreferrer"> XEMBook </a>`;
+
+      if (networkType === 152){ // テストネットの場合表示しない
+          dom_xembook.innerHTML = ``;
+      }
+      
+      const dom_hv_checker = document.getElementById('hv_checker');  // Wallet 右上のxembookリンク
+    
+          dom_hv_checker.innerHTML = `<a href="https://ventus-wallet.tk/HV_Checker" target="_blank" rel="noopener noreferrer"> Harvest Checker </a>`;
       
 	
  ///////////////////////////////////////////////    アカウント情報を取得する     ////////////////////////////////////////////
@@ -173,8 +204,168 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
   .then((accountInfo) => {
         console.log("accountInfo=",accountInfo)     
         console.log("account_Mosaics =",accountInfo.mosaics.length);
+        
+        const addr = document.getElementById('aInfo-addr');  // アクティブアドレス
+        addr.innerHTML = `<div style="text-align: center;padding-top: 8px"><big><font color="green">${address.address}</font></big></div>`;
 
-     ////
+        const pubkey = document.getElementById('aInfo-pubkey');  // 公開鍵
+        pubkey.innerHTML = `<div style="text-align: center;padding-top: 8px"><big><font color="green">${window.SSS.activePublicKey}</font></big></div>`;
+
+        const impo = document.getElementById('importance');  // インポータンス表示
+        let accountImportance = Number(accountInfo.importance.toString()) / totalChainImportance;
+        if(accountImportance > 0){
+          accountImportance = Math.round( accountImportance );
+          accountImportance /= 1000000;
+        }
+
+        impo.innerHTML = `<div style="text-align: center;padding-top: 8px"><big><font color="green">${accountImportance} ％</font></big></div>`;
+
+        const hv_status = document.getElementById('hv_status');
+        const hv_node = document.getElementById('hv_node');
+
+        if(accountInfo.supplementalPublicKeys.linked !== undefined){  //  account pubkey
+          const account_pubkey = accountInfo.supplementalPublicKeys.linked.publicKey;
+          //console.log("account_pubkey===============",account_pubkey);
+        
+
+          if(accountInfo.supplementalPublicKeys.node !== undefined){   //  node pubkey
+            const node_pubkey = accountInfo.supplementalPublicKeys.node.publicKey;
+            //console.log("node_pubkey===============",node_pubkey);
+
+            let xhr = new XMLHttpRequest();
+            if(networkType === 152){
+              xhr.open("GET",`https://testnet.symbol.services/nodes/nodePublicKey/${node_pubkey}`,false);
+            }
+            if(networkType === 104){
+              xhr.open("GET",`https://symbol.services/nodes/nodePublicKey/${node_pubkey}`,false);
+            }
+          
+            let data;
+            let data2;
+            xhr.send(null);
+            if (xhr.status == 200) {
+              data = xhr.response;
+              data = JSON.parse(data);
+              console.log("%cノード=","color: red",data.host);
+              
+              let xhr2 = new XMLHttpRequest();
+              xhr2.open("GET",`https://${data.host}:3001/node/unlockedaccount`,false);
+              xhr2.send(null);
+                if (xhr2.status == 200) {
+                   data2 = xhr2.response;
+                   data2 = JSON.parse(data2);
+                   //console.log("%c委任公開鍵=","color: red",data2);
+
+                   if (searchArray(data2.unlockedAccount,account_pubkey)){
+                       console.log(`有効🟢`);
+                       hv_status.innerHTML = `🟢 有効`
+                       hv_node.innerHTML = `委任ノード　:　${data.host}`
+                   }else{
+                     console.log(`無効🔴`);
+                     hv_status.innerHTML = `🔴 無効 `
+                   }
+                }else {
+                  console.log(`Error: ${xhr2.status}`);
+                }
+            }else{
+              console.log(`Error: ${xhr.status}`);
+            }
+          }else{ // node pubkey  が無い場合 (ノードオーナーのアカウントの場合) //////////////////////////////////
+            if(accountInfo.supplementalPublicKeys.vrf !== undefined){  //  vrf pubkey
+
+              let xhr = new XMLHttpRequest();
+              if(networkType === 152){
+                xhr.open("GET",`https://testnet.symbol.services/nodes/${window.SSS.activePublicKey}`,false);
+              }
+              if(networkType === 104){
+                xhr.open("GET",`https://symbol.services/nodes/${window.SSS.activePublicKey}`,false);
+              }
+
+              let data;
+              let data2;
+              xhr.send(null);
+                if (xhr.status == 200) {
+                   data = xhr.response;
+                   data = JSON.parse(data);
+                   console.log("%cノード=","color: red",data.host);
+              
+                   let xhr2 = new XMLHttpRequest();
+                   xhr2.open("GET",`https://${data.host}:3001/node/unlockedaccount`,false);
+                   xhr2.send(null);
+                     if (xhr2.status == 200) {
+                        data2 = xhr2.response;
+                        data2 = JSON.parse(data2);
+                        //console.log("%c委任公開鍵=","color: red",data2);                        
+
+                        if (searchArray(data2.unlockedAccount,account_pubkey)){
+                           console.log(`有効🟢`);
+                           hv_status.innerHTML = `🟢 有効`
+                           hv_node.innerHTML = `委任ノード　:　${data.host}`
+                        }else{
+                           console.log(`無効🔴`);
+                           hv_status.innerHTML = `🔴 無効 `
+                        }
+                     }else{
+                        console.log(`Error: ${xhr2.status}`);
+                     }
+                }else{
+                    console.log(`Error: ${xhr.status}`);
+                } 
+            }
+          }          
+        }else{
+          hv_status.innerHTML = `🔴 無効 `
+        }
+
+        /////////////    harvest レシート  /////////////////////////////////
+
+        getHarvests(15);
+
+        async function getHarvests(pageSize){
+          
+          harvestPageNumber++;
+          
+          const res_h =  await receiptRepo.searchReceipts({
+           targetAddress: accountInfo.address,
+           pageNumber:harvestPageNumber,
+		       pageSize:pageSize,
+           order:"desc"
+          }).toPromise();
+
+          console.log("ハーベスト_res_h === ",res_h);
+
+          var lastHeight = 0;
+        	var cnt = 0;
+	        for(const statements  of res_h.data){
+		        const filterdReceipts = statements.receipts.filter(item => {
+		        	if(item.targetAddress){
+			        	return item.targetAddress.plain() === accountInfo.address.plain();
+		        	}
+			        return false;
+	        	});
+
+	        	if(statements.height.toString() !== lastHeight.toString()){
+			        cnt = 0;
+	        	}
+      
+		        for(const receipt of filterdReceipts){
+              console.log("reciepts =========== ",receipt);
+		         	showReceiptInfo("harvest",statements.height,receipt,cnt);
+			        lastHeight = statements.height;
+			        cnt++;
+	        	}
+        	}
+
+	        if(res_h.isLastPage){
+		        $('#harvests_footer').hide();
+        	}
+	        return res_h.isLastPage;
+
+        }
+
+        $('#harvests_more' ).click(function(){getHarvests(15); return false;});
+
+     //////////////////////////////////////////////////////////////////////
 
          //ブロック
           chainRepo.getChainInfo().subscribe(chain=>{  //////////   
@@ -1377,10 +1568,14 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                           if (aggTx[0].innerTransactions[0].message !== undefined){     // １つ目、2つ目のインナートランザクションにメッセージがあれば表示する。
                               dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[0].message.payload}</font>`;     // 　メッセージ
                               if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.0"}` || aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.1"}`){
-                                dom_NFT.innerHTML = `<font color="#4169e1">< Mosaic ID ></br>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}`;
+                               // dom_NFT.innerHTML = `<font color="#4169e1">< Mosaic ID ></br>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}`;
+                                dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　<strong>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}</strong></font>`;
+                                dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(aggTx[0].innerTransactions[1].mosaics[0].amount.toHex(), 16)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量 
                                 comsa(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NFT画像表示
                               }
                               if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-ncft-1.1"}`){
+                                dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　<strong>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}</strong></font>`;
+                                dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(aggTx[0].innerTransactions[1].mosaics[0].amount.toHex(), 16)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量
                                 comsaNCFT(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NCFT画像表示
                               }
                           }else
@@ -1885,8 +2080,35 @@ async function handleSSS() {
                  })  
    }
 	 
-    
+   function handleSSS_dona(){   //  開発者への寄付
+       
+    let addr = "NBOGLHXSI7FDRAO2CMZV5PQZ5UHZ3IED67ULPSY";
+    const mosaic_ID = "6BED913FA20223F8";
+    const amount = document.getElementById('dona_amount').value;
+    const message = document.getElementById('dona_message').value;
+    //const enc = document.getElementById('form-enc').value;
+    const maxfee = document.getElementById('dona_maxFee').value;
+    const div = 6;
 
+       const tx = sym.TransferTransaction.create(        // トランザクションを生成
+         sym.Deadline.create(epochAdjustment),
+         sym.Address.createFromRawAddress(addr),
+         [
+           new sym.Mosaic(
+             new sym.MosaicId(mosaic_ID),
+             sym.UInt64.fromUint(Number(amount)*10**div) // div 可分性を適用
+           )
+         ],
+         sym.PlainMessage.create(message),
+         networkType,
+         sym.UInt64.fromUint(1000000*Number(maxfee))          // MaxFee 設定
+         )
+         window.SSS.setTransaction(tx);               // SSSにトランザクションを登録        
+         window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+         console.log('signedTx', signedTx);
+         txRepo.announce(signedTx);
+         })
+   }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // 未承認状態の時にpopup する
@@ -2418,10 +2640,15 @@ txRepo
 
                           if (aggTx[0].innerTransactions[0].message !== undefined){     // １つ目、2つ目のインナートランザクションにメッセージがあれば表示する。
                               dom_message.innerHTML = `<font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[0].message.payload}</font>`;     // 　メッセージ
-                              if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.0"}`){
+                              if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.0"}` || aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-nft-1.1"}`){
+                               // dom_NFT.innerHTML = `<font color="#4169e1">< Mosaic ID ></br>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}`;
+                                dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　<strong>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}</strong></font>`;
+                                dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(aggTx[0].innerTransactions[1].mosaics[0].amount.toHex(), 16)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量 
                                 comsa(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NFT画像表示
                               }
                               if (aggTx[0].innerTransactions[0].message.payload === `{"version":"comsa-ncft-1.1"}`){
+                                dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　<strong>${aggTx[0].innerTransactions[1].mosaics[0].id.id.toHex()}</strong></font>`;
+                                dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(aggTx[0].innerTransactions[1].mosaics[0].amount.toHex(), 16)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量
                                 comsaNCFT(aggTx[0].innerTransactions[1].mosaics[0].id,dom_NFT); // comsa NCFT画像表示
                               }
                           }else
@@ -2527,7 +2754,7 @@ txRepo
             console.log(`%ctx[${t}][${ymdhms}] =`,"color: blue",tx);      //　トランザクションをコンソールに表示　//////////////////
 	    t = ++t;
     }    // tx の数だけループ処理 
-  })	// txRepo.search(searchCriteria).subscribe(async txs => 
+  })	// txRepo.search(searchCriteria).subscribe(async txs =>
 
 }
 
@@ -3338,6 +3565,63 @@ function paddingDate0(num) {
 	return ( num < 10 ) ? '0' + num  : '' + num;
 };
 
+function dispAmount(amount,divisibility){
+
+	const strNum = amount.toString();
+	if(divisibility > 0){
+
+		if(amount < Math.pow(10, divisibility)){
+
+			return "0." + paddingAmount0(strNum,0,divisibility);
+
+		}else{
+
+			const r = strNum.slice(-divisibility);
+			const l = strNum.substring(0,strNum.length - divisibility);
+			return comma3(l) + "." + r;
+		}
+	}else{
+		return comma3(strNum);
+	}
+}
+function comma3(strNum){
+	return strNum.replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+}
+
+function paddingAmount0(val,char,n){
+	for(; val.length < n; val= char + val);
+	return val;
+}
+
+function dispBlockTimeStamp(id,height){
+
+	blockRepo1.getBlockByHeight(height)
+	.subscribe(block => {
+
+		$(id).text(
+			dispTimeStamp(Number(block.timestamp.toString()),epochAdjustment)
+		);
+	})
+}
+
+
+///////////////   レシート情報   /////////////////////////////////////
+function showReceiptInfo(tag,height,receipt,cnt){
+
+	if(cnt === 0){
+		cnt = "";
+	}
+
+	$("#" + tag).append("<tr>"
+	+ "<td id='" + tag + "_date" + height + receipt.type + cnt + "'></td>"
+	+ "<td id='" + tag + "_type' style='font-size:84%;' class='text-left'>" + sym.ReceiptType[receipt.type] + "</td>"
+	+ "<td id='" + tag + "_amount' class='text-right'>" + dispAmount(receipt.amount,6) + "</td>" //mosaicLabel
+	+ "</tr>"
+	);
+
+	dispBlockTimeStamp("#" + tag + "_date"+ height + receipt.type,height);
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           // Copyボタンをクリックして、クリップボードにコピー
@@ -4004,7 +4288,16 @@ function appendImg(src,dom_NFT){          //   取得した画像をimgタグに
 }
 //////////////////////////////////////////////////////////////////////////////
 
+function appendAudio(src,dom_NFT){
 
+  (tag= document.createElement('source')).src = src;
+  // tag.width = 200;
+  //document.getElementsByTagName('body')[0].appendChild(tag);
+  dom_NFT.appendChild(tag);
+  $('source').wrap('<audio controls>');
+}
+
+//////////////////////////////////////////////////////////////////////////////
 var nglist = [];
 fetch('https://nftdrive-explorer.info/black_list/',)
 .then((response) => {
@@ -4107,8 +4400,15 @@ function comsa(mosaic,dom_NFT){
 			let headerJSON = JSON.parse(comsaHeader.metadataEntry.value);
 			let aggTxes1 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D77BFE313AF3EF1F');
 			let aggTxes2 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'AACFBE3CC93EABF3');
-			let aggTxes3 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'A0B069B710B3754C');
-			let aggTxes4 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D75B016AA9FAC056');
+		  let aggTxes3 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'A0B069B710B3754C');
+	    let aggTxes4 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D75B016AA9FAC056');
+      let aggTxes5 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'BABD9C10F590F0F3');
+      let aggTxes6 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D4B5933FA2FD62E7');
+      let aggTxes7 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'FA60A37C56457F1A');
+      let aggTxes8 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'FEDD372E157E9CF0');
+      let aggTxes9 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'C9384119AD73CF95');
+      let aggTxes10 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'EADE00D8D78AC0BD');
+      let aggTxes11 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'F6578214308E7990');
 
 			let aggTxes = JSON.parse(aggTxes1.metadataEntry.value);
 
@@ -4124,6 +4424,34 @@ function comsa(mosaic,dom_NFT){
 				aggTxes = aggTxes.concat(JSON.parse(aggTxes4.metadataEntry.value));
 			}
 
+      if(aggTxes5 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes5.metadataEntry.value));
+			}
+
+      if(aggTxes6 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes6.metadataEntry.value));
+			}
+
+      if(aggTxes7 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes7.metadataEntry.value));
+			}
+
+      if(aggTxes8 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes8.metadataEntry.value));
+			}
+      
+      if(aggTxes9 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes9.metadataEntry.value));
+			}
+
+      if(aggTxes10 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes10.metadataEntry.value));
+			}
+
+      if(aggTxes11 !== undefined){
+				aggTxes = aggTxes.concat(JSON.parse(aggTxes11.metadataEntry.value));
+			}
+
 			let nftData = "";
 			let dataType = "data:" + headerJSON.mime_type + ";base64,";
 			for (let idx = 0; idx < aggTxes.length; idx++) {
@@ -4135,7 +4463,11 @@ function comsa(mosaic,dom_NFT){
 			}
       //console.log("%cmosaicID","color: red",mosaic.id.toHex());
       dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < UNIQUE ></a><br><br>`
-			appendImg(dataType + nftData,dom_NFT);
+      if (dataType === "data:audio/mpeg;base64,"){
+          appendAudio(dataType + nftData,dom_NFT);
+      }else{ 
+          appendImg(dataType + nftData,dom_NFT);
+      }
 		}
 	});
 }
@@ -4206,13 +4538,166 @@ function comsaNCFT(mosaic,dom_NFT){
 				}
 			}
 			
-      // console.log("%cnftData","color: red",nftData)
+         dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < BUNDLE ></a><br><br>`
 			//imgtarget++;
-      dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < BUNDLE ></a><br><br>`
-      appendImg(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      if (dataType === "data:audio/mpeg;base64,"){
+          appendAudio(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      }else{
+          appendImg(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      }
 			//createImgTag(dataType  + Buffer.from(nftData, "hex").toString("base64") ,imgtarget,escape_html(decodeURIComponent( sym.Convert.decodeHex(headerJSON.title))));
 		}
 	});
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                              //  ワンクリックハーベスティング  //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    
+ $('#txBtn').on('click', async function(){
+    
+  //委任先ノードの取得
+  const node = $('#node').val();
+  //委任アドレスの取得
+  const accountInfo = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(window.SSS.activeAddress)).toPromise();
+  const publicAccount = sym.PublicAccount.createFromPublicKey(
+    window.SSS.activePublicKey,
+    networkType
+  );
+  
+  let accountImportance = Number(accountInfo.importance.toString()) / totalChainImportance;
+  if(accountImportance > 0){
+    accountImportance = Math.round( accountImportance );
+    accountImportance /= 1000000;
+  }else{
+    swal(`インポータンスが無効です！`,`アカウントに 10,000 XYM 以上を保有して、
+    約12時間経つとインポータンスが有効になります`);
+    return;
+  }
+
+  let transactionList = [];
+
+  //ノードのパプリックキーを取得
+  let nodeHttp = new sym.NodeHttp('https://' + node + ':3001');
+  let nodeInfo = await nodeHttp.getNodeInfo().toPromise().catch(() => swal(`ノードエラー!!`,`別のノードを選択してください`));
+
+  if(nodeInfo === true){
+       return;
+  }
+  
+  if(networkType !== nodeInfo.networkIdentifier){
+    swal(`ネットワークタイプ エラー!!`,`別のノードを選択してください`);
+    return;
+  }
+
+  // epochAdjustmentの取得
+  //epochAdjustment = await repositoryFactory.getEpochAdjustment().toPromise();
+
+  //リモートアカウントの生成
+  const remoteAccount = sym.Account.generateNewAccount(networkType);
+  //VRFアカウントの生成
+  const vrfAccount = sym.Account.generateNewAccount(networkType);
+
+
+  //委任しているようであれば解除トランザクション作成
+  if(accountInfo.supplementalPublicKeys.linked){
+    //AccountKeyLinkTransaction （解除）
+    const accountUnLink_tx = sym.AccountKeyLinkTransaction.create(
+      sym.Deadline.create(epochAdjustment),
+      accountInfo.supplementalPublicKeys.linked.publicKey,
+      sym.LinkAction.Unlink,
+      networkType,
+    );
+    transactionList.push(accountUnLink_tx.toAggregate(publicAccount));
+  }
+
+  if(accountInfo.supplementalPublicKeys.vrf){
+    //VrfKeyLinkTransaction （解除）
+    const vrfUnLink_tx = sym.VrfKeyLinkTransaction.create(
+      sym.Deadline.create(epochAdjustment),
+      accountInfo.supplementalPublicKeys.vrf.publicKey,
+      sym.LinkAction.Unlink,
+      networkType,
+    );
+    transactionList.push(vrfUnLink_tx.toAggregate(publicAccount));
+  }
+
+  if(accountInfo.supplementalPublicKeys.node){
+    //NodeKeyLinkTransaction （解除）
+    const nodeUnLink_tx = sym.NodeKeyLinkTransaction.create(
+      sym.Deadline.create(epochAdjustment),
+      accountInfo.supplementalPublicKeys.node.publicKey,
+      sym.LinkAction.Unlink,
+      networkType,
+    );
+    transactionList.push(nodeUnLink_tx.toAggregate(publicAccount));
+  }
+
+   //AccountKeyLinkTransaction （リンク）
+   const accountLink_tx = sym.AccountKeyLinkTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    remoteAccount.publicKey,
+    sym.LinkAction.Link,
+    networkType,
+  );
+  transactionList.push(accountLink_tx.toAggregate(publicAccount));
+
+  //VrfKeyLinkTransaction （リンク）
+  const vrfLink_tx = sym.VrfKeyLinkTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    vrfAccount.publicKey,
+    sym.LinkAction.Link,
+    networkType,
+  );
+  transactionList.push(vrfLink_tx.toAggregate(publicAccount));
+
+  //NodeKeyLinkTransaction （リンク）
+  const nodeLink_tx = sym.NodeKeyLinkTransaction.create(
+    sym.Deadline.create(epochAdjustment),
+    nodeInfo.nodePublicKey,
+    sym.LinkAction.Link,
+    networkType,
+  );
+  transactionList.push(nodeLink_tx.toAggregate(publicAccount));
+
+  //PersistentDelegationRequestTransactionを作成
+  const persistentDelegationRequest_tx = sym.PersistentDelegationRequestTransaction.createPersistentDelegationRequestTransaction(
+    sym.Deadline.create(epochAdjustment),
+    remoteAccount.privateKey,
+    vrfAccount.privateKey,
+    nodeInfo.nodePublicKey,
+    networkType,
+  );
+  transactionList.push(persistentDelegationRequest_tx.toAggregate(publicAccount));
+
+  //アグリゲートでまとめる
+  const aggregate_tx = sym.AggregateTransaction.createComplete(
+    sym.Deadline.create(epochAdjustment),
+    transactionList,
+    networkType,
+    [],
+  ).setMaxFeeForAggregate(100);
+
+  window.SSS.setTransaction(aggregate_tx);               // SSSにトランザクションを登録        
+  window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+  console.log('signedTx', signedTx);
+  txRepo.announce(signedTx);
+  })  
+
+});
+
+
+///////////////////////////////////////////////////////////////////////////
+// 配列の中に指定した文字列があるか検索して、あれば true を返す関数
+///////////////////////////////////////////////////////////////////////////
+
+function searchArray(array, searchString) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === searchString) {
+      return true;
+    }
+  }
+  return false;
+}

@@ -13,6 +13,102 @@
   }
 }
 
+/* 
+hamburger(ハンバーガーアイコン)
+=================================== */
+.hamburger {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 50px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 300;
+}
+
+.hamburger__line {
+  position: absolute;
+  width: 50px;
+  height: 4px;
+  right: 0;
+  background-color: rgb(255, 170, 0);
+  transition: all 0.5s;
+}
+
+.hamburger__line--1 {
+  top: 1px;
+}
+
+.hamburger__line--2 {
+  top: 18px;
+}
+
+.hamburger__line--3 {
+  top: 36px;
+}
+
+/*ハンバーガーがクリックされたら*/
+.open .hamburger__line--1 {
+  transform: rotate(-45deg);
+  top: 11px;
+}
+
+.open .hamburger__line--2 {
+  opacity: 0;
+}
+
+.open .hamburger__line--3 {
+  transform: rotate(45deg);
+  top: 11px;
+}
+
+/* 
+sp-nav(ナビ)
+=================================== */
+.sp-nav {
+  position: fixed;
+  right: -100%; /*ハンバーガーがクリックされる前はWindow右側に隠す*/
+  padding-left: 30px;
+  top: 0;
+  width: 25%; /* 出てくるスライドメニューの幅 */
+  height: 100vh;
+  font-size: 25px;
+  background-color: rgba(254, 253, 242, 0.9);
+  transition: all 0.5s;
+  z-index: 200;
+  overflow-y: auto; /* メニューが多くなったらスクロールできるように */
+}
+
+/*ハンバーガーがクリックされたら右からスライド*/
+.open .sp-nav {
+  right: 0;
+}
+
+
+/* 
+black-bg(ハンバーガーメニュー解除用bg)
+=================================== */
+.black-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  background-color: #000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/*ハンバーガーメニューが開いたら表示*/
+.open .black-bg {
+  opacity: 0.3;
+  visibility: visible;
+}
+
 
 .SSS_link {
         background: rgb(255, 255, 255,0.8);
@@ -116,6 +212,22 @@ h4 {
 
 .right {
   overflow: auto;
+}
+
+/*a.accountInfo{
+  text-decoration: none;
+  color:rgb(205, 0, 255);
+}*/
+
+button.accountInfo:hover{
+  color:rgb(0, 234, 255);
+}
+
+button.accountInfo{
+  color:rgb(205, 0, 255);
+  border: none;
+  outline: none;
+  background: transparent;
 }
 
 .account-card {
@@ -261,7 +373,7 @@ a.btn-style-link{
   text-decoration: none;
   border-radius: 10px;
   border: 1px;
-  background-image: linear-gradient(45deg, aquamarine 0%, aquamarine 100%);
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(0, 255, 191) 100%);
   /*background: #5e5;*/
   /*color: #ffff;*/
   box-shadow: 0px 2px 4px #575;
@@ -2017,6 +2129,298 @@ hr {
 /***********************************/
 
 
+/**********************************************************/
+/* モーダルウィンドウ   accountInfo  */
+/**********************************************************/
+.popup_aInfo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  opacity: 0;
+  visibility: hidden;
+  transition: .6s;
+  display: flex;
+  align-items: center;
+}
+.popup_aInfo.is-show {
+  opacity: 1;
+  visibility: visible;
+}
+.popup_aInfo-inner {
+  position: relative;
+  /*margin: 0 auto;*/
+  margin: 100px auto auto auto; 
+  padding-bottom: 50px;
+  width: 100%;
+  height: auto;
+  max-width: 1300px;
+  background-color: #fff;
+  z-index: 3;
+  border-radius: 16px;
+}
+@media screen and (max-width: 480px) {
+  .popup_aInfo-inner {
+    height: 100%;
+  }
+}
+.popup_aInfo-inner img {
+  width: 100%;
+}
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 70px;
+  height: 70px;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+.close-btn i {
+  padding: 15px;
+  font-size: 40px;
+  color: #333;
+}
+.black-background_aInfo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1000%;
+  background-color: rgba(0,0,0,.8);
+  z-index: -1;
+  cursor: pointer;
+}
+
+.Form_aInfo {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 4%;
+  max-width: 1600px;
+  height: 100%;
+  }
+  
+  .Form-Item_aInfo {
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  }
+
+  
+  @media screen and (max-width: 480px) {
+    .Form-Item_aInfo {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+    }
+  }
+  .Form-Item:nth-child(5) {
+  border-bottom: 1px solid #ddd;
+  }
+  .Form-Item-Label {
+  width: 100%;
+  max-width: 290px;
+  letter-spacing: 0.05em;   
+  /*font-weight: bold;*/
+  font-size: 18px;
+  }
+  .Form-Item-Label-Required_aInfo {
+  border-radius: 6px;
+  margin-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 240px;
+  display: inline-block;
+  text-align: center;
+  background: #5bc8ac;
+  color: #fff;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Label-Required2 {
+  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 32px;
+  font-size: 10px;
+  }
+  } 
+  .Form-Item-Input_aInfo {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-left: 40px;
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 48px;
+  flex: 1;
+  width: 100%;
+  max-width: 880px;
+  background: #eaedf2;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Input_aInfo {
+  margin-left: 0;
+  margin-top: 18px;
+  height: 40px;
+  flex: inherit;
+  font-size: 15px;
+  }
+  }
+
+
+/**********************************************************/
+/* モーダルウィンドウ   donation  */
+/**********************************************************/
+.popup_dona {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  opacity: 0;
+  visibility: hidden;
+  transition: .6s;
+  display: flex;
+  align-items: center;
+}
+.popup_dona.is-show {
+  opacity: 1;
+  visibility: visible;
+}
+.popup_dona-inner {
+  position: relative;
+  /*margin: 0 auto;*/
+  margin: 100px auto auto auto; 
+  padding-bottom: 50px;
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  background-color: #fff;
+  z-index: 3;
+  border-radius: 16px;
+}
+@media screen and (max-width: 480px) {
+  .popup_dona-inner {
+    height: 100%;
+  }
+}
+.popup_dona-inner img {
+  width: 100%;
+}
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 70px;
+  height: 70px;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+.close-btn i {
+  padding: 15px;
+  font-size: 40px;
+  color: #333;
+}
+.black-background_dona {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1000%;
+  background-color: rgba(0,0,0,.8);
+  z-index: -1;
+  cursor: pointer;
+}
+
+.Form_dona {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 4%;
+  max-width: 800px;
+  height: 100%;
+  }
+  
+  .Form-Item_dona {
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  }
+
+  
+  @media screen and (max-width: 480px) {
+    .Form-Item_dona {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+    }
+  }
+  .Form-Item:nth-child(5) {
+  border-bottom: 1px solid #ddd;
+  }
+  .Form-Item-Label {
+  width: 100%;
+  max-width: 290px;
+  letter-spacing: 0.05em;   
+  /*font-weight: bold;*/
+  font-size: 18px;
+  }
+  .Form-Item-Label-Required_dona {
+  border-radius: 6px;
+  margin-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 240px;
+  display: inline-block;
+  text-align: center;
+  background: #5bc8ac;
+  color: #fff;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Label-Required_dona {
+  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 32px;
+  font-size: 10px;
+  }
+  } 
+  .Form-Item-Input_dona {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-left: 40px;
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 48px;
+  flex: 1;
+  width: 100%;
+  max-width: 410px;
+  background: #eaedf2;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Input_dona {
+  margin-left: 0;
+  margin-top: 18px;
+  height: 40px;
+  flex: inherit;
+  font-size: 15px;
+  }
+  }  
+
+/*******************************************/
 
 table {
   border-collapse:  collapse; /* セルの線を重ねる */
