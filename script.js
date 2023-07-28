@@ -14,7 +14,7 @@ window.onload = function () {     // ハンバーガーメニュー
 let harvestPageNumber = 0;
 
 const dom_version = document.getElementById('version');
-dom_version.innerHTML = `v1.0.23　|　Powered by SYMBOL`;
+dom_version.innerHTML = `v1.0.24　|　Powered by SYMBOL`;
 
 const sym = require('/node_modules/symbol-sdk');
 const op  = require("/node_modules/rxjs/operators");
@@ -182,7 +182,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
      
       const dom_explorer = document.getElementById('explorer');  // Wallet 右上のExplorerリンク
     
-          dom_explorer.innerHTML = `<a href="${EXPLORER}/accounts/${address.address}" target="_blank" rel="noopener noreferrer"> Explorer </a>`; 
+          dom_explorer.innerHTML = `<a href="${EXPLORER}/accounts/${address.address}" target="_blank" rel="noopener noreferrer"> Symbol Explorer </a>`; 
 
       const dom_xembook = document.getElementById('xembook');  // Wallet 右上のxembookリンク
     
@@ -191,10 +191,19 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
       if (networkType === 152){ // テストネットの場合表示しない
           dom_xembook.innerHTML = ``;
       }
-      
-      const dom_hv_checker = document.getElementById('hv_checker');  // Wallet 右上のxembookリンク
+
+      const dom_nftdrive_explorer = document.getElementById('nftdrive_explorer');  // Wallet 右上の nftdrive リンク
     
-          dom_hv_checker.innerHTML = `<a href="https://ventus-wallet.tk/HV_Checker" target="_blank" rel="noopener noreferrer"> Harvest Checker </a>`;
+          dom_nftdrive_explorer.innerHTML = `<a href="https://nftdrive-explorer.info/?address=${window.SSS.activeAddress}" target="_blank" rel="noopener noreferrer"> NFT-Drive Explorer </a>`;
+
+      
+      const dom_hv_checker = document.getElementById('hv_checker');  // Wallet 右上のhv_checkerリンク
+    
+          dom_hv_checker.innerHTML = `<a href="https://ventus-wallet.tk/HV_Checker" target="_blank" rel="noopener noreferrer"> 🌾 Harvest Checker 🌾</a>`;
+
+      const dom_QR_Auth = document.getElementById('QR_Auth');  // Wallet 右上のQR_Authリンク 
+
+          dom_QR_Auth.innerHTML = `<a href="https://ventus-wallet.tk/QR_Auth/" target="_blank" rel="noopener noreferrer"> QRモザイク認証 </a>`;
       
 	
  ///////////////////////////////////////////////    アカウント情報を取得する     ////////////////////////////////////////////
@@ -1988,8 +1997,8 @@ async function handleSSS() {
    async function handleSSS_agg() {            //////////    aggregate Tx  一括送信 /////////////////////////////////////////////
                   
                 console.log('handle sss_agg');
-                const mosaic_ID2 = document.querySelector('.select_m1').value;
-                const amount2 = document.getElementById('form-amount2').value;
+                let mosaic_ID2 = document.querySelector('.select_m1').value;
+                let amount2 = document.getElementById('form-amount2').value;
                 const message2 = document.getElementById('form-message2').value;
                 //const enc2 = document.getElementById('form-enc2').value;
                 //const maxfee2 = document.getElementById('form-maxFee2').value;
@@ -2014,10 +2023,19 @@ async function handleSSS() {
                  console.log("%c制限状態チェック","color: red",res1); */
 
                 mosaicInfo = await mosaicRepo.getMosaic(new sym.MosaicId(mosaic_ID2)).toPromise();// 可分性の情報を取得する 
-                const div = mosaicInfo.divisibility; // 可分性
+                let div = mosaicInfo.divisibility; // 可分性
 
                   let innerTx = [];
-                  for (let i=0; i<address1.length; i++){
+                  for (let i=0; i<address1.length; i++){                           
+                            if (amount1[i] !== undefined){    // 3列目 amount がある場合
+                                amount2 = amount1[i];
+                                
+                            }
+                            if (mosaic1[i] !== undefined){    // 4列目 mosaic がある場合
+                                mosaic_ID2 = mosaic1[i];
+                                mosaicInfo = await mosaicRepo.getMosaic(new sym.MosaicId(mosaic_ID2)).toPromise();// 可分性の情報を取得する 
+                                div = mosaicInfo.divisibility; // 可分性
+                            }
 
                             if (address1[i].length === 39){  // アドレスの場合
 			                        innerTx[i] = sym.TransferTransaction.create(

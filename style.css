@@ -409,10 +409,22 @@ a.btn-style-link:hover{
   word-wrap: break-word;
 }
 
-ul{
+/*ul{
    padding: 0;
    margin: 0;
-}
+}*/
+
+ul {
+  margin: 0; /*余白をリセット*/
+  padding: 0; /*余白をリセット*/
+  list-style-type: none; /*マーカーを削除*/
+  border-top: solid 1px #3dbfb8; /*枠線・上*/
+ }
+ ul li {
+  padding: 10px 20px; /*余白*/
+  background: #e3f6f5; /*背景色*/
+  border-bottom: solid 1px #3dbfb8; /*枠線・下*/
+ }
 
 .decryption{
     display: flex;
