@@ -14,10 +14,10 @@ window.onload = function () {     // ハンバーガーメニュー
 let harvestPageNumber = 0;
 
 const dom_version = document.getElementById('version');
-dom_version.innerHTML = `v1.0.24　|　Powered by SYMBOL`;
+dom_version.innerHTML = `v1.0.28　|　Powered by SYMBOL`;
 
 const sym = require('/node_modules/symbol-sdk');
-const op  = require("/node_modules/rxjs/operators");
+const op = require("/node_modules/rxjs/operators");
 const rxjs = require("/node_modules/rxjs");
 
 //MAIN_NET の場合
@@ -49,7 +49,7 @@ const totalChainImportance = 78429286;
 
 const EPOCH_T = 1667250467;
 //const EPOCH_T = 1672735883;  //Canade
-const NODE_URL_T = 'https://mikun-testnet2.tk:3001';
+const NODE_URL_T = 'https://mikun-testnet.tk:3001';
 const NET_TYPE_T = sym.NetworkType.TEST_NET;
 const XYM_ID_T = '72C0212E67A08BCE';
 //const XYM_ID_T = '5282230404218E56';  //Canade CBDP
@@ -184,12 +184,18 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
     
           dom_explorer.innerHTML = `<a href="${EXPLORER}/accounts/${address.address}" target="_blank" rel="noopener noreferrer"> Symbol Explorer </a>`; 
 
-      const dom_xembook = document.getElementById('xembook');  // Wallet 右上のxembookリンク
-    
-          dom_xembook.innerHTML = `<a href="https://xembook.github.io/xembook/?address=${window.SSS.activeAddress}" target="_blank" rel="noopener noreferrer"> XEMBook </a>`;
+      const dom_faucet = document.getElementById('faucet');  // Wallet 右上のFaucetリンク
 
-      if (networkType === 152){ // テストネットの場合表示しない
-          dom_xembook.innerHTML = ``;
+      //dom_faucet.innerHTML =`<a style="color: blue"><i>　　MAIN NET</style></i></a>`;
+      if (networkType === 152){ // テストネットの場合表示
+        dom_faucet.innerHTML = `<a href="https://testnet.symbol.tools/?recipient=${window.SSS.activeAddress}" target="_blank" rel="noopener noreferrer"> 🚰  Faucet🚰 </a>`;
+      }
+
+      const dom_xembook = document.getElementById('xembook');  // Wallet 右上のxembookリンク
+      
+      //dom_xembook.innerHTML =`<a style="color: blue"><i>　　TEST NET</i></a>`;
+      if (networkType === 104){ // メインネットの場合表示
+          dom_xembook.innerHTML = `<a href="https://xembook.github.io/xembook/?address=${window.SSS.activeAddress}" target="_blank" rel="noopener noreferrer"> XEMBook </a>`;   
       }
 
       const dom_nftdrive_explorer = document.getElementById('nftdrive_explorer');  // Wallet 右上の nftdrive リンク
@@ -569,6 +575,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                             case 10:   // 回収可
                               if (i === -1){
                                   var cellText = document.createTextNode("回収可");
+                                  select_revoke.push({value:"--- Select ---",name:"--- Select ---"}); //セレクトボックス用の連想配列を作る
                                   break;
                               }
                               if (mosaic.data[i].flags.revokable === true){
@@ -634,6 +641,19 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                      select.appendChild(option);
                    });
                    jsSelectBox_rev.appendChild(select);
+
+                   const selectBox = document.querySelector('.select_r');   //  イベントリスナー
+                   
+                   // イベントリスナーを追加
+                   selectBox.addEventListener("change", function(event) {
+                     // セレクトボックスの値が変化したときの処理
+                     //const selectedValue = event.target.value;
+                     //console.log("選択された値: ", selectedValue);
+
+                        holder_list(); // ホルダーリストを呼び出す
+                   });
+
+
 
                    ////    select_mosaicID  (Metadata用)    ///////////////////////////////////////
 
@@ -1099,7 +1119,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
         //受信後の処理を記述
         console.log(tx);
         // 未承認トランザクション音を鳴らす
-        var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding.ogg");
+        var my_audio = new Audio("./src/ding.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
         my_audio.play();  //サウンドを再生 
          var popup = document.getElementById('popup'); //ポップアップを表示
@@ -1112,12 +1132,14 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
         //受信後の処理を記述
         console.log(tx);
          // 承認音を鳴らす   
-        var my_audio = new Audio("https://github.com/symbol/desktop-wallet/raw/dev/src/views/resources/audio/ding2.ogg");
+        var my_audio = new Audio("./src/ding2.ogg");
         my_audio.currentTime = 0;  //再生開始位置を先頭に戻す      
         my_audio.play();  //サウンドを再生
         var popup = document.getElementById('popup'); // ポップアップを閉じる
              popup.classList.toggle('is-show');
-        window.setTimeout(function(){location.reload();},2000); // 2秒後にページをリロード
+             var audio = new Audio('./src/ventus.mp3');
+             audio.play();
+        window.setTimeout(function(){location.reload();},6000); // 6秒後にページをリロード
     });
   
   });
@@ -1232,7 +1254,8 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
               /////////// モザイクが空ではない場合   /////////////////　　モザイクが空の場合はこの for 文はスルーされる  //////////
               for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
                   const dom_mosaic = document.createElement('div');  
-                  const dom_amount = document.createElement('div');                  
+                  const dom_amount = document.createElement('div');
+                  const dom_mosaic_img = document.createElement('div');                  
           
                (async() => {
                   let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
@@ -1258,15 +1281,38 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                            }                           
                            dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量
                        }
-		            // console.log("%ci モザイクが空では無い場合の処理　iだよ　",'color: red',i);
+		            // console.log("%ci モザイクが空では無い場合の処理　iだよ　",'color: red',i);                
+                 
                 })(); // async() 
                
                 nftdrive(tx.mosaics[i].id,dom_NFT); // nftdrive NFT画像表示
                 comsa(tx.mosaics[i].id,dom_NFT);    // comsa NFT画像表示
 
-                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                let xhr = new XMLHttpRequest();     // mosaic-center の画像を表示
+                xhr.open("GET",`https://mosaic-center.tk/db/api.php?mode=search&mosaicid=${tx.mosaics[i].id.toHex()}`,false);  
+
+                let data;
+                xhr.send(null);
+                if (xhr.status == 200) {
+                    data = xhr.response;
+                    data = JSON.parse(data);
+                  if (data !== null){
+                    let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+                    if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
+                      dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${[mosaicNames][0][0].names[0].name}</a><br><br>`
+                    }else{                                       // ネームスペースがない場合
+                      dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${data[0][2]}</a><br><br>`
+                    }
+                  }
+                }else{
+                     console.log(`Error: ${xhr.status}`);
+                }
+
+                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加
                 dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-                dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加                  
+                dom_tx.appendChild(dom_NFT);                       // dom_NFT をdom_txに追加
+                dom_tx.appendChild(dom_mosaic_img);                // dom_mosaic_img をdom_txに追加 
+                                
               }  //モザイクの数だけ繰り返す
              //})(); // async() 
 	
@@ -1275,10 +1321,10 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                   const dom_amount = document.createElement('div');
                   
                    if(tx.signer.address.address === address.address) {  // 署名アドレスとウォレットのアドレスが同じ場合
-                       dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
+                       dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　No mosaic</font>`;     // No mosaic
                        dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量
                    }else{          //  署名アドレスとウォレットアドレスが違う場合
-                         dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
+                         dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　No mosaic</font>`;     // No mosaic
                          dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量        
                    } 
                    dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
@@ -1376,7 +1422,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                        if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合                         
                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big></font>`;
                        }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
-                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :<strong>${tx.mosaic.id.id.toHex()}</strong></font>`;
+                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<strong>${tx.mosaic.id.id.toHex()}</strong></font>`;
                        }
                        dom_amount.innerHTML = `<font color="#3399FF" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(tx.mosaic.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量                
            })(); // async() 
@@ -1392,10 +1438,10 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
           if (tx.type === 16973){       // tx.type が 'MOSAIC_SUPPLY_CHANGE' の場合	  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
              const dom_mosaic = document.createElement('div');
              if (tx.action === 0){
-                 dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :${tx.mosaicId.toHex()}　<br><big><strong> 減少　⬇️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
+                 dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　${tx.mosaicId.toHex()}　<br><big><strong> 減少　⬇️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
              }else
                 if (tx.action === 1){
-                   dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :${tx.mosaicId.toHex()}　<br><big><strong> 増加　⬆️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
+                   dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　${tx.mosaicId.toHex()}　<br><big><strong> 増加　⬆️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
                 }
                 dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                 dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
@@ -1486,11 +1532,20 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                    res_Flag = "　　　　　　　　　❌➡️";
               }   
 
-              dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントアドレス制限</strong></font>
-              <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
-              <br>${res_Flag}
-              <br>アドレス : <strong>${tx.restrictionAdditions[0].address}</strong></font>`
-              
+              if (tx.restrictionAdditions.length !== 0){   // 制限追加
+                dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントアドレス制限　追加</strong></font>
+                <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                <br>${res_Flag}
+                <br>アドレス : <strong>${tx.restrictionAdditions[0].address}</strong></font>`
+              }
+
+              if (tx.restrictionDeletions.length !== 0){   // 制限削除
+                 dom_restriction.innerHTML = `<font color="#3399FF"><strong>⚠️アカウントアドレス制限　削除</strong></font>
+                 <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                 <br>${res_Flag}
+                 <br>アドレス : <strong>${tx.restrictionDeletions[0].address}</strong></font>`
+              }
+
               dom_tx.appendChild(dom_restriction);               // dom_restrictionをdom_txに追加
               dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
           }
@@ -1506,10 +1561,19 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                 res_Flag = "　　　　　　　　　➡️❌";
               }
 
-              dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントモザイク制限</strong></font>
-              <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
-              <br>${res_Flag}
-              <br>モザイクID : <strong>${tx.restrictionAdditions[0].id.toHex()}</strong></font>`
+              if (tx.restrictionAdditions.length !== 0){   // 制限追加
+                 dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントモザイク制限　追加</strong></font>
+                 <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                 <br>${res_Flag}
+                 <br>モザイクID : <strong>${tx.restrictionAdditions[0].id.toHex()}</strong></font>`
+              }
+
+              if (tx.restrictionDeletions.length !== 0){   // 制限削除
+                dom_restriction.innerHTML = `<font color="#3399FF"><strong>⚠️アカウントモザイク制限　削除</strong></font>
+                <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                <br>${res_Flag}
+                <br>モザイクID : <strong>${tx.restrictionDeletions[0].id.toHex()}</strong></font>`
+             }
 
               dom_tx.appendChild(dom_restriction);               // dom_restrictionをdom_txに追加
               dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
@@ -1546,10 +1610,11 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                  const dom_amount = document.createElement('div');
           
     		        if (aggTx[0].innerTransactions[0].type === 16724){  // TRANSFER の場合
-                  
-                     const dom_mosaic = document.createElement('div');
+                     
                      const dom_aggTx = document.createElement('div');
+                     const dom_mosaic = document.createElement('div'); 
                      const dom_NFT = document.createElement('div');
+                     const dom_mosaic_img = document.createElement('div');
 
                      let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
      
@@ -1595,11 +1660,33 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                         dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
 
                         nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id,dom_NFT); // nftdrive NFT画像表示 
-                          
+
+
+                        let xhr = new XMLHttpRequest();     // mosaic-center の画像を表示
+                        xhr.open("GET",`https://mosaic-center.tk/db/api.php?mode=search&mosaicid=${aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex()}`,false);  
+
+                        let data;
+                        xhr.send(null);
+                        if (xhr.status == 200) {
+                           data = xhr.response;
+                           data = JSON.parse(data);
+                           if (data !== null){
+                            let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+                            if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
+                              dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${[mosaicNames][0][0].names[0].name}</a><br><br>`
+                            }else{                                       // ネームスペースがない場合
+                              dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${data[0][2]}</a><br><br>`
+                            }
+                           }
+                        }else{
+                              console.log(`Error: ${xhr.status}`);
+                        }
+ 
                         dom_tx.appendChild(dom_aggTx);                     // dom_aggTx をdom_txに追加
                         dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                         dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
                         dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加
+                        dom_tx.appendChild(dom_mosaic_img);                // dom_mosaic_img をdom_txに追加
 	              }   
 
                 if (aggTx[0].innerTransactions[0].type === 16717){ // MOSAIC_REGISTRATION の場合
@@ -1679,6 +1766,32 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                            dom_message.innerHTML = `</br><font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[1].message.payload}</font>`;     // メッセージ
                        }  
                 }
+
+                if (aggTx[0].innerTransactions[0].type === 17229){       // 'MOSAIC_SUPPLY_REVOCATION' の場合
+                  const dom_aggTx = document.createElement('div');	  
+                  const dom_mosaic = document.createElement('div');
+                  const dom_amount = document.createElement('div');
+          
+                 (async() => {
+                    let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaic.id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+           
+                    mosaicInfo = await mosaicRepo.getMosaic(aggTx[0].innerTransactions[0].mosaic.id.id).toPromise();// 可分性の情報を取得する                     
+                    let div = mosaicInfo.divisibility; // 可分性      
+                     
+                             if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合                         
+                                  dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big></font>`;
+                             }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
+                                   dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<strong>${aggTx[0].innerTransactions[0].mosaic.id.id.toHex()}</strong></font>`;
+                             }
+                             dom_amount.innerHTML = `<font color="#3399FF" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(aggTx[0].innerTransactions[0].mosaic.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量                
+                 })(); // async() 
+               
+                  dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
+                  dom_tx.appendChild(dom_aggTx);
+                  dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                  dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加                                                                  	  		  		  	  
+                }
+
                     dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加
                     dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く  
               })(); // async() 
@@ -2314,7 +2427,8 @@ txRepo
               /////////// モザイクが空ではない場合   /////////////////　　モザイクが空の場合はこの for 文はスルーされる  //////////
               for(let i=0; i<tx.mosaics.length; i++){  //モザイクの数だけ繰り返す
                   const dom_mosaic = document.createElement('div');  
-                  const dom_amount = document.createElement('div');                  
+                  const dom_amount = document.createElement('div');
+                  const dom_mosaic_img = document.createElement('div');                  
           
                (async() => {
                   let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
@@ -2340,15 +2454,38 @@ txRepo
                            }                           
                            dom_amount.innerHTML = `<font color="#008000" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(tx.mosaics[i].amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量
                        }
-		            // console.log("%ci モザイクが空では無い場合の処理　iだよ　",'color: red',i);
+		            // console.log("%ci モザイクが空では無い場合の処理　iだよ　",'color: red',i);                
+                 
                 })(); // async() 
                
                 nftdrive(tx.mosaics[i].id,dom_NFT); // nftdrive NFT画像表示
                 comsa(tx.mosaics[i].id,dom_NFT);    // comsa NFT画像表示
 
-                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                let xhr = new XMLHttpRequest();     // mosaic-center の画像を表示
+                xhr.open("GET",`https://mosaic-center.tk/db/api.php?mode=search&mosaicid=${tx.mosaics[i].id.toHex()}`,false);  
+
+                let data;
+                xhr.send(null);
+                if (xhr.status == 200) {
+                    data = xhr.response;
+                    data = JSON.parse(data);
+                  if (data !== null){
+                    let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(tx.mosaics[i].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+                    if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
+                      dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${[mosaicNames][0][0].names[0].name}</a><br><br>`
+                    }else{                                       // ネームスペースがない場合
+                      dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${data[0][2]}</a><br><br>`
+                    }
+                  }
+                }else{
+                     console.log(`Error: ${xhr.status}`);
+                }
+
+                dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加
                 dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-                dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加                  
+                dom_tx.appendChild(dom_NFT);                       // dom_NFT をdom_txに追加
+                dom_tx.appendChild(dom_mosaic_img);                // dom_mosaic_img をdom_txに追加 
+                                
               }  //モザイクの数だけ繰り返す
              //})(); // async() 
 	
@@ -2357,10 +2494,10 @@ txRepo
                   const dom_amount = document.createElement('div');
                   
                    if(tx.signer.address.address === address.address) {  // 署名アドレスとウォレットのアドレスが同じ場合
-                       dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic : No mosaic</font>`;     // No mosaic
+                       dom_mosaic.innerHTML = `<font color="#FF0000">Mosaic :　No mosaic</font>`;     // No mosaic
                        dom_amount.innerHTML = `<font color="#FF0000">💁‍♀️➡️💰 : </font>`;     // 　数量
                    }else{          //  署名アドレスとウォレットアドレスが違う場合
-                         dom_mosaic.innerHTML = `<font color="#008000">Mosaic : No mosaic</font>`;     // No mosaic
+                         dom_mosaic.innerHTML = `<font color="#008000">Mosaic :　No mosaic</font>`;     // No mosaic
                          dom_amount.innerHTML = `<font color="#008000">💰➡️😊 : </font>`;     // 　数量        
                    } 
                    dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
@@ -2458,7 +2595,7 @@ txRepo
                        if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合                         
                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big></font>`;
                        }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
-                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :<strong>${tx.mosaic.id.id.toHex()}</strong></font>`;
+                             dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<strong>${tx.mosaic.id.id.toHex()}</strong></font>`;
                        }
                        dom_amount.innerHTML = `<font color="#3399FF" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(tx.mosaic.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量                
            })(); // async() 
@@ -2474,10 +2611,10 @@ txRepo
           if (tx.type === 16973){       // tx.type が 'MOSAIC_SUPPLY_CHANGE' の場合	  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
              const dom_mosaic = document.createElement('div');
              if (tx.action === 0){
-                 dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :${tx.mosaicId.toHex()}　<br><big><strong> 減少　⬇️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
+                 dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　${tx.mosaicId.toHex()}　<br><big><strong> 減少　⬇️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
              }else
                 if (tx.action === 1){
-                   dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :${tx.mosaicId.toHex()}　<br><big><strong> 増加　⬆️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
+                   dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　${tx.mosaicId.toHex()}　<br><big><strong> 増加　⬆️　${parseInt(tx.delta.toHex(),16)}</strong></big></font>`;
                 }
                 dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                 dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
@@ -2568,11 +2705,20 @@ txRepo
                    res_Flag = "　　　　　　　　　❌➡️";
               }   
 
-              dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントアドレス制限</strong></font>
-              <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
-              <br>${res_Flag}
-              <br>アドレス : <strong>${tx.restrictionAdditions[0].address}</strong></font>`
-              
+              if (tx.restrictionAdditions.length !== 0){   // 制限追加
+                dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントアドレス制限　追加</strong></font>
+                <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                <br>${res_Flag}
+                <br>アドレス : <strong>${tx.restrictionAdditions[0].address}</strong></font>`
+              }
+
+              if (tx.restrictionDeletions.length !== 0){   // 制限削除
+                 dom_restriction.innerHTML = `<font color="#3399FF"><strong>⚠️アカウントアドレス制限　削除</strong></font>
+                 <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                 <br>${res_Flag}
+                 <br>アドレス : <strong>${tx.restrictionDeletions[0].address}</strong></font>`
+              }
+
               dom_tx.appendChild(dom_restriction);               // dom_restrictionをdom_txに追加
               dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
           }
@@ -2588,10 +2734,19 @@ txRepo
                 res_Flag = "　　　　　　　　　➡️❌";
               }
 
-              dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントモザイク制限</strong></font>
-              <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
-              <br>${res_Flag}
-              <br>モザイクID : <strong>${tx.restrictionAdditions[0].id.toHex()}</strong></font>`
+              if (tx.restrictionAdditions.length !== 0){   // 制限追加
+                 dom_restriction.innerHTML = `<font color="#ff4500"><strong>⚠️アカウントモザイク制限　追加</strong></font>
+                 <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                 <br>${res_Flag}
+                 <br>モザイクID : <strong>${tx.restrictionAdditions[0].id.toHex()}</strong></font>`
+              }
+
+              if (tx.restrictionDeletions.length !== 0){   // 制限削除
+                dom_restriction.innerHTML = `<font color="#3399FF"><strong>⚠️アカウントモザイク制限　削除</strong></font>
+                <font color="#008b8b"><br><br>タイプ : <strong>${restriction_type}</strong>
+                <br>${res_Flag}
+                <br>モザイクID : <strong>${tx.restrictionDeletions[0].id.toHex()}</strong></font>`
+             }
 
               dom_tx.appendChild(dom_restriction);               // dom_restrictionをdom_txに追加
               dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く
@@ -2628,10 +2783,11 @@ txRepo
                  const dom_amount = document.createElement('div');
           
     		        if (aggTx[0].innerTransactions[0].type === 16724){  // TRANSFER の場合
-                  
-                     const dom_mosaic = document.createElement('div');
+                     
                      const dom_aggTx = document.createElement('div');
+                     const dom_mosaic = document.createElement('div'); 
                      const dom_NFT = document.createElement('div');
+                     const dom_mosaic_img = document.createElement('div');
 
                      let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
      
@@ -2677,11 +2833,33 @@ txRepo
                         dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
 
                         nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id,dom_NFT); // nftdrive NFT画像表示 
-                          
+
+
+                        let xhr = new XMLHttpRequest();     // mosaic-center の画像を表示
+                        xhr.open("GET",`https://mosaic-center.tk/db/api.php?mode=search&mosaicid=${aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex()}`,false);  
+
+                        let data;
+                        xhr.send(null);
+                        if (xhr.status == 200) {
+                           data = xhr.response;
+                           data = JSON.parse(data);
+                           if (data !== null){
+                            let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+                            if ([mosaicNames][0][0].names.length !==0){  // ネームスペースがある場合
+                              dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${[mosaicNames][0][0].names[0].name}</a><br><br>`
+                            }else{                                       // ネームスペースがない場合
+                              dom_mosaic_img.innerHTML =`<br><a class="btn-style-link" href="https://mosaic-center.tk/" target="_blank">Mosaic Center</a><br><br><img class="mosaic_img" src=${data[0][7]} width="200"><br><a style="color: #1e90ff">${data[0][2]}</a><br><br>`
+                            }
+                           }
+                        }else{
+                              console.log(`Error: ${xhr.status}`);
+                        }
+ 
                         dom_tx.appendChild(dom_aggTx);                     // dom_aggTx をdom_txに追加
                         dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                         dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
                         dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加
+                        dom_tx.appendChild(dom_mosaic_img);                // dom_mosaic_img をdom_txに追加
 	              }   
 
                 if (aggTx[0].innerTransactions[0].type === 16717){ // MOSAIC_REGISTRATION の場合
@@ -2761,6 +2939,32 @@ txRepo
                            dom_message.innerHTML = `</br><font color="#4169e1">< Message ></br>${aggTx[0].innerTransactions[1].message.payload}</font>`;     // メッセージ
                        }  
                 }
+
+                if (aggTx[0].innerTransactions[0].type === 17229){       // 'MOSAIC_SUPPLY_REVOCATION' の場合
+                  const dom_aggTx = document.createElement('div');	  
+                  const dom_mosaic = document.createElement('div');
+                  const dom_amount = document.createElement('div');
+          
+                 (async() => {
+                    let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(aggTx[0].innerTransactions[0].mosaic.id.id.toHex())]).toPromise(); // Namespaceの情報を取得する
+           
+                    mosaicInfo = await mosaicRepo.getMosaic(aggTx[0].innerTransactions[0].mosaic.id.id).toPromise();// 可分性の情報を取得する                     
+                    let div = mosaicInfo.divisibility; // 可分性      
+                     
+                             if ([mosaicNames][0][0].names.length !==0){ // ネームスペースがある場合                         
+                                  dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<big><strong>${[mosaicNames][0][0].names[0].name}</strong></big></font>`;
+                             }else{ 　　　　　　　　　　　　　　　　　　　　　  // ネームスペースがない場合
+                                   dom_mosaic.innerHTML = `<font color="#3399FF">Mosaic :　<strong>${aggTx[0].innerTransactions[0].mosaic.id.id.toHex()}</strong></font>`;
+                             }
+                             dom_amount.innerHTML = `<font color="#3399FF" size="+1">💰➡️😊 :　<i><big><strong> ${(parseInt(aggTx[0].innerTransactions[0].mosaic.amount.toHex(), 16)/(10**div)).toLocaleString(undefined, { maximumFractionDigits: 6 })} </big></strong><i></font>`;    // 　数量                
+                 })(); // async() 
+               
+                  dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
+                  dom_tx.appendChild(dom_aggTx);
+                  dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
+                  dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加                                                                  	  		  		  	  
+                }
+
                     dom_tx.appendChild(dom_message);                   // dom_message をdom_txに追加
                     dom_tx.appendChild(document.createElement('hr'));  // 水平線を引く  
               })(); // async() 
@@ -2772,7 +2976,7 @@ txRepo
             console.log(`%ctx[${t}][${ymdhms}] =`,"color: blue",tx);      //　トランザクションをコンソールに表示　//////////////////
 	    t = ++t;
     }    // tx の数だけループ処理 
-  })	// txRepo.search(searchCriteria).subscribe(async txs =>
+  })	// txRepo.search(searchCriteria).subscribe(async txs =>  
 
 }
 
@@ -3002,6 +3206,7 @@ case 9:   // 転送可
 case 10:   // 回収可
  if (i === -1){
      var cellText = document.createTextNode("回収可");
+     select_revoke.push({value:"--- Select ---",name:"--- Select ---"}); //セレクトボックス用の連想配列を作る
      break;
  }
  if (mosaic.data[i].flags.revokable === true){
@@ -3799,33 +4004,351 @@ function mosaic_supply(){
 
 async function revoke_mosaic(){
 
-  const holderAddress = document.getElementById("holderAddress").value;
+  let re_agg_check = document.getElementById("re_agg_check").checked;  // 一括回収チェックのフラグ
+  let mosaic_ID2 = document.querySelector(".select_r").value;
+  let amount2 = document.getElementById("re_amount").value;
+
+  if (re_agg_check === false){
+    if (file1 === undefined){   // ファイルが選択されていない時   ///////////////////
+      if (mosaic_ID2 === "--- Select ---"){
+        swal(`モザイクIDを選択してください！`,"");
+      }
+      let mosaicInfo = await mosaicRepo.getMosaic(new sym.MosaicId(mosaic_ID2)).toPromise();// 可分性の情報を取得する 
+      let div = mosaicInfo.divisibility; // 可分性
+
+       const holderAddress = document.getElementById("holderAddress").value;
+       // const maxFee = document.getElementById("re_maxFee_r").value;
+
+       const revoke_tx = sym.MosaicSupplyRevocationTransaction.create(
+         sym.Deadline.create(epochAdjustment),
+         sym.Address.createFromRawAddress(holderAddress),
+         new sym.Mosaic(
+           new sym.MosaicId(mosaic_ID2),     // mosice ID 16進数　
+           sym.UInt64.fromUint(Number(amount2)*10**div)),      // mosaic 数量  可分性を適用する                                  
+         networkType,
+         //sym.UInt64.fromUint(1000000*Number(maxFee)) 
+       ).setMaxFee(100); //手数料
+
+       const fee_rev = document.getElementById("fee_rev");    // aggregate 手数料表示
+       fee_rev.innerHTML =`<p style="font-size:20px;color:blue;">手数料　 ${parseInt(revoke_tx.maxFee.toHex(),16)/1000000} XYM　　　　</p>`
+
+       window.SSS.setTransaction(revoke_tx);               // SSSにトランザクションを登録        
+       window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+       console.log('signedTx', signedTx);
+       txRepo.announce(signedTx);
+       }) 
+    }else{ //ファイルが選択されている場合 //////////////////////////////////////////////
+              
+              let innerTx = [];
+              for (let i=0; i<address1.length; i++){
+                  if (amount1[i] !== undefined){    // 3列目 amount がある場合
+                      amount2 = amount1[i];
+                  
+                  }
+                  if (mosaic1[i] !== undefined){    // 4列目 mosaic がある場合
+                      mosaic_ID2 = mosaic1[i];
+                  }else{ // mosaic ID がない場合
+                    if (mosaic_ID2 === "--- Select ---"){
+                      swal(`モザイクIDを選択してください！`,"");
+                    }
+                  }  
+                  
+                let mosaicInfo = await mosaicRepo.getMosaic(new sym.MosaicId(mosaic_ID2)).toPromise();// 可分性の情報を取得する 
+                let div = mosaicInfo.divisibility; // 可分性
+
+                        if (address1[i].length === 39){  // アドレスの場合
+                          innerTx[i] = sym.MosaicSupplyRevocationTransaction.create(
+                          undefined, //Deadline
+                          sym.Address.createFromRawAddress(address1[i]), //回収先                                                            
+                              new sym.Mosaic(
+                                  new sym.MosaicId(mosaic_ID2),
+                                  sym.UInt64.fromUint(Number(amount2)*10**div)  
+                                  ),                              
+                          //sym.PlainMessage.create(message),
+                          networkType
+                          );
+                        }else{  // ネームスペースの場合
+                            namespaceId = new sym.NamespaceId(address1[i]); 
+                            innerTx[i] = sym.MosaicSupplyRevocationTransaction.create(
+                            undefined, //Deadline
+                            namespaceId, //回収先                                
+                                new sym.Mosaic(
+                                    new sym.MosaicId(mosaic_ID2),
+                                    sym.UInt64.fromUint(Number(amount2)*10**div)  
+                                    ),
+                            //sym.PlainMessage.create(message),
+                            networkType
+                            );
+                          }
+
+                 }
+
+                 const publicAccount = sym.PublicAccount.createFromPublicKey(
+                   window.SSS.activePublicKey,
+                   networkType
+                 );
+
+                 for (let i=0; i<address1.length; i++){
+                     innerTx[i] = innerTx[i].toAggregate(publicAccount)
+                 }
+
+                 const aggregateTx = sym.AggregateTransaction.createComplete(
+                   sym.Deadline.create(epochAdjustment),  //Deadline
+                   innerTx,
+                   networkType,
+                   [],
+                 /*sym.UInt64.fromUint(1000000*Number(maxfee2))          //最大手数料*/
+                 ).setMaxFeeForAggregate(100);
+
+                 console.log("aggregateTx====",aggregateTx)
+                 console.log("aggregateTx.maxFee======",parseInt(aggregateTx.maxFee.toHex(),16)/1000000);
+
+                 const agg_fee = document.getElementById("fee_rev");    // aggregate 手数料表示
+                 agg_fee.innerHTML =`<p style="font-size:20px;color:blue;">手数料　 ${parseInt(aggregateTx.maxFee.toHex(),16)/1000000} XYM　　　　</p>`
+
+                 window.SSS.setTransaction(aggregateTx);               // SSSにトランザクションを登録        
+                 window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+                 console.log('signedTx', signedTx);
+                 txRepo.announce(signedTx);
+                 }) 
+          
+
+
+    }
+
+  }else{  // 一括回収チェックが true の場合 ///////////////////////////
+    if (mosaic_ID2 === "--- Select ---"){
+      swal(`モザイクIDを選択してください！`,"");
+    }
+
+    const page_num = document.getElementById('page_num_holder1').value;  /////////  セレクトボックスから、Page No を取得  ///////////////////////
+  
+    let xhr = new XMLHttpRequest();
+    
+     if (networkType === 104){ // Main Net
+        xhr.open("GET",`https://symbol-mikun.net:3001/accounts?mosaicId=${mosaic_ID2}&orderBy=balance&order=desc&pageSize=100&pageNumber=${page_num}`,false);
+     }
+     if (networkType === 152){ // Test Net
+        xhr.open("GET",`https://mikun-testnet.tk:3001/accounts?mosaicId=${mosaic_ID2}&orderBy=balance&order=desc&pageSize=100&pageNumber=${page_num}`,false);
+     }
+  
+     let data;
+  
+     xhr.send(null);
+  
+     data = xhr.response;
+     data = JSON.parse(data);
+     data2 = [];
+     data3 = [];
+     for (j=0;j<data.data.length;j++){
+       for (i=0; i<data.data[j].account.mosaics.length; i++){
+         if (data.data[j].account.mosaics[i].id === mosaic_ID2){
+            data2.push(sym.Address.createFromEncoded(data.data[j].account.address).plain());
+            data3.push(data.data[j].account.mosaics[i].amount);
+         }
+      
+       }
+     }
+
+
+                  let innerTx = [];
+                  for (let i=0; i<data2.length; i++){                           
+
+                            if (data2[i].length === 39){  // アドレスの場合
+			                        innerTx[i] = sym.MosaicSupplyRevocationTransaction.create(
+                              undefined, //Deadline
+                              sym.Address.createFromRawAddress(data2[i]), //回収先                                                            
+                                  new sym.Mosaic(
+                                      new sym.MosaicId(mosaic_ID2),
+                                      sym.UInt64.fromUint(Number(data3[i])) 
+                                      ),                              
+                              //sym.PlainMessage.create(message),
+                              networkType
+                              );
+                            }else{  // ネームスペースの場合
+                                namespaceId = new sym.NamespaceId(data2[i]); 
+                                innerTx[i] = sym.MosaicSupplyRevocationTransaction.create(
+                                undefined, //Deadline
+                                namespaceId, //回収先                                
+                                    new sym.Mosaic(
+                                        new sym.MosaicId(mosaic_ID2),
+                                        sym.UInt64.fromUint(Number(data3[i]))  
+                                        ),
+                                //sym.PlainMessage.create(message),
+                                networkType
+                                );
+                            }
+
+                  }
+
+                  const publicAccount = sym.PublicAccount.createFromPublicKey(
+                    window.SSS.activePublicKey,
+                    networkType
+                  );
+
+                  for (let i=0; i<data2.length; i++){
+                      innerTx[i] = innerTx[i].toAggregate(publicAccount)
+                  }
+
+                  const aggregateTx = sym.AggregateTransaction.createComplete(
+                    sym.Deadline.create(epochAdjustment),  //Deadline
+                    innerTx,
+                    networkType,
+                    [],
+                    /*sym.UInt64.fromUint(1000000*Number(maxfee2))          //最大手数料*/
+                  ).setMaxFeeForAggregate(100);
+
+                  console.log("aggregateTx====",aggregateTx)
+                  console.log("aggregateTx.maxFee======",parseInt(aggregateTx.maxFee.toHex(),16)/1000000);
+
+                  const agg_fee = document.getElementById("fee_rev");    // aggregate 手数料表示
+                  agg_fee.innerHTML =`<p style="font-size:20px;color:blue;">手数料　 ${parseInt(aggregateTx.maxFee.toHex(),16)/1000000} XYM　　　　</p>`
+
+                 window.SSS.setTransaction(aggregateTx);               // SSSにトランザクションを登録        
+                 window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+                 console.log('signedTx', signedTx);
+                 txRepo.announce(signedTx);
+                 }) 
+
+  }
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+//                   モザイク　リッチリスト
+/////////////////////////////////////////////////////////////////////////
+
+async function holder_list(){
+
+  const page_num = document.getElementById('page_num_holder1').value;  /////////  セレクトボックスから、Page No を取得  ///////////////////////
+
   const mosaic_ID = document.querySelector(".select_r").value;
-  const amount = document.getElementById("re_amount").value;
-  const maxFee = document.getElementById("re_maxFee_r").value;
-
-
+  
   const mosaicInfo = await mosaicRepo.getMosaic(new sym.MosaicId(mosaic_ID)).toPromise();// 可分性の情報を取得する 
   const div = mosaicInfo.divisibility; // 可分性
 
-  const revoke_tx = sym.MosaicSupplyRevocationTransaction.create(
-    sym.Deadline.create(epochAdjustment),
-    sym.Address.createFromRawAddress(holderAddress),
-    new sym.Mosaic(
-      new sym.MosaicId(mosaic_ID),     // mosice ID 16進数　
-      sym.UInt64.fromUint(Number(amount)*10**div)),      // mosaic 数量  可分性を適用する                                  
-    networkType,
-    sym.UInt64.fromUint(1000000*Number(maxFee)) 
-  )
+  const dom_holder = document.getElementById('holder_table');  // テーブルがある場合削除
+       // console.log("dom_txInfo=",dom_Meta); ////////////////
+  if (dom_holder !== null){ // null じゃなければ子ノードを全て削除  
+    while(dom_holder.firstChild){
+        dom_holder.removeChild(dom_holder.firstChild);
+    }
+  }
+  
 
-  window.SSS.setTransaction(revoke_tx);               // SSSにトランザクションを登録        
-  window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
-  console.log('signedTx', signedTx);
-  txRepo.announce(signedTx);
-  }) 
+  let xhr = new XMLHttpRequest();
+  
+   if (networkType === 104){ // Main Net
+      xhr.open("GET",`https://symbol-mikun.net:3001/accounts?mosaicId=${mosaic_ID}&orderBy=balance&order=desc&pageSize=100&pageNumber=${page_num}`,false);
+   }
+   if (networkType === 152){ // Test Net
+      xhr.open("GET",`https://mikun-testnet.tk:3001/accounts?mosaicId=${mosaic_ID}&orderBy=balance&order=desc&pageSize=100&pageNumber=${page_num}`,false);
+   }
 
+   let data;
+
+   xhr.send(null);
+
+   data = xhr.response;
+   data = JSON.parse(data);
+   data2 = [];
+   data3 = [];
+   for (j=0;j<data.data.length;j++){
+
+     for (i=0; i<data.data[j].account.mosaics.length; i++){
+       if (data.data[j].account.mosaics[i].id === mosaic_ID){
+           // console.log("amount=",data.data[j].account.mosaics[i].amount)
+           //console.log(`${j} ${sym.Address.createFromEncoded(data.data[j].account.address).plain()}　　　amount= ${data.data[j].account.mosaics[i].amount}`);
+          data2.push(sym.Address.createFromEncoded(data.data[j].account.address).plain());
+          data3.push(data.data[j].account.mosaics[i].amount/10**div);
+       }
+    
+     }
+   }
+   const dom_mosaic_rev = document.getElementById('mosaic_ID_rev');   
+   dom_mosaic_rev.innerHTML = `<big>< ${mosaic_ID} ></big>`
+
+   const dom_namespace_rev = document.getElementById('namespace_rev');
+   let mosaicNames = await nsRepo.getMosaicsNames([new sym.MosaicId(mosaic_ID)]).toPromise(); // Namespaceの情報を取得する
+   
+   if ([mosaicNames][0][0].names.length !== 0){
+     dom_namespace_rev.innerHTML = `<big> ${[mosaicNames][0][0].names[0].name} </big>`
+   }else{
+     dom_namespace_rev.innerHTML = ``
+   }
+
+   var body = document.getElementById("holder_table");
+   body.style.width = "700px";
+   body.style.margin = "0 auto";  //centerに合わせる
+
+   // <table> 要素と <tbody> 要素を作成　/////////////////////////////////////////////////////
+   var tbl = document.createElement("table");
+   var tblBody = document.createElement("tbody_r");
+   //tblBody.style.width = "600px";
+ 
+   // すべてのセルを作成
+   for (var i = -1; i < data.data.length; i++) {  // データの数だけ繰り返す
+     // 表の行を作成
+     var row = document.createElement("tr");
+
+     for (var j = 0; j < 3; j++) {
+       // <td> 要素とテキストノードを作成し、テキストノードを
+       // <td> の内容として、その <td> を表の行の末尾に追加
+       var cell = document.createElement("td");                                                   
+          switch(j){
+            case 0:   // No
+              if (i === -1){
+                  var cellText = document.createTextNode("No");                   
+                  break;
+              }                        
+              var cellText = document.createTextNode(i+1+(100*(page_num-1))); // Noを追加    
+                  break;
+            case 1:   //アドレス
+              if (i === -1){
+                  var cellText = document.createTextNode("アドレス");                   
+                  break;
+              }                        
+              var cellText = document.createTextNode(data2[i]); // アドレスをセルに追加    
+                  break;
+            case 2:   //数量
+              if (i === -1){
+                 var cellText = document.createTextNode("保有量");
+                 break;
+              }
+                 var cellText = document.createTextNode(data3[i]);　// 数量をセルに追加 
+                 break;  
+                             
+            }  
+       cell.appendChild(cellText);
+       row.appendChild(cell);
+     }                     
+     // 表の本体の末尾に行を追加
+     tblBody.appendChild(row);
+   }
+
+   // <tbody> を <table> の中に追加
+   tbl.appendChild(tblBody);
+   // <table> を <body> の中に追加
+   body.appendChild(tbl);
+   // tbl の border 属性を 2 に設定
+   tbl.setAttribute("border", "1"); 
+   
+   for (i=1; i<= data.data.length+1; i++){
+      var firstCell = document.querySelector(`tbody_r tr:nth-child(${i}) td:nth-child(1)`);
+      firstCell.style.textAlign = "right";  // 右寄せ
+      firstCell.style.width = "50px"
+
+      var firstCell = document.querySelector(`tbody_r tr:nth-child(${i}) td:nth-child(2)`);
+      firstCell.style.textAlign = "center";  // 右寄せ
+      firstCell.style.width = "400px"
+
+      var thirdCell = document.querySelector(`tbody_r tr:nth-child(${i}) td:nth-child(3)`);
+      thirdCell.style.textAlign = "right";  // 右寄せ
+      thirdCell.style.width = "250px"
+   }
 
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                               // Namespace 作成 //
@@ -4293,7 +4816,7 @@ function MetaKey_select(){
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                              //  NFT (NFTDrive) をデコードして表示する //
+                                              //  nftData を対象のタグに挿入する //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -4301,12 +4824,13 @@ function appendImg(src,dom_NFT){          //   取得した画像をimgタグに
 
   (tag= document.createElement('img')).src = src;
    tag.width = 200;
+   tag.className = "mosaic_img";
   //document.getElementsByTagName('body')[0].appendChild(tag);
   dom_NFT.appendChild(tag);
 }
 //////////////////////////////////////////////////////////////////////////////
 
-function appendAudio(src,dom_NFT){
+function appendAudio(src,dom_NFT){     // Audio
 
   (tag= document.createElement('source')).src = src;
   // tag.width = 200;
@@ -4314,8 +4838,42 @@ function appendAudio(src,dom_NFT){
   dom_NFT.appendChild(tag);
   $('source').wrap('<audio controls>');
 }
+/////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////
+function appendVideo(src,dom_NFT){      // Video
+
+  (tag= document.createElement('source')).src = src;
+  //tag.width = 200;
+  tag.width = 600;
+  //document.getElementsByTagName('body')[0].appendChild(tag);
+  dom_NFT.appendChild(tag);
+  $('source').wrap('<video controls>');
+  }
+  /////////////////////////////////////////////////////////////////////////////
+  
+  function appendPdf(src,dom_NFT){      // Pdf
+  
+  (tag= document.createElement('embed')).src = src;
+  tag.width = 600;
+  tag.height = 600;
+  //document.getElementsByTagName('body')[0].appendChild(tag);
+  dom_NFT.appendChild(tag);
+  }
+  /////////////////////////////////////////////////////////////////////////////
+  
+  function appendHtml(src,dom_NFT){      // html
+  
+  (tag= document.createElement('iframe')).src = src;
+  tag.width = 600;
+  tag.height = 600;
+  //document.getElementsByTagName('body')[0].appendChild(tag);
+  dom_NFT.appendChild(tag);
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                              //  NFT (NFTDrive) をデコードして表示する //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var nglist = [];
 fetch('https://nftdrive-explorer.info/black_list/',)
 .then((response) => {
@@ -4387,10 +4945,26 @@ function nftdrive(mosaic,dom_NFT){
 			}
                              
 			 //console.log(nftData);
-			if(nftData.indexOf("data:image/") >= 0){
+       if(nftData.indexOf("data:image/") >= 0){
         dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a><br><br>`
-				appendImg(nftData,dom_NFT);
-			}
+        appendImg(nftData,dom_NFT);
+      }
+      if(nftData.indexOf("data:audio/") === 0){
+        dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a><br><br>`
+        appendAudio(nftData,dom_NFT);
+      }
+      if(nftData.indexOf("data:video/") === 0){ 
+        dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a><br><br>`
+        appendVideo(nftData,dom_NFT);
+      }
+      if(nftData.indexOf("data:application/pdf") === 0){ 
+        dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a><br><br>`
+        appendPdf(nftData,dom_NFT);
+      }
+      if(nftData.indexOf("data:text/html") === 0){ 
+        dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a><br><br>`
+        appendHtml(nftData,dom_NFT);
+      }
 		}
 	});
 }
@@ -4399,95 +4973,181 @@ function nftdrive(mosaic,dom_NFT){
                                               //  NFT (COMSA) をデコードして表示する //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+Buffer = require("/node_modules/buffer").Buffer;
 
 function comsa(mosaic,dom_NFT){
 
-	mosaicRepo.getMosaic(mosaic.id)
-	.subscribe(async mo=>{
+mosaicRepo.getMosaic(mosaic.id)
+.subscribe(async mo=>{
 
-		let meta = await metaRepo.search({
-			targetId:mo.id,
-			metadataType:sym.MetadataType.Mosaic,
-			pageSize:100
-		}).toPromise();
+  let meta = await metaRepo.search({
+    targetId:mo.id,
+    metadataType:sym.MetadataType.Mosaic,
+    pageSize:100
+  }).toPromise();
 
-		let comsaHeader = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'DA030AA7795EBE75');
-		if(comsaHeader !== undefined){
+  let comsaHeader = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'DA030AA7795EBE75');
+  if(comsaHeader !== undefined){
 
-			let headerJSON = JSON.parse(comsaHeader.metadataEntry.value);
-			let aggTxes1 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D77BFE313AF3EF1F');
-			let aggTxes2 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'AACFBE3CC93EABF3');
-		  let aggTxes3 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'A0B069B710B3754C');
-	    let aggTxes4 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D75B016AA9FAC056');
-      let aggTxes5 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'BABD9C10F590F0F3');
-      let aggTxes6 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D4B5933FA2FD62E7');
-      let aggTxes7 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'FA60A37C56457F1A');
-      let aggTxes8 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'FEDD372E157E9CF0');
-      let aggTxes9 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'C9384119AD73CF95');
-      let aggTxes10 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'EADE00D8D78AC0BD');
-      let aggTxes11 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'F6578214308E7990');
+    let headerJSON = JSON.parse(comsaHeader.metadataEntry.value);
+    console.log("ヘッダー情報＝＝＝＝",headerJSON);
+    let aggTxes1 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D77BFE313AF3EF1F');
+    let aggTxes2 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'AACFBE3CC93EABF3');
+    let aggTxes3 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'A0B069B710B3754C');
+    let aggTxes4 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D75B016AA9FAC056');
+    let aggTxes5 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'BABD9C10F590F0F3');
+    let aggTxes6 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'D4B5933FA2FD62E7');
+    let aggTxes7 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'FA60A37C56457F1A');
+    let aggTxes8 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'FEDD372E157E9CF0');
+    let aggTxes9 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'C9384119AD73CF95');
+    let aggTxes10 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'EADE00D8D78AC0BD');
+    let aggTxes11 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'F6578214308E7990');
 
-			let aggTxes = JSON.parse(aggTxes1.metadataEntry.value);
+    let aggTxes12 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'CE7226A968287482');
+    let aggTxes13 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'C2811F3B6F49C568');
+    let aggTxes14 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === '886A58DBE955A788');
+    let aggTxes15 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === '87300B99E5B10E2C');
+    let aggTxes16 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'EE553D7141B98753');
+    let aggTxes17 = meta.data.find(tx=>tx.metadataEntry.scopedMetadataKey.toHex() === 'B3084C09176CA990');
 
-			if(aggTxes2 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes2.metadataEntry.value));
-			}
 
-			if(aggTxes3 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes3.metadataEntry.value));
-			}
-			
-			if(aggTxes4 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes4.metadataEntry.value));
-			}
+    let aggTxes = JSON.parse(aggTxes1.metadataEntry.value);
 
-      if(aggTxes5 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes5.metadataEntry.value));
-			}
+    if(aggTxes2 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes2.metadataEntry.value));
+    }
+    
 
-      if(aggTxes6 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes6.metadataEntry.value));
-			}
+    if(aggTxes3 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes3.metadataEntry.value));
+    }
+    
+    if(aggTxes4 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes4.metadataEntry.value));
+    }
 
-      if(aggTxes7 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes7.metadataEntry.value));
-			}
+    if(aggTxes5 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes5.metadataEntry.value));
+    }
 
-      if(aggTxes8 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes8.metadataEntry.value));
-			}
-      
-      if(aggTxes9 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes9.metadataEntry.value));
-			}
+    if(aggTxes6 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes6.metadataEntry.value));
+    }
 
-      if(aggTxes10 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes10.metadataEntry.value));
-			}
+    if(aggTxes7 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes7.metadataEntry.value));
+    }
 
-      if(aggTxes11 !== undefined){
-				aggTxes = aggTxes.concat(JSON.parse(aggTxes11.metadataEntry.value));
-			}
+    if(aggTxes8 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes8.metadataEntry.value));
+    }
+    
+    if(aggTxes9 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes9.metadataEntry.value));
+    }
 
-			let nftData = "";
-			let dataType = "data:" + headerJSON.mime_type + ";base64,";
-			for (let idx = 0; idx < aggTxes.length; idx++) {
-				const aggTx = await txRepo.getTransaction(aggTxes[idx],sym.TransactionGroup.Confirmed).toPromise();
-				for(let idx = 1; idx < aggTx.innerTransactions.length;idx++){
-					let payload = aggTx.innerTransactions[idx].message.payload;
-					nftData += payload.slice(6);
-				}
-			}
-      //console.log("%cmosaicID","color: red",mosaic.id.toHex());
+    if(aggTxes10 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes10.metadataEntry.value));
+    }
+
+    if(aggTxes11 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes11.metadataEntry.value));
+    }
+
+    if(aggTxes12 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes12.metadataEntry.value));
+    }
+
+    if(aggTxes13 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes13.metadataEntry.value));
+    }
+
+    if(aggTxes14 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes14.metadataEntry.value));
+    }
+    
+    if(aggTxes15 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes15.metadataEntry.value));
+    }
+
+    if(aggTxes16 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes16.metadataEntry.value));
+    }
+
+    if(aggTxes17 !== undefined){
+      aggTxes = aggTxes.concat(JSON.parse(aggTxes17.metadataEntry.value));
+    }
+  
+    
+    if(headerJSON.version === "comsa-nft-1.0"){  // バージョン 1.0 の場合 //////////////////////////////
+      let nftData = "";
+      let dataType = "data:" + headerJSON.mime_type + ";base64,";
+      for (let idx = 0; idx < aggTxes.length; idx++) {              
+        const aggTx = await txRepo.getTransaction(aggTxes[idx],sym.TransactionGroup.Confirmed).toPromise();
+        for(let idx2 = 1; idx2 < aggTx.innerTransactions.length;idx2++){
+          let payload = aggTx.innerTransactions[idx2].message.payload;
+        
+          nftData += payload.slice(6);
+        }
+      }
+
       dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < UNIQUE ></a><br><br>`
-      if (dataType === "data:audio/mpeg;base64,"){
-          appendAudio(dataType + nftData,dom_NFT);
-      }else{ 
+  
+      if (dataType.indexOf("data:image/") === 0){
           appendImg(dataType + nftData,dom_NFT);
       }
-		}
-	});
+      if (dataType.indexOf("data:audio/") === 0){
+          appendAudio(dataType + nftData,dom_NFT);
+      }
+      if (dataType.indexOf("data:video/") === 0){ 
+          appendVideo(dataType + nftData,dom_NFT);
+      } 
+    }
+
+    if(headerJSON.version === "comsa-nft-1.1"){  //  バージョン 1.1 の場合 //////////////////////////////
+      let nftData = "";
+			let dataType = "data:" + headerJSON.mime_type + ";base64,";
+			for(aggTx of aggTxes){
+
+				const data = {"transactionIds": [aggTx]}
+				const res =  await fetch(nodeRepo.url + "/transactions/confirmed", {
+					headers: {
+						"Content-Type": "application/json;charset=utf-8"
+					},
+					method: "POST",
+					body: JSON.stringify(data)
+				});
+				const json = await res.json();
+				const innerTxes = json[0].transaction.transactions;
+				let isSkip = true;
+				for(innerTx of innerTxes){
+					if(isSkip){
+						isSkip = false;
+						continue;
+					}
+					nftData += innerTx.transaction.message;
+					//console.log(innerTx.transaction.message);
+				}
+			}
+
+      dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < UNIQUE ></a><br><br>`
+
+    
+      if (dataType.indexOf("data:image/") === 0){
+          appendImg(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      }
+      if (dataType.indexOf("data:audio/") === 0){
+          appendAudio(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      }
+      if (dataType.indexOf("data:video/") === 0){ 
+          appendVideo(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      } 
+    }
+
+     
+  }
+});
+
 }
 
 
@@ -4497,8 +5157,6 @@ function comsa(mosaic,dom_NFT){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-Buffer = require("/node_modules/buffer").Buffer;
 function comsaNCFT(mosaic,dom_NFT){
   
 	mosaicRepo.getMosaic(mosaic.id)
@@ -4558,10 +5216,14 @@ function comsaNCFT(mosaic,dom_NFT){
 			
          dom_NFT.innerHTML =`<br><a class="btn-style-link" href="https://explorer.comsa.io/mosaic/${mosaic.id.toHex()}" target="_blank">COMSA < BUNDLE ></a><br><br>`
 			//imgtarget++;
-      if (dataType === "data:audio/mpeg;base64,"){
-          appendAudio(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
-      }else{
-          appendImg(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      if (dataType.indexOf("data:image/") === 0){
+        appendImg(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      }
+      if (dataType.indexOf("data:audio/") === 0){
+         appendAudio(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);
+      }
+      if (dataType.indexOf("data:video/") === 0){
+         appendVideo(dataType + Buffer.from(nftData, "hex").toString("base64"),dom_NFT);  
       }
 			//createImgTag(dataType  + Buffer.from(nftData, "hex").toString("base64") ,imgtarget,escape_html(decodeURIComponent( sym.Convert.decodeHex(headerJSON.title))));
 		}

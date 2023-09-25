@@ -2,6 +2,16 @@
 <html lang="ja">
 <head>
   <title>Ventus Wallet (ウェンタスウォレット)</title>
+
+ <!-- Google tag (gtag.js) --> 
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYBR78TJ5E"></script>
+ <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NYBR78TJ5E');
+ </script>
+
   <link rel="stylesheet" href="./css/BGimg_ventus.css" type="text/css" media="all" id="switchCSS" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -19,7 +29,7 @@
     var defaulturl= './css/BGimg_ventus.css'
     var cyberpunkurl= './css/BGimg_cyberpunk.css';
     var seaurl= './css/BGimg_sea.css';
-    var shevaurl= './css/BGimg_sheva.css';
+    var tomatinaurl= './css/BGimg_tomatina.css';
 // 画面表示時のCSSの読み込み設定
     $(document).ready(
         function() {
@@ -37,9 +47,9 @@
             } else if (Cookies.get('cookieCSS') == 'sea') {
                     $("#selectCSS").val("sea");
                     $("#switchCSS").attr("href" , seaurl);
-            } else if (Cookies.get('cookieCSS') == 'sheva') {
-                    $("#selectCSS").val("sheva");
-                    $("#switchCSS").attr("href" , shevaurl);
+            } else if (Cookies.get('cookieCSS') == 'tomatina') {
+                    $("#selectCSS").val("tomatina");
+                    $("#switchCSS").attr("href" , tomatinaurl);
             }
         }
     );
@@ -55,8 +65,8 @@
                     cssurl = cyberpunkurl;
                 } else if  (val == "sea") {
                      cssurl = seaurl;
-                } else if  (val == "sheva") {
-                     cssurl = shevaurl;
+                } else if  (val == "tomatina") {
+                     cssurl = tomatinaurl;
                 }
             // 選択結果をクッキーに登録する
                 Cookies.set('cookieCSS', val);
@@ -80,14 +90,16 @@
           <option value="ventus">Ventus</option>
           <option value="cyberpunk">CyberPunk</option>
           <option value="sea">Sea</option>
-          <!-- <option value="sheva">Sheva</option> -->
+          <option value="tomatina">Tomatina</option>
         </select></li>
         <br>
         <li><a href="./Terms_of_use.html" target="_blank">利用規約</a></li>
         <li><a href="https://note.com/mikun_nem/n/n5c21f4af8930/" target="_blank">使い方</a></li>
         <li><div id="explorer"></div></li>
+        <li><div id="faucet"></div></li>
         <li><div id="xembook"></div></li>
         <li><div id="nftdrive_explorer"></div></li>
+        <li><a href="https://mosaic-center.tk/" target="_blank">🖼️ Mosaic Center 🎨</a></li>
         <li><div id="hv_checker"></div></li>
         <li><div id="QR_Auth"></div></li>
         <li><a href="https://docs.sss-symbol.com/ja/" target="_blank">SSS_Extension</a></li>
@@ -155,7 +167,7 @@
           </div>
 
           <div class="textfiled-wrapper">
-            <div>最大手数料</div>
+            <div>手数料</div>
             <select id="form-maxfee">
               <option value="0.02">0.02 xym (slow)</option>
               <option value="0.04">0.04 xym</option>
@@ -212,7 +224,7 @@
   <!--   popup  ユニコーン   ----------------------------------->
   <div id="popup" class="popup">
     <div class="popup-inner">
-      <div class="img"><img src="unicorn2.gif" alt="ポップアップ画像"></div>
+      <div class="img"><img src="./src/unicorn.gif" alt="ポップアップ画像"></div>
     </div><!-- .popup-inner -->
     <div id="bg-black" class="bg-black"></div>
   </div><!-- #popup -->
@@ -271,7 +283,7 @@
           </div>
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">最大手数料</span></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">手数料</span></p>
           <div class="Form-Item-Input" style="text-align: center">
             <select class="re_maxFee" id="re_maxFee_m">
               <option value="0.04">0.04 xym (slow)</option>
@@ -285,8 +297,8 @@
         <br>
         <div style="text-align:center">レンタル手数料&nbsp; 50 XYM</div>
         <br>
-        <div style="text-align:right"><button id="js-show-popup_sup" class="popup_sub_button">供給量変更</button></div><br>
-        <div style="text-align:right"><button id="js-show-popup_r" class="popup_sub_button">モザイク回収</button></div>
+        <div style="text-align:right"><button id="js-show-popup_sup" class="popup_sub_button">⬇️ 供給量変更 ⬆️</button></div><br>
+        <div style="text-align:right"><button id="js-show-popup_r" class="popup_sub_button">♻︎ モザイク回収 ♻︎</button></div>
         <div style="text-align:center"><i><b><big>発行したモザイク</big></b></i></div>
 
         <div style="text-align: right">
@@ -339,7 +351,7 @@
         <input type="text" class="Form-Item-Input_N" id="Namespace" placeholder=""/>
       </div>
       <div class="Form-Item2">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">最大手数料</span></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">手数料</span></p>
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_n">
             <option value="0.02">0.02 xym (slow)</option>
@@ -409,7 +421,7 @@
         <input type="text" class="Form-Item-Input_sn" id="subNamespace" placeholder=""/>
       </div>
       <div class="Form-Item_sn">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">最大手数料</span></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">手数料</span></p>
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_sn">
             <option value="0.02">0.02 xym (slow)</option>
@@ -465,7 +477,7 @@
       </div>
 
       <div class="Form-Item">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">最大手数料</span></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">手数料</span></p>
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_sup">
             <option value="0.04">0.02 xym (slow)</option>
@@ -482,40 +494,88 @@
 </div>
 
 
-<!-- ------- popup revokable mosaic ---------------->
+<!-- ------- popup revokable mosaic モザイク回収　---------------->
 
 <div id="js-popup_r" class="popup_r">
   <div class="popup_r-inner">
     <div class="close-btn" id="js-close-btn_r"><i class="fas fa-times"></i></div>
     <div class="Form_r">
-      <h4>モザイク回収</h4>
-      <div class="Form-Item_r">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">ホルダーアドレス</span></p>
-        <input type="text" class="Form-Item-Input_r" id="holderAddress"/>
-      </div>
-      <div class="Form-Item_r">
+      <h4>♻️ モザイク回収 ♻️</h4>
+      　　　　　個別回収
+      <div class="Form-Item_r" style="border-top: 3px solid rgb(0, 204, 255)">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">モザイクID</span></br></p>
         <div class="Form-Item-Input" style="text-align: center">
           <div class="revoke_select"></div>
         </div>
       </div>
       <div class="Form-Item_r">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">アドレス</span></p>
+        <input type="text" class="Form-Item-Input_r" id="holderAddress"/>
+      </div>
+      <div class="Form-Item_r">
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">数量</span></br></p>
         <input type="text" class="Form-Item-Input_r" id="re_amount"/>
       </div>
-      <div class="Form-Item_r">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">最大手数料</span></br></p>
-       <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
-        <div class="Form-Item-Input" style="text-align: center">
-          <select class="re_maxFee" id="re_maxFee_r">
-            <option value="0.02">0.02 xym (slow)</option>
-            <option value="0.04">0.04 xym</option>
-            <option value="0.07">0.07 xym</option>
-            <option value="0.1">0.1 xym (fast)</option>
-          </select></div>
+      　　　　まとめて回収
+      <div class="Form-Item_r" style="border-top: 3px solid rgb(0, 204, 255)">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">上位100件まとめて回収</span></p>
+        <div class="toggle7">
+         <input type="checkbox" name="check7" value="re_agg_check" id="re_agg_check" />
+        </div>
       </div>
-      <input type="button" onclick="revoke_mosaic();" class="Form-Btn" id="js-popup_r" value="回収"/>
+      　　ファイルで指定して回収
+      <div class="Form-Item_r" style="border-top: 3px solid rgb(0, 204, 255);border-bottom: 0px solid rgb(0, 204, 255)">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">Address エラーチェック</span></br></p>
+        <div class="toggle8">
+         <input type="checkbox" name="check8" value="csv_check" id="csv_check_re" />
+        </div>
+      </div> 
 
+      <div class="Form-Item_r" style="border-top: 0px solid rgb(0, 204, 255);border-bottom: 3px solid rgb(0, 204, 255)">
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">CSVファイルを選択</span></p>
+         <label class="Address_List" style="margin-left: 100px">
+          <input type="file" id="upload-file_re">Address List (.csv)       <!-- address ファイルを選択 -->
+         </label>
+         <div style="display: inline-block; _display: inline;">
+           <p1>　選択されていません</p1>
+         </div>
+        <div id="kurukuru_re"></div>
+      </div>
+
+      <input type="button" onclick="revoke_mosaic();" class="Form-Btn" id="js-popup_r" value="回収"/>
+      <br>
+      <div style="text-align:center">fee Multiprier = 100</div>
+      <br>
+      <div id="fee_rev" style="text-align:right"></div>
+      
+      <br>
+      <br>
+      <div style="text-align: center">
+        <div class="btn-gradient-radius" style="font-size: 20px">ホルダーリスト</div>
+      </div>
+      <br>
+      
+      <div id="mosaic_ID_rev" style="text-align: center"></div>
+      <div id="namespace_rev" style="text-align: center"></div>
+
+      <div style="text-align: right; padding-right: 120px">
+        <div style="display: inline-block; _display: inline;">Page:</div>
+          <select id="page_num_holder1" onchange="holder_list();">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+      </div>
+
+      <br>
+        <table id="holder_table"></table>
     </div>
   </div>
   <div class="black-background_r" id="js-black-bg_r"></div>
@@ -556,7 +616,7 @@
       </div>  -->
 
       <div class="Form-Item_L">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">最大手数料</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">手数料</span></br></p>
         <div class="Form-Item-Input_L" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_L">
             <option value="0.02">0.02 xym (slow)</option>
@@ -613,17 +673,6 @@
         <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">value(値)</span></br></p>
         <input type="text" class="Form-Item-Input_Meta_value" id="Meta_value"/>
       </div>
-
- <!-- <div class="Form-Item_Meta">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">最大手数料</span></br></p>
-        <div class="Form-Item-Input_Meta" style="text-align: center">
-          <select class="re_maxFee" id="re_maxFee_Meta">
-            <option value="0.03">0.03 xym (slow)</option>
-            <option value="0.07">0.07 xym</option>
-            <option value="0.1">0.1 xym</option>
-            <option value="0.2">0.2 xym (fast)</option>
-          </select></div>
-      </div> -->
 
       <input type="button" onclick="Metadata();" class="Form-Btn" id="js-popup_Meta" value="登録 / 更新"/>
       <br>
@@ -706,36 +755,26 @@
         </select>
       </div>  -->
 
-
-    <!--  <div class="Form-Item_agg">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">最大手数料</span></br></p>
-        <div class="Form-Item-Input" style="text-align: center">
-          <select class="re_maxFee" id="form-maxFee2">
-            <option value="0.4">0.4 xym (slow)</option>
-            <option value="0.8">0.8 xym</option>
-            <option value="1.4">1.4 xym</option>
-            <option value="2">2 xym (fast)</option>
-          </select></div>
-      </div>  -->
       <br>
       <div class="Form-Item_agg">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">アドレスチェック</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">Address エラーチェック</span></br></p>
       <div class="toggle6">
-        <input type="checkbox" name="check6" value="csv_check" id="csv_check" />
+        <input type="checkbox" name="check6" value="csv_check" id="csv_check_agg" />
       </div>
       </div>
-      <br>
-      <div style="text-align: center;">CSVファイルを選択してください<br><br>
+
+      <div class="Form-Item_agg">
+      <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">CSVファイルを選択</span></p>
       <label class="Address_List">
-          <input type="file" id="upload-file">Address List (.csv)       <!-- address ファイルを選択 -->
+          <input type="file" id="upload-file_agg">Address List (.csv)       <!-- address ファイルを選択 -->
       </label>
        <div style="display: inline-block; _display: inline;">
-         <p1>選択されていません</p1>
+         <p1>　選択されていません</p1>
        </div>
-      <div id="kurukuru"></div>
+      <div id="kurukuru_agg"></div>
       </div>
       <br>
-      <p2 id="address_list" style="overflow-wrap: break-word"></p2>
+      <!-- <p2 id="address_list" style="overflow-wrap: break-word"></p2> -->
       <br>
       <input type="button" onclick="handleSSS_agg();" class="Form-Btn" id="js-popup_agg" value="一括送信"/>
       <br>
@@ -748,7 +787,8 @@
         ~~~~~~~~~　　csvファイルの例　　~~~~~~~~~<br><br>
         <img src="src/agg_csv.png">
         <br><br><a href="https://www.microsoft.com/ja-jp/microsoft-365/excel" target="_blank">Excel</a>を開き、A列には任意の名前を、B列にはアドレス、またはネームスペースを入力して CSVファイルを作成してください。
-        <br>1つのファイルに100件まで登録出来ます。
+        <br>C列に数量、D列にモザイクIDを個別に指定する事も出来ます。
+        <br>1つのファイルに登録出来るのは100件までです。
         <br>アカウント制限があるアドレスが含まれていると、一括送信がエラーとなる場合があります。
 
       </p>
@@ -837,7 +877,7 @@
         <input type="text" class="Form-Item-Input_dona" id="dona_message"/>
       </div>
       <div class="Form-Item_dona">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">最大手数料</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">手数料</span></br></p>
        <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="dona_maxFee">
@@ -1123,6 +1163,30 @@ $(".toggle6").on("click", function() {   // agg トグルスイッチをクリ�
   }
 });
 
+$(".toggle7").on("click", function() {
+  $(".toggle7").toggleClass("checked");
+  if(!$('input[name="check7"]').prop("checked")) {
+    $(".toggle7 input").prop("checked", true);
+  } else {
+    $(".toggle7 input").prop("checked", false);
+  }
+});
+
+$(".toggle8").toggleClass("checked");     // 初期値はON にする
+  if(!$('input[name="check8"]').prop("checked")) {
+    $(".toggle8 input").prop("checked", true);
+  } else {
+    $(".toggle8 input").prop("checked", false);
+  }
+$(".toggle8").on("click", function() {   // agg トグルスイッチをクリックした場合
+  $(".toggle8").toggleClass("checked");
+  if(!$('input[name="check8"]').prop("checked")) {
+    $(".toggle8 input").prop("checked", true);
+  } else {
+    $(".toggle8 input").prop("checked", false);
+  }
+});
+
 ////////////////////////////////////////////////
 //  jQuery ページネーションプラグイン
 ////////////////////////////////////////////////
@@ -1141,24 +1205,41 @@ $(".toggle6").on("click", function() {   // agg トグルスイッチをクリ�
 /* ------------------------------
  表示用の関数
  ------------------------------ */
- function dispLoading(msg){
+ function dispLoading_agg(msg){  // 一括送信用
   // 引数なしの場合、メッセージは非表示。
   if(msg === undefined ) msg = "";
 
   // 画面表示メッセージを埋め込み
-  var innerMsg = "<div id='innerMsg'>" + msg + "</div>";
+  var innerMsg = "<div id='innerMsg_agg'>" + msg + "</div>";
 
   // ローディング画像が非表示かどうかチェックし、非表示の場合のみ出力。
-  if($("#nowLoading").length == 0){
-    $("#kurukuru").append("<div id='nowLoading'>" + innerMsg + "</div>");
+  if($("#nowLoading_agg").length == 0){
+    $("#kurukuru_agg").append("<div id='nowLoading_agg'>" + innerMsg + "</div>");
+  }
+}
+
+function dispLoading_re(msg){    // 回収モザイク用
+  // 引数なしの場合、メッセージは非表示。
+  if(msg === undefined ) msg = "";
+
+  // 画面表示メッセージを埋め込み
+  var innerMsg = "<div id='innerMsg_re'>" + msg + "</div>";
+
+  // ローディング画像が非表示かどうかチェックし、非表示の場合のみ出力。
+  if($("#nowLoading_re").length == 0){
+    $("#kurukuru_re").append("<div id='nowLoading_re'>" + innerMsg + "</div>");
   }
 }
 
 /* ------------------------------
  表示ストップ用の関数
  ------------------------------ */
-function removeLoading(){
-  $("#nowLoading").remove();
+function removeLoading_agg(){  // 一括送信用
+  $("#nowLoading_agg").remove();
+}
+
+function removeLoading_re(){  // 回収モザイク用
+  $("#nowLoading_re").remove();
 }
 
 
@@ -1169,8 +1250,10 @@ function removeLoading(){
   <!-- <script type="text/javascript" src="./js/jquery.simplePagination.js"></script> -->
   <script type="text/javascript" src="script.js"></script>
   <script>
+
     // aggregate送信用ファイルを読み込み　エラーチェック　
-    const input = document.getElementById('upload-file');
+      const input_agg = document.getElementById("upload-file_agg");
+      const input_re = document.getElementById("upload-file_re");
     //FileReaderの定義
     const reader = new FileReader();
     let address1 = [];
@@ -1178,47 +1261,52 @@ function removeLoading(){
     let amount1 = [];
     let mosaic1 =[];
     let file;
+    let file1;
     // 選択したファイルのファイル名を出力する
              $('input').on('change', function () {
                 let file = $(this).prop('files')[0];
                 $('p1').text(file.name);
                 address1.length = 0;
                 address2.length = 0;
-                csv_check = document.getElementById("csv_check").checked;  // csvファイルチェックのフラグ
-                console.log("%ccsv_check===","color: red",csv_check);
+                csv_check_agg = document.getElementById("csv_check_agg").checked;  // csvファイルチェックのフラグ
+                csv_check_re = document.getElementById("csv_check_re").checked;  // csvファイルチェックのフラグ
              });
 
-    input.addEventListener('change', (e) => {
-        const file1 = e.target.files[0];
+    /////////////////////////// input_agg に変化があった場合 ////////////////////////////////////////////////////////////////////////////
+             
+    input_agg.addEventListener('change', (e) => {
+        file1 = e.target.files[0];
         console.log("%cfile1===","color: red",file1);
           if (typeof file1 === "undefined"){
              address1.length = 0;
              address2.length = 0; // ファイル選択が取り消された場合、配列を削除
              $('p1').text("選択されていません");
-             $('p2').text(""); // address_list 非表示
+             //$('p2').text(""); // address_list 非表示
              file = file1;
           }
 
         //ファイルの種類を絞る
         if (file1.type === 'text/csv') {
            reader.onload = () => { 
+
+             console.log("reader.result===============",reader.result);
              address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
+             console.log("address2===============",address2);
 
              if (address2[address2.length - 1] === ""){  // 改行の後 "" が最後の配列にある場合
                  address2.pop();  //最後の配列要素を削除
              }
 
             (async() => {
-              console.log("CSV チェック =========",csv_check);
-              if (csv_check === true){
-                $('p2').text(""); // address_list 非表示
-                dispLoading(`アドレスにエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
+              console.log("CSV_agg チェック =========",csv_check_agg);
+              if (csv_check_agg === true){
+                //$('p2').text(""); // address_list 非表示
+                dispLoading_agg(`Address にエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
                  for (let i = 0; i < address2.length; ++i) {
                      let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
                      address1[i] = cells[1];                //アドレスだけを格納
                      if (cells.length >= 3){               //３列目がある場合
-                       amount1[i] = cells[2];
-                     
+                       amount1[i] = cells[2];                     
                        if (cells.length >= 4){               //4列目がある場合
                            mosaic1[i] = cells[3];
                        }
@@ -1229,6 +1317,9 @@ function removeLoading(){
                      }
                      address1[i] = address1[i].replace(/ /g,"");  // スペース削除
                      address1[i] = address1[i].replace(/　/g,""); //　スペース削除
+                     address1[i] = address1[i].replace( /\r?\n|\r/g , ""); //　改行削除
+
+                     console.log(`address[${i}]============`,address1[i]);
 
                      if (address1[i].length !== 39){  // 39文字以外の処理
                           const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
@@ -1279,7 +1370,135 @@ function removeLoading(){
                       }
                     }
                }
-               removeLoading();  //  ローディング画像を非表示
+               removeLoading_agg();  //  ローディング画像を非表示
+               swal(`アドレスチェック完了！`,"");
+              }else{    // エラーチェックしない
+                for (let i = 0; i < address2.length; ++i) {
+                     let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                     address1[i] = cells[1];                //アドレスだけを格納
+                     if (cells.length >= 3){               //３列目がある場合
+                       amount1[i] = cells[2];                     
+                       if (cells.length >= 4){               //4列目がある場合
+                           mosaic1[i] = cells[3];
+                       }
+                     }
+                     // 余分なハイフンやスペースを削除
+                     if (address1[i].length === 45){                 //ハイフン有りのアドレスの場合
+                        address1[i] = address1[i].replace(/-/g,"");  // ハイフンを削除する
+                     }
+                     address1[i] = address1[i].replace(/ /g,"");  // スペース削除
+                     address1[i] = address1[i].replace(/　/g,""); //　スペース削除
+                     address1[i] = address1[i].replace( /\r?\n|\r/g , ""); //　改行削除
+
+                 }
+                 //const address_list = document.getElementById("address_list");
+                 //address_list.innerHTML= `${address1}`;
+              }
+
+
+            })(); // async()
+
+               console.log("address1=",address1);
+           }
+           reader.readAsText(file1);
+        }
+    });
+
+      /////////////////////////// input_re に変化があった場合 ////////////////////////////////////////////////////////////////////////////
+
+      input_re.addEventListener('change', (e) => {
+        file1 = e.target.files[0];
+        console.log("%cfile1===","color: red",file1);
+          if (typeof file1 === "undefined"){
+             address1.length = 0;
+             address2.length = 0; // ファイル選択が取り消された場合、配列を削除
+             $('p1').text("選択されていません");
+             //$('p2').text(""); // address_list 非表示
+             file = file1;
+          }
+
+        //ファイルの種類を絞る
+        if (file1.type === 'text/csv') {
+           reader.onload = () => { 
+             address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
+
+             if (address2[address2.length - 1] === ""){  // 改行の後 "" が最後の配列にある場合
+                 address2.pop();  //最後の配列要素を削除
+             }
+
+            (async() => {
+              console.log("CSV_re チェック =========",csv_check_re);
+              if (csv_check_re === true){
+                //$('p2').text(""); // address_list 非表示
+                dispLoading_re(`Address にエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
+                 for (let i = 0; i < address2.length; ++i) {
+                     let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                     address1[i] = cells[1];                //アドレスだけを格納
+                     if (cells.length >= 3){               //３列目がある場合
+                       amount1[i] = cells[2];
+                     
+                       if (cells.length >= 4){               //4列目がある場合
+                           mosaic1[i] = cells[3];
+                       }
+                     }
+                     // 余分なハイフンやスペースを削除
+                     if (address1[i].length === 45){                 //ハイフン有りのアドレスの場合
+                        address1[i] = address1[i].replace(/-/g,"");  // ハイフンを削除する
+                     }
+                     address1[i] = address1[i].replace(/ /g,"");  // スペース削除
+                     address1[i] = address1[i].replace(/　/g,""); //　スペース削除
+                     address1[i] = address1[i].replace( /\r?\n|\r/g , ""); //　改行削除
+
+                     if (address1[i].length !== 39){  // 39文字以外の処理
+                          const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
+                          const ns_check = await nsRepo.getLinkedAddress(namespaceId)
+                             .toPromise()
+                             .catch(() => swal(`Namespace or Address Error!!`,`[No.${i+1}]
+
+                             ${address1[i]}`));
+
+                          console.log(`%cns_check[${i}]`,"color: red",ns_check);
+                          if (ns_check !== true){ // Namespace がリンクされている場合
+                             address1[i] = ns_check.address;   // Namspace をアドレスに変更
+                          }
+                     }
+                 }
+
+               const res1 = [];
+               for (let i = 0; i < address1.length; ++i){
+                    if (address1[i].length === 39){  // 39文字の場合
+                      if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T"){
+                        const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
+                          .toPromise()
+                          .catch(() => swal(`Address Error!!`,`[No.${i+1}]
+
+                          ${address1[i]}`));                                                   // アドレス　有無のチェック
+
+                           alice = sym.Address.createFromRawAddress(address1[i]);                //アカウント制限チェック
+                           res = await resAccountRepo.getAccountRestrictions(alice)
+                                 .toPromise()
+                                 .catch(() => console.log(`制限無し[${i+1}]`));
+
+                            if (res !== undefined){
+                                res1.push(`[No.${i+1}]
+                                ${res.address.address}
+
+                                `);
+                                swal(`アカウント制限有り`,`${res1}`);
+
+                                for (j = 0; j < res.restrictions.length; ++j ){
+                                   console.log(`restrictions[${i}][${j}]`,res.restrictions[j]);
+                                }
+                            }
+
+                      }else{ //先頭が NまたはTでない場合
+                        swal(`Address Error!!`,`[No.${i+1}]
+
+                        ${address1[i]}`);        // アドレス　有無のチェック
+                      }
+                    }
+               }
+               removeLoading_re();  //  ローディング画像を非表示
                swal(`アドレスチェック完了！`,"");
               }else{    // エラーチェックしない
                 for (let i = 0; i < address2.length; ++i) {
@@ -1298,10 +1517,11 @@ function removeLoading(){
                      }
                      address1[i] = address1[i].replace(/ /g,"");  // スペース削除
                      address1[i] = address1[i].replace(/　/g,""); //　スペース削除
+                     address1[i] = address1[i].replace( /\r?\n|\r/g , ""); //　改行削除
 
                  }
-                 const address_list = document.getElementById("address_list");
-                 address_list.innerHTML= `${address1}`;
+                 //const address_list = document.getElementById("address_list");
+                 //address_list.innerHTML= `${address1}`;
               }
 
 
@@ -1312,6 +1532,7 @@ function removeLoading(){
            reader.readAsText(file1);
         }
     });
+
    </script>
 
 </body>

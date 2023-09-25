@@ -309,6 +309,7 @@ input[type="file"] {
 
 .Address_List{
   padding: 4px;
+  margin-left: 40px;
   border: solid;
   border-radius: 15px;
   font-size: 13px;
@@ -360,7 +361,7 @@ input[type="file"] {
 .tx-card {
   background: rgb(255, 255, 255,0.8);
   border-radius: 16px;
-  width: 650px;
+  width: 730px;
   margin-left: 750px;
   padding: 32px 32px 32px 32px;
 }
@@ -383,6 +384,19 @@ a.btn-style-link{
 a.btn-style-link:hover{
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
 }
+
+.mosaic_img{
+ /* appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; */
+  box-shadow: 10px 10px 10px rgb(102, 113, 102);
+  transition: box-shadow .3s;
+}
+
+.mosaic_img:hover{
+  opacity: 0.5; /* ホバー時の透明度 */  
+}
+
 
 .textfiled-wrapper {
   display: flex;
@@ -763,6 +777,100 @@ hr {
   background: #35c759;
 }
 .toggle6.checked:after {
+  left: 23px;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.5);
+}
+
+/** 7  一括回収  **/
+.toggle7 {
+  position: relative;
+  width: 50px;
+  height: 30px;
+  margin: 0px 150px;
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.toggle7 input[type=checkbox] {
+  display: none;
+}
+.toggle7:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #e9e9eb;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle7:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.3);
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle7.checked:before {
+  background: #35c759;
+}
+.toggle7.checked:after {
+  left: 23px;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.5);
+}
+
+/** 8  agg ファイルチェック **/
+.toggle8 {
+  position: relative;
+  width: 50px;
+  height: 30px;
+  margin: 0px 150px;
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.toggle8 input[type=checkbox] {
+  display: none;
+}
+.toggle8:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #e9e9eb;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle8:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.3);
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle8.checked:before {
+  background: #35c759;
+}
+.toggle8.checked:after {
   left: 23px;
   box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.5);
 }
@@ -2448,7 +2556,18 @@ th,td {
 }
 
 /**********************************/
-#nowLoading {
+#nowLoading_agg {
+  display: table;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  opacity: 0.9;
+}
+
+#nowLoading_re {
   display: table;
   width: 100%;
   height: 100%;
@@ -2459,7 +2578,16 @@ th,td {
   opacity: 0.9;
 }
  
-#innerMsg {
+#innerMsg_agg {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 140px;
+  z-index:20000;
+  background: url("./src/kurukuru.gif") center center no-repeat;
+}
+
+#innerMsg_re {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
