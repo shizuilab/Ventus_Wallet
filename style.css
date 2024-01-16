@@ -178,6 +178,7 @@ h1 {
   text-align: right;
   margin: 50px 80px 0px auto;
   font-family: 'Sacramento', cursive;
+  text-shadow: 2px 2px 3px white;
 }
 
 h2 {
@@ -185,6 +186,7 @@ h2 {
   font-size: 3rem;
   font-family: 'Itim', cursive;
   margin: 0px 0px 0px 30px;
+  text-shadow: 2px 2px 3px white;
 }
 
 h3 {
@@ -194,6 +196,7 @@ h3 {
   justify-content: flex-end;*/
   text-align: right;
   margin: 0px 80px 10px auto;
+  text-shadow: 2px 2px 3px white;
 }
 
 h4 {
@@ -203,6 +206,7 @@ h4 {
   justify-content: flex-end;*/
   text-align: center;
   margin: 40px auto 40px auto;
+  text-shadow: 2px 2px 3px white;
 }
 
 .left {
@@ -210,8 +214,22 @@ h4 {
   position: fixed;
 }
 
+@media screen and (max-width:  480px) {
+  .left {
+    width: 360px;
+    position: fixed;
+  }
+}
+
 .right {
   overflow: auto;
+}
+
+@media screen and (max-width:  480px) {
+  .right {
+    width: 360px;
+    overflow: auto;
+  }
 }
 
 /*a.accountInfo{
@@ -228,6 +246,7 @@ button.accountInfo{
   border: none;
   outline: none;
   background: transparent;
+  text-shadow: 2px 2px 3px white;
 }
 
 .account-card {
@@ -236,6 +255,7 @@ button.accountInfo{
   margin: 0px 16px 16px 16px;
   padding: 16px 18px 18px 18px;
   position: relative;
+  box-shadow: 5px 5px 5px rgb(102, 113, 102);
 }
 
 .account-card #m_ns_button {
@@ -250,6 +270,7 @@ button.accountInfo{
   margin: 16px 16px 0px 16px;
   padding: 16px 36px 36px 36px;
   color: #2f4f4f;
+  box-shadow: 5px 5px 5px rgb(102, 113, 102);
 }
 
 .sender-card #agg_button {
@@ -282,6 +303,7 @@ input[type="file"] {
   color: blue;
   background-image: linear-gradient(45deg, #ffffff00 0%, #05b7feb2 100%);
   transition: .4s;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
 }
 
 .btn-gradient-radius:hover {
@@ -301,6 +323,7 @@ input[type="file"] {
   color:rgb(255,255,255); 
   border-radius: 16px;
   cursor: pointer;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
 }
 
 .button-sign:hover{
@@ -330,6 +353,7 @@ input[type="file"] {
   font-weight: bold;
   color: blue;
   background-image: linear-gradient(45deg, #ffffff00 0%, #05b7feb2 100%);
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
 }
 
 .button-txinfo:hover{
@@ -352,6 +376,7 @@ input[type="file"] {
   background-image: linear-gradient(45deg, aquamarine 0%, aquamarine 100%);
   border-radius: 10px;
   transition: 0.4s;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
 }
 
 .popup_sub_button:hover{
@@ -364,6 +389,19 @@ input[type="file"] {
   width: 730px;
   margin-left: 750px;
   padding: 32px 32px 32px 32px;
+  box-shadow: 5px 5px 5px rgb(102, 113, 102);
+}
+
+@media screen and (max-width:  480px) {
+  .tx-card {
+    background: rgb(255, 255, 255,0.8);
+    border-radius: 16px;
+    margin-top: 800px;
+    margin-left: 0px;
+    padding: 32px 32px 32px 32px;
+    box-shadow: 5px 5px 5px rgb(102, 113, 102);
+  }
+
 }
 
 a.btn-style-link{
@@ -374,7 +412,7 @@ a.btn-style-link{
   text-decoration: none;
   border-radius: 10px;
   border: 1px;
-  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(0, 255, 191) 100%);
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(255, 145, 0, 0.5) 100%);
   /*background: #5e5;*/
   /*color: #ffff;*/
   box-shadow: 0px 2px 4px #575;
@@ -385,12 +423,115 @@ a.btn-style-link:hover{
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
 }
 
+a.btn-style-link_1{
+  display: inline-block;
+  padding: 8px 24px;
+  font-weight:bold;
+  font-size: 15px;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px;
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(0, 174, 255, 0.5) 100%);
+  /*background: #5e5;*/
+  /*color: #ffff;*/
+  box-shadow: 0px 2px 4px #575;
+  transition: box-shadow .3s;
+}
+
+a.btn-style-link_1:hover{
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
+}
+
+a.btn-style-link_2{
+  display: inline-block;
+  padding: 8px 24px;
+  font-weight:bold;
+  font-size: 15px;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px;
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(0, 255, 98, 0.5) 100%);
+  /*background: #5e5;*/
+  /*color: #ffff;*/
+  box-shadow: 0px 2px 4px #575;
+  transition: box-shadow .3s;
+}
+
+a.btn-style-link_2:hover{
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
+}
+
+a.btn-style-link_3{
+  display: inline-block;
+  padding: 8px 24px;
+  font-weight:bold;
+  font-size: 15px;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px;
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgba(0, 110, 255, 0.5) 100%);
+  /*background: #5e5;*/
+  /*color: #ffff;*/
+  box-shadow: 0px 2px 4px #575;
+  transition: box-shadow .3s;
+}
+
+a.btn-style-link_3:hover{
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
+}
+
+a.btn-style-link_4{
+  display: inline-block;
+  padding: 8px 24px;
+  font-weight:bold;
+  font-size: 15px;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px;
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(183, 0, 255, 0.5) 100%);
+  /*background: #5e5;*/
+  /*color: #ffff;*/
+  box-shadow: 0px 2px 4px #575;
+  transition: box-shadow .3s;
+}
+
+a.btn-style-link_4:hover{
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
+}
+
+a.btn-style-link_5{
+  display: inline-block;
+  padding: 8px 24px;
+  font-weight:bold;
+  font-size: 15px;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px;
+  background-image: linear-gradient(45deg, #ffffff00 0%, rgb(255, 230, 0) 100%);
+  /*background: #5e5;*/
+  /*color: #ffff;*/
+  box-shadow: 0px 2px 4px #575;
+  transition: box-shadow .3s;
+}
+
+a.btn-style-link_5:hover{
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);  
+}
+
 .mosaic_img{
  /* appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none; */
   box-shadow: 10px 10px 10px rgb(102, 113, 102);
   transition: box-shadow .3s;
+  margin: 0 auto;
+  display: block;  
+}
+
+@media (max-width: 768px) { /*横幅が 768px 以下の場合*/
+  .mosaic_img {
+      max-width: 100%; /* 画像の幅を親要素に合わせる */
+  }
 }
 
 .mosaic_img:hover{
@@ -406,6 +547,20 @@ a.btn-style-link:hover{
 
 .textfiled {
   width: 400px;                     /*左の白い背景の大きさ*/
+}
+
+@media screen and (max-width:  480px) {
+  .textfiled-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px;
+  }
+}
+
+@media screen and (max-width:  480px) {
+  .textfiled {
+    width: 100px;                     /*左の白い背景の大きさ*/
+  }
 }
 
 #wallet-addr {
@@ -463,7 +618,7 @@ ul {
 }
 
 hr {
-  border-top: 4px solid skyblue;
+  border-top: 5px solid skyblue;
 }
 
 #version {
@@ -971,7 +1126,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;
   /*font-weight: bold;*/
   font-size: 18px;
@@ -1000,7 +1155,7 @@ hr {
   margin-right: 8px;
   padding-top: 8px;
   padding-bottom: 8px;
-  width: 120px;
+  width: 230px;
   display: inline-block;
   text-align: center;
   background: #5bc8ac;
@@ -1063,6 +1218,7 @@ hr {
   font-size: 20px;
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
   }
   .Form-Btn:hover{
     opacity: 0.6;
@@ -1175,7 +1331,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -1447,7 +1603,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -1591,7 +1747,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -1737,7 +1893,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -1883,7 +2039,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -2029,7 +2185,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -2173,7 +2329,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -2345,7 +2501,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -2491,7 +2647,7 @@ hr {
   }
   .Form-Item-Label {
   width: 100%;
-  max-width: 290px;
+  max-width: 300px;
   letter-spacing: 0.05em;   
   /*font-weight: bold;*/
   font-size: 18px;
@@ -2576,6 +2732,17 @@ th,td {
   left: 0;
   background-color: #fff;
   opacity: 0.9;
+}
+
+#nowLoading_MV {
+  display: table;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  opacity: 0.5; 
 }
  
 #innerMsg_agg {

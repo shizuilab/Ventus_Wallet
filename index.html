@@ -21,7 +21,6 @@
   <meta http-equiv="content-type" charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-
   <script src="./js/jquery-3.6.3.min.js"></script>
   <script src="./js/js.cookie.js"></script>
   <script>
@@ -99,13 +98,15 @@
         <li><div id="faucet"></div></li>
         <li><div id="xembook"></div></li>
         <li><div id="nftdrive_explorer"></div></li>
-        <li><a href="https://mosaic-center.tk/" target="_blank">🖼️ Mosaic Center 🎨</a></li>
+        <li><a href="https://xym-monster.netlify.app/" target="_blank">😈 XYM Monster 😈</a></li>
+        <li><a href="https://mosaic-center.net/" target="_blank">📝 Mosaic Center 📝</a></li>
+        <li><a href="https://ventus-wallet.tk/Mosaic_Viewer" target="_blank">🖼️ Mosaic Viewer 🖼️</a></li>
         <li><div id="hv_checker"></div></li>
         <li><div id="QR_Auth"></div></li>
-        <li><a href="https://docs.sss-symbol.com/ja/" target="_blank">SSS_Extension</a></li>
+        <li><a href="https://docs.sss-symbol.com/ja/" target="_blank">SSS Extension</a></li>
         <li><a href="https://note.com/mahorobart/n/nd5f226887c2a" target="_blank">Ventusについて</a></li>
-        <li><a href="https://symbol-community.com" target="_blank">Symbol_Community_Web</a></li>
-        <li><a href="https://twitter.com/mikunNEM" target="_blank">VentusWallet 開発者</a></li>
+        <li><a href="https://symbol-community.com" target="_blank">Symbol Community Web</a></li>
+        <li><a href="https://twitter.com/mikunNEM" target="_blank">Ventus Wallet 開発者</a></li>
         <br>
         <button id="js-show-popup_dona" class="btn btn-primary" style="font-size: 25px">開発者へ寄付</button>
         <!-- <li><a href="./update.html" target="_blank">アップデート履歴</a></li> -->
@@ -167,7 +168,7 @@
           </div>
 
           <div class="textfiled-wrapper">
-            <div>手数料</div>
+            <div>トランザクション手数料</div>
             <select id="form-maxfee">
               <option value="0.02">0.02 xym (slow)</option>
               <option value="0.04">0.04 xym</option>
@@ -241,12 +242,12 @@
           <input type="text" class="Form-Item-Input" id="SupplyAmount" placeholder="　1 〜 8999999999000000">
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">有効期限</span><small>&nbsp;&nbsp;　約30秒 = 1 (Block)</br>　　　　　　　　　　無期限 = 0</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">有効期限</span><small>&nbsp;&nbsp;<br>　約30秒 = 1 (Block)</br>　無期限 = 0</small></p>
           <input type="text" class="Form-Item-Input" id="Duration1" placeholder=" 　0 〜 315360000 (Block)" onchange="ex_date1();"/>
           <div id="ex_date1" style="text-align:right"></div>
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">可分性</span><small>　小数点以下の桁数</small></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">可分性</span><small><br>　小数点以下の桁数</small></p>
          <div class="Form-Item-Input" style="text-align: center">
           <select class="divisibility" id="Divisibility">
             <option value="0">0</option>
@@ -283,7 +284,7 @@
           </div>
         </div>
         <div class="Form-Item">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">手数料</span></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required">トランザクション手数料</span></p>
           <div class="Form-Item-Input" style="text-align: center">
             <select class="re_maxFee" id="re_maxFee_m">
               <option value="0.04">0.04 xym (slow)</option>
@@ -351,7 +352,7 @@
         <input type="text" class="Form-Item-Input_N" id="Namespace" placeholder=""/>
       </div>
       <div class="Form-Item2">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">手数料</span></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required2">トランザクション手数料</span></p>
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_n">
             <option value="0.02">0.02 xym (slow)</option>
@@ -421,7 +422,7 @@
         <input type="text" class="Form-Item-Input_sn" id="subNamespace" placeholder=""/>
       </div>
       <div class="Form-Item_sn">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">手数料</span></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sn">トランザクション手数料</span></p>
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_sn">
             <option value="0.02">0.02 xym (slow)</option>
@@ -477,7 +478,7 @@
       </div>
 
       <div class="Form-Item">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">手数料</span></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_sup">トランザクション手数料</span></p>
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_sup">
             <option value="0.04">0.02 xym (slow)</option>
@@ -616,7 +617,7 @@
       </div>  -->
 
       <div class="Form-Item_L">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">手数料</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_L">トランザクション手数料</span></br></p>
         <div class="Form-Item-Input_L" style="text-align: center">
           <select class="re_maxFee" id="re_maxFee_L">
             <option value="0.02">0.02 xym (slow)</option>
@@ -789,8 +790,10 @@
         <br><br><a href="https://www.microsoft.com/ja-jp/microsoft-365/excel" target="_blank">Excel</a>を開き、A列には任意の名前を、B列にはアドレス、またはネームスペースを入力して CSVファイルを作成してください。
         <br>C列に数量、D列にモザイクIDを個別に指定する事も出来ます。
         <br>1つのファイルに登録出来るのは100件までです。
-        <br>アカウント制限があるアドレスが含まれていると、一括送信がエラーとなる場合があります。
-
+        <br>
+        <br>名前やアドレスに "," (カンマ) が含まれているとエラーになるので、削除してください。
+        <br>アカウント制限があるアドレスが含まれていると、一括送信がエラーになる場合があります。
+        
       </p>
     </div>
   </div>
@@ -877,7 +880,7 @@
         <input type="text" class="Form-Item-Input_dona" id="dona_message"/>
       </div>
       <div class="Form-Item_dona">
-        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">手数料</span></br></p>
+        <p class="Form-Item-Label"><span class="Form-Item-Label-Required_dona">トランザクション手数料</span></br></p>
        <!-- <input type="text" class="Form-Item-Input_r" id="re_maxFee"/>  -->
         <div class="Form-Item-Input" style="text-align: center">
           <select class="re_maxFee" id="dona_maxFee">
@@ -1246,6 +1249,7 @@ function removeLoading_re(){  // 回収モザイク用
 </script>
 
   <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
+  <script type="text/javascript" src="https://xembook.github.io/symbol-browserify/metal-on-symbol-0.2.2.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
   <!-- <script type="text/javascript" src="./js/jquery.simplePagination.js"></script> -->
   <script type="text/javascript" src="script.js"></script>
@@ -1342,9 +1346,15 @@ function removeLoading_re(){  // 回収モザイク用
                       if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T"){
                         const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
                           .toPromise()
-                          .catch(() => swal(`Address Error!!`,`[No.${i+1}]
+                          .catch(() => swal(`Address Error!!`,`
+                          ネットワークに認識されていないアドレスです
 
-                          ${address1[i]}`));                                                   // アドレス　有無のチェック
+                          [No.${i+1}]
+                           
+                          ${address1[i]}
+
+                          
+                          ※トランザクション履歴のないアドレスの場合は、まだネットワークに認識されていませんが、「送信」は可能です`));                                                   // アドレス　有無のチェック
 
                            alice = sym.Address.createFromRawAddress(address1[i]);                //アカウント制限チェック
                            res = await resAccountRepo.getAccountRestrictions(alice)
