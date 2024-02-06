@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');  /* フォントのインポート */
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');   /* フォントのインポート */
 
+
 @media all and (min-width: 500px) {
   .wrapper {
     display: flex;
