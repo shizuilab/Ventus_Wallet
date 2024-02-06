@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</head>
+
+<style>
+  table {
+    table-layout:fixed;
+    width:100%;
+  }
+
+  table td,
+  table th {
+    padding: 8px;
+    font-size: 14px;
+    white-space: nowrap;   /* テキストを折り返さずに表示 */
+    overflow: hidden;      /* オーバーフローした部分を隠す */
+    text-overflow: ellipsis; /* オーバーフローした部分を省略記号で表示 */
+  }
+</style>
+
+<body>
+  <table border="1">
+    <tr>
+      <th></th>
+      <th>Peer Node info</th>
+    </tr>
+    <tr>
+      <td>Friendly Name</td>
+      <td id="friendlyName"></td>
+    </tr>
+    <tr>
+      <td>Host</td>
+      <td id="host"></td>
+    </tr>
+    <tr>
+      <td>Host Detail</td>
+      <td id="hostDetail"></td>
+    </tr>
+    <tr>
+      <td>Version</td>
+      <td id="version"></td>
+    </tr>
+    <tr>
+      <td>PublicKey</td>
+      <td id="node_publicKey"></td>
+    </tr>
+    <tr>
+      <td>Network Type</td>
+      <td id="networkType"></td>
+    </tr>
+    <tr style="height: 20em">
+      <td colspan="2" style="text-align: center;">
+        <button id="delegateButton" style="font-size: 14px;
+        width: 50%;
+        height: 40px;
+        background-image: linear-gradient(45deg, #f707ff 0%, #af05fe 100%);
+        color: rgb(255, 255, 255);
+        border-radius: 16px;
+        cursor: pointer;
+        box-shadow: 2px 2px 2px rgb(102, 113, 102);">このノードに委任する</button>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <br>
+  <script>
+    try {
+      const queryString = window.location.search;
+      if (!queryString) {
+        console.error('正しい情報が取得できませんでした。');
+        throw new Error('正しい情報が取得できませんでした。');
+      }
+      
+      const params = new URLSearchParams(queryString);
+      const aLice_pubKey = params.get('pubkey');
+      const friendlyName = params.get('friendlyName');
+      const host = params.get('host');
+      const hostDetail = params.get('hostDetail');
+      const version = params.get('version');
+      const node_publicKey = params.get('node_publicKey');
+      const aLice_NET_Type = params.get('network');
+      let networkType = params.get('NET_Type');
+
+
+      if (aLice_NET_Type !== networkType) {
+        swal(`ネットワークエラー`, `aLiceのメインアカウントを確認してください。
+
+        MainNet :　N _____
+        TestNet :　T _____
+        `);
+      }
+
+      if (friendlyName == null || host == null || hostDetail == null || version == null || node_publicKey == null || networkType == null) {
+        console.error('正しい情報が取得できませんでした。', friendlyName, host, hostDetail, version, node_publicKey, networkType);
+        throw new Error('正しい情報が取得できませんでした。');
+      }
+
+      document.getElementById('friendlyName').textContent = friendlyName;
+      document.getElementById('host').textContent = host;
+      document.getElementById('hostDetail').textContent = hostDetail;
+      document.getElementById('version').textContent = version;
+      document.getElementById('node_publicKey').textContent = node_publicKey;
+      document.getElementById('networkType').textContent = networkType;
+
+
+      if (networkType === 'MainNet') {
+        networkType = 104;
+
+      }
+      if (networkType === 'TestNet') {
+        networkType = 152;
+      }
+
+
+      const sym = require('/node_modules/symbol-sdk');
+
+      // MAIN NET
+      const NODE_M = 'https://symbol-mikun.net:3001'
+      const repo_M = new sym.RepositoryFactoryHttp(NODE_M);
+      const accountRepo_M = repo_M.createAccountRepository();
+      //const networkType_M = sym.NetworkType.MAIN_NET;
+      const EPOCH_M = 1615853185;
+
+      // TEST NET
+      const NODE_T = 'https://mikun-testnet.tk:3001'
+      const repo_T = new sym.RepositoryFactoryHttp(NODE_T);
+      const accountRepo_T = repo_T.createAccountRepository();
+      //const networkType_T = sym.NetworkType.TEST_NET;
+      const EPOCH_T = 1667250467;
+
+      let NODE;
+      let accountRepo;
+      //let networkType;
+      let epochAdjustment;
+
+      const aLicePublicAccount = sym.PublicAccount.createFromPublicKey(
+        aLice_pubKey,
+        networkType        // ← クリックした時に上の表か、下の表かで判定する
+      );
+
+      const address = sym.Address.createFromRawAddress(aLicePublicAccount.address.address);
+
+      const check_netType = address.address.charAt(0);     // 1文字目を抽出
+
+      if (check_netType === 'N') {           //ネットワークの判別　 メインネット 
+        NODE = NODE_M;
+        accountRepo = accountRepo_M;
+        // networkType = NET_TYPE_M;
+        epochAdjustment = EPOCH_M;
+
+        console.log("MAIN_NET");
+      } else
+        if (check_netType === 'T') {      // テストネット
+          NODE = NODE_T;
+          accountRepo = accountRepo_T;
+          // networkType = NET_TYPE_T;
+          epochAdjustment = EPOCH_T;
+
+          console.log("TEST_NET");
+        }
+
+
+      console.log("address=========", address)
+      accountRepo.getAccountInfo(address)
+        .toPromise()
+        .then((accountInfo) => {
+          const totalChainImportance = 78429286;
+          // const networkType = sym.NetworkType.TEST_NET;
+          //const epochAdjustment = 1667250467;
+
+          let accountImportance = Number(accountInfo.importance.toString()) / totalChainImportance;
+          if (accountImportance > 0) {
+            accountImportance = Math.round(accountImportance);
+            accountImportance /= 1000000;
+            console.log("Importance=====", accountImportance)
+          } else {
+            swal(`インポータンスが無効です！`, `
+                ${address.address}
+
+                アカウントに 10,000 XYM 以上を保有して、
+                約12時間経つとインポータンスが有効になります                   
+                `);
+            return;
+          }
+
+          let transactionList = [];
+
+          //リモートアカウントの生成
+          const remoteAccount = sym.Account.generateNewAccount(networkType);
+          //VRFアカウントの生成
+          const vrfAccount = sym.Account.generateNewAccount(networkType);
+
+          //委任しているようであれば解除トランザクション作成
+          if (accountInfo.supplementalPublicKeys.linked) {
+            //AccountKeyLinkTransaction （解除）
+            const accountUnLink_tx = sym.AccountKeyLinkTransaction.create(
+              sym.Deadline.create(epochAdjustment),
+              accountInfo.supplementalPublicKeys.linked.publicKey,
+              sym.LinkAction.Unlink,
+              networkType,
+            );
+            transactionList.push(accountUnLink_tx.toAggregate(aLicePublicAccount));
+          }
+
+          if (accountInfo.supplementalPublicKeys.vrf) {
+            //VrfKeyLinkTransaction （解除）
+            const vrfUnLink_tx = sym.VrfKeyLinkTransaction.create(
+              sym.Deadline.create(epochAdjustment),
+              accountInfo.supplementalPublicKeys.vrf.publicKey,
+              sym.LinkAction.Unlink,
+              networkType,
+            );
+            transactionList.push(vrfUnLink_tx.toAggregate(aLicePublicAccount));
+          }
+
+          if (accountInfo.supplementalPublicKeys.node) {
+            //NodeKeyLinkTransaction （解除）
+            const nodeUnLink_tx = sym.NodeKeyLinkTransaction.create(
+              sym.Deadline.create(epochAdjustment),
+              accountInfo.supplementalPublicKeys.node.publicKey,
+              sym.LinkAction.Unlink,
+              networkType,
+            );
+            transactionList.push(nodeUnLink_tx.toAggregate(aLicePublicAccount));
+          }
+
+          //AccountKeyLinkTransaction （リンク）                          
+          const accountLink_tx = sym.AccountKeyLinkTransaction.create(
+            sym.Deadline.create(epochAdjustment),
+            remoteAccount.publicKey,
+            sym.LinkAction.Link,
+            networkType,
+          );
+          transactionList.push(accountLink_tx.toAggregate(aLicePublicAccount));
+
+          //VrfKeyLinkTransaction （リンク）
+          const vrfLink_tx = sym.VrfKeyLinkTransaction.create(
+            sym.Deadline.create(epochAdjustment),
+            vrfAccount.publicKey,
+            sym.LinkAction.Link,
+            networkType,
+          );
+          transactionList.push(vrfLink_tx.toAggregate(aLicePublicAccount));
+
+          //NodeKeyLinkTransaction （リンク）
+          const nodeLink_tx = sym.NodeKeyLinkTransaction.create(
+            sym.Deadline.create(epochAdjustment),
+            node_publicKey,
+            sym.LinkAction.Link,
+            networkType,
+          );
+          transactionList.push(nodeLink_tx.toAggregate(aLicePublicAccount));
+
+          //PersistentDelegationRequestTransactionを作成
+          const persistentDelegationRequest_tx = sym.PersistentDelegationRequestTransaction.createPersistentDelegationRequestTransaction(
+            sym.Deadline.create(epochAdjustment),
+            remoteAccount.privateKey,
+            vrfAccount.privateKey,
+            node_publicKey,
+            networkType,
+          );
+          transactionList.push(persistentDelegationRequest_tx.toAggregate(aLicePublicAccount));
+
+          //アグリゲートでまとめる
+          const aggregate_tx = sym.AggregateTransaction.createComplete(
+            sym.Deadline.create(epochAdjustment),
+            transactionList,
+            networkType,
+            [],
+          ).setMaxFeeForAggregate(100);
+
+          const payload = aggregate_tx.serialize();
+          document.getElementById("delegateButton").onclick = () => {
+            window.location.href = `alice://sign?data=${payload}&type=request_sign_transaction&node=${sym.Convert.utf8ToHex(NODE)}&method=announce`;
+          };
+        });
+    } catch (e) {
+      swal(`エラーが発生しました！`, `${e}`);
+    }
+  </script>
+</body>
+
+</html>
