@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <!--<link type="text/css" rel="stylesheet" href="./css/simplePagination.css"/>-->
   <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"> -->
   <link rel="stylesheet" href="style.css" type="text/css">
@@ -111,7 +112,7 @@
         </li>
         <li><a href="https://xym-monster.netlify.app/" target="_blank">😈 XYM Monster 😈</a></li>
         <li><a href="https://mosaic-center.net/" target="_blank">📝 Mosaic Center 📝</a></li>
-        <li><a href="https://ventus-wallet.tk/Mosaic_Viewer" target="_blank">🖼️ Mosaic Viewer 🖼️</a></li>
+        <li><a href="https://ventus-wallet.net/Mosaic_Viewer" target="_blank">🖼️ Mosaic Viewer 🖼️</a></li>
         <li>
           <div id="hv_checker"></div>
         </li>
@@ -146,27 +147,39 @@
           <button id="js-show-popup_Meta" class="btn-gradient-radius">Metadata</button>
         </div>
         <hr>
-        <div class="container" style="color:#2f4f4f">
+        <div class="container" style="color:blue">
+          <div id="multisig_account"></div>
           <div id="wallet-addr"></div>
         </div>
         <div class="container" style="color:blue;">
           <div id="wallet-xym"></div>
+          <br>
+          <button id="js-show-popup_multisig" class="btn-gradient-radius_2" style="font-size: 20px;">
+            <p id="account_append_info_1"></p>
+            <p id="account_append_info_2"></p>
+          </button>
         </div>
       </div>
 
       <div class="sender-card">
         <h2>Send</h2>
+        <div id="multisig_message" style="color:coral"></div>
         <hr>
         <!-- <a href="https://bit.ly/41uG3VR" target="_blank"><p style="text-align:right"><b>📖SYMBOLタウンリスト　</b></p></a> -->
         <div class="textfiled-wrapper">
           <div>宛　　先</div>
-          <input type="text" id="form-addr" class="textfiled" placeholder="　　　　 address  or  alias / namespace" />
+          <input type="text" id="form-addr" class="textfiled" placeholder="　　　　　　 address   or   namespace" />
         </div>
 
         <div class="textfiled-wrapper">
           <div>モザイク</div>
-          <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select> <!--   セレクトボックス     -->
+          <!-- <select id="form-mosaic_ID" name="form-mosaic_ID" class="textfiled"></select>  -->
+          <!--セレクトボックス-->
+          <div class="form-mosaic_ID"></div>
         </div>
+
+        <div id="hoyu-ryo" style="text-align: right;color: blue"></div>
+        <div id="kigen-gire" style="text-align: right;color: red"></div>
 
         <div class="textfiled-wrapper">
           <div>数　　量</div>
@@ -175,7 +188,7 @@
 
         <div class="textfiled-wrapper">
           <div>メッセージ</div>
-          <input type="text" id="form-message" class="textfiled" style="line-height:3" />
+          <input type="text" id="form-message" class="textfiled2" style="line-height:3" />
         </div>
 
         <div class="textfiled-wrapper">
@@ -232,6 +245,36 @@
             <option value="18">18</option>
             <option value="19">19</option>
             <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <option value="50">50</option>
           </select>
         </div>
 
@@ -287,6 +330,7 @@
           <div class="toggle3">
             <input type="checkbox" name="check3" value="Restrictable" id="Restrictable" />
           </div>
+          　　　　　　<p>※モザイク制限は未実装です/今後対応予定</p>
         </div>
         <div class="Form-Item">
           <p class="Form-Item-Label"><span class="Form-Item-Label-Required">供給量可変</span>　⬇️⬆️</p>
@@ -561,7 +605,7 @@
           style="border-top: 3px solid rgb(0, 204, 255);border-bottom: 0px solid rgb(0, 204, 255)">
           <p class="Form-Item-Label"><span class="Form-Item-Label-Required_r">Address エラーチェック</span></br></p>
           <div class="toggle8">
-            <input type="checkbox" name="check8" value="csv_check" id="csv_check_re" />
+            <input type="checkbox" name="check8" value="csv_check_re" id="csv_check_re" />
           </div>
         </div>
 
@@ -694,8 +738,9 @@
               <option value="2">Namespace</option>
             </select>
           </div>
-          <div id="meta_address"></div>
         </div>
+        <div id="meta_address" style="text-align: right"></div>
+
         <div class="Form-Item_Meta">
           <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Meta">モザイク ID</span></p>
           <div class="Form-Item-Input_Meta" style="text-align: center">
@@ -774,7 +819,9 @@
             <div class="mosaic_ID2"></div> <!--   セレクトボックス     -->
           </div>
         </div>
-        <p style="text-align:center">　　　　　　　　　　　　　　　　　　保有モザイク数が多いと読み込みに時間が掛かります。</p>
+
+        <div id="hoyu-ryo_agg" style="text-align: right;color: blue"></div>
+        <div id="kigen-gire_agg" style="text-align: right;color: red"></div>
 
         <div class="Form-Item_agg">
           <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">数　量</span></br></p>
@@ -786,19 +833,11 @@
           <input type="text" class="Form-Item-Input_agg" id="form-message2" />
         </div>
 
-        <!--   <div class="textfiled-wrapper">
-        <div></div>
-        <select id="form-enc">
-        <option value="0">Plain message　　　(平文)</option>
-        <option value="1">Encrypted message (暗号化)</option>
-        </select>
-      </div>  -->
-
         <br>
         <div class="Form-Item_agg">
           <p class="Form-Item-Label"><span class="Form-Item-Label-Required_agg">Address エラーチェック</span></br></p>
           <div class="toggle6">
-            <input type="checkbox" name="check6" value="csv_check" id="csv_check_agg" />
+            <input type="checkbox" name="check6" value="csv_check_agg" id="csv_check_agg" />
           </div>
         </div>
 
@@ -815,7 +854,7 @@
         </div>
         <br>
         <!-- <p2 id="address_list" style="overflow-wrap: break-word"></p2> -->
-        <br>
+
         <input type="button" onclick="handleSSS_agg();" class="Form-Btn" id="js-popup_agg" value="一括送信" />
         <br>
         <div style="text-align:center">fee Multiprier = 100</div>
@@ -827,9 +866,9 @@
           ~~~~~~~~~　　csvファイルの例　　~~~~~~~~~<br><br>
           <img src="src/agg_csv.png">
           <br><br><a href="https://www.microsoft.com/ja-jp/microsoft-365/excel"
-            target="_blank">Excel</a>を開き、A列に<b>任意の名前</b>、B列に<b>アドレス</b>、または<b>ネームスペース</b>を入力して CSVファイルを作成してください。
+            target="_blank">Excel</a>を開き、A列に<b>任意のラベル</b>、B列に<b>アドレス</b>、または<b>ネームスペース</b>を入力して<br>CSVファイルを「UTF-8(コンマ区切り)(.csv)」で作成してください。
           <br>
-          <br>C列に<b>数量</b>、D列に<b>モザイクID</b>、E列に<b>メッセージ</b>を設定する事も出来ます。
+          <br>C列に<b>数量</b>、D列に<b>モザイクID</b>、E列に<b>メッセージ</b>を個別に設定する事も出来ます。
           <br>1つのファイルに登録出来るのは100件までです。
           <br>
           <br>"," (カンマ) が含まれているとエラーになるので使用しないでください。
@@ -945,6 +984,95 @@
       </div>
     </div>
     <div class="black-background_dona" id="js-black-bg_dona"></div>
+  </div>
+
+  <!-- ------- popup multisig ---------------->
+
+  <div id="js-popup_multisig" class="popup_multisig">
+    <div class="popup_multisig-inner">
+      <div class="close-btn" id="js-close-btn_multisig"><i class="fas fa-times"></i></div>
+      <div class="Form_multisig">
+        <h4>マルチシグアカウントからの送信</h4>
+        <br>
+        <div class="Form-Item_multisig_1">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">マルチシグアカウント</span></br></p>
+          <div class="Form-Item-Input_multisig" style="text-align: center">
+            <div class="multisig_address_select"></div>
+          </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="container-multisig">
+          <div class="Form-Item_multisig">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">宛先</span></br></p>
+            <input type="text" class="Form-Item-Input_multisig" id="multisig_to" />
+          </div>
+          <div class="Form-Item_multisig">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">モザイク</span></br></p>
+            <div class="Form-Item-Input_multisig" style="text-align: center">
+              <div class="multisig_mosaic_select"></div>
+            </div>
+          </div>
+
+          <div id="multisig_hoyu-ryo" style="text-align: right;color: blue"></div>
+          <div id="multisig_kigen-gire" style="text-align: right;color: red"></div>
+
+          <div class="Form-Item_multisig">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">数量</span></br></p>
+            <input type="text" class="Form-Item-Input_multisig" id="multisig_amount" />
+          </div>
+          <div class="Form-Item_multisig">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">メッセージ</span></br></p>
+            <input type="text" class="Form-Item-Input_multisig" id="multisig_message2" style="height: 100px;" />
+          </div>
+          
+          <br>
+          <br>
+          <div style="color:blue;text-align: center;" class="multisig_agg"><big>一括送信 (Aggregate Tx)</big></div>
+          <br>
+          <div class="Form-Item_multisig"
+            style="border-top: 3px solid rgb(0, 204, 255);border-bottom: 0px solid rgb(0, 204, 255)">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">Address エラーチェック</span></br></p>
+            <div class="toggle9">
+              <input type="checkbox" name="check9" value="csv_check_msig" id="csv_check_msig" />
+            </div>
+          </div>
+  
+          <div class="Form-Item_multisig"
+            style="border-top: 0px solid rgb(0, 204, 255);border-bottom: 3px solid rgb(0, 204, 255)">
+            <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">CSVファイルを選択</span></p>
+            <label class="Address_List" style="margin-left: 0px">
+              <input type="file" id="upload-file_msig">Address List
+              <!-- address ファイルを選択 -->
+            </label>
+            <div style="display: inline-block; _display: inline;">
+              <p1>　選択されていません</p1>
+            </div>
+            <div id="kurukuru_msig"></div>
+          </div>
+
+
+        </div>
+        <br>
+        <div style="text-align:center">fee Multiprier = 100</div>
+
+
+        <input type="button" onclick="handleSSS_multisig();" class="Form-Btn" id="js-popup_multisig" value="送信" />
+        <br>
+        <br>
+        <br>
+        <div>マルチシグアカウント(最小承認数２以上)では、起案者のアカウントに <font style="color: red">「10XYM」+「トランザクション手数料」</font>の残高が必要です。
+          連署者の署名が揃うと、ロックされた「10XYM」は返却されます。48時間以内に署名が揃わない場合はネットワークに徴収されます。
+          <br>
+          <br>
+          最小承認数が１のマルチシグアカウントの場合は、起案者のアカウントに「10XYM」は不要で、トランザクション手数料分の残高が必要です。
+        </div>
+
+
+      </div>
+    </div>
+    <div class="black-background_multisig" id="js-black-bg_multisig"></div>
   </div>
 
   <script>
@@ -1138,6 +1266,27 @@
 
     ////////////////////////////////////////////////
 
+    function popupImage_multisig() {  //  multisig　ポップアップ
+      var popup_multisig = document.getElementById('js-popup_multisig');
+      if (!popup_multisig) return;
+      var blackBg = document.getElementById('js-black-bg_multisig');
+      var closeBtn = document.getElementById('js-close-btn_multisig');
+      var showBtn = document.getElementById('js-show-popup_multisig');
+
+      closePopUp(blackBg);
+      closePopUp(closeBtn);
+      closePopUp(showBtn);
+      function closePopUp(elem) {
+        if (!elem) return;
+        elem.addEventListener('click', function () {
+          popup_multisig.classList.toggle('is-show');
+        });
+      }
+    }
+    popupImage_multisig();
+
+    ////////////////////////////////////////////////
+
     function popupImage_dona() {  //  donation　ポップアップ
       var popup_dona = document.getElementById('js-popup_dona');
       if (!popup_dona) return;
@@ -1160,7 +1309,7 @@
     ////////////////////////////////////////////////
 
     //トグルスイッチ
-    $(".toggle1").on("click", function () {
+    $(".toggle1").on("click", function () {            // 供給量可変
       $(".toggle1").toggleClass("checked");
       if (!$('input[name="check1"]').prop("checked")) {
         $(".toggle1 input").prop("checked", true);
@@ -1168,7 +1317,7 @@
         $(".toggle1 input").prop("checked", false);
       }
     });
-    $(".toggle2").on("click", function () {
+    $(".toggle2").on("click", function () {              // 転送可
       $(".toggle2").toggleClass("checked");
       if (!$('input[name="check2"]').prop("checked")) {
         $(".toggle2 input").prop("checked", true);
@@ -1176,7 +1325,7 @@
         $(".toggle2 input").prop("checked", false);
       }
     });
-    $(".toggle3").on("click", function () {
+    $(".toggle3").on("click", function () {              // 制限可
       $(".toggle3").toggleClass("checked");
       if (!$('input[name="check3"]').prop("checked")) {
         $(".toggle3 input").prop("checked", true);
@@ -1184,7 +1333,7 @@
         $(".toggle3 input").prop("checked", false);
       }
     });
-    $(".toggle4").on("click", function () {
+    $(".toggle4").on("click", function () {              // 回収可
       $(".toggle4").toggleClass("checked");
       if (!$('input[name="check4"]').prop("checked")) {
         $(".toggle4 input").prop("checked", true);
@@ -1192,7 +1341,7 @@
         $(".toggle4 input").prop("checked", false);
       }
     });
-    $(".toggle5").on("click", function () {
+    $(".toggle5").on("click", function () {            // モザイク供給量変更
       $(".toggle5").toggleClass("checked");
       if (!$('input[name="check5"]').prop("checked")) {
         $(".toggle5 input").prop("checked", true);
@@ -1201,13 +1350,13 @@
       }
     });
 
-    $(".toggle6").toggleClass("checked");     // 初期値はON にする
+    $(".toggle6").toggleClass("checked");     // 初期値はON にする　　　aggregete 一括送信　アドレスチェック
     if (!$('input[name="check6"]').prop("checked")) {
       $(".toggle6 input").prop("checked", true);
     } else {
       $(".toggle6 input").prop("checked", false);
     }
-    $(".toggle6").on("click", function () {   // agg トグルスイッチをクリックした場合
+    $(".toggle6").on("click", function () {   
       $(".toggle6").toggleClass("checked");
       if (!$('input[name="check6"]').prop("checked")) {
         $(".toggle6 input").prop("checked", true);
@@ -1216,7 +1365,7 @@
       }
     });
 
-    $(".toggle7").on("click", function () {
+    $(".toggle7").on("click", function () {      //  まとめて回収
       $(".toggle7").toggleClass("checked");
       if (!$('input[name="check7"]').prop("checked")) {
         $(".toggle7 input").prop("checked", true);
@@ -1225,18 +1374,34 @@
       }
     });
 
-    $(".toggle8").toggleClass("checked");     // 初期値はON にする
+
+    $(".toggle8").toggleClass("checked");     // 初期値はON にする          ファイルで指定して回収
     if (!$('input[name="check8"]').prop("checked")) {
       $(".toggle8 input").prop("checked", true);
     } else {
       $(".toggle8 input").prop("checked", false);
     }
-    $(".toggle8").on("click", function () {   // agg トグルスイッチをクリックした場合
+    $(".toggle8").on("click", function () {   
       $(".toggle8").toggleClass("checked");
       if (!$('input[name="check8"]').prop("checked")) {
         $(".toggle8 input").prop("checked", true);
       } else {
         $(".toggle8 input").prop("checked", false);
+      }
+    });
+
+    $(".toggle9").toggleClass("checked");     // 初期値はON にする       multisigアカウントからの送信  一括送信
+    if (!$('input[name="check9"]').prop("checked")) {
+      $(".toggle9 input").prop("checked", true);
+    } else {
+      $(".toggle9 input").prop("checked", false);
+    }    
+    $(".toggle9").on("click", function () {
+      $(".toggle9").toggleClass("checked");
+      if (!$('input[name="check9"]').prop("checked")) {
+        $(".toggle9 input").prop("checked", true);
+      } else {
+        $(".toggle9 input").prop("checked", false);
       }
     });
 
@@ -1258,7 +1423,7 @@
     /* ------------------------------
      表示用の関数
      ------------------------------ */
-    function dispLoading_agg(msg) {  // 一括送信用
+    function dispLoading_agg(msg) {  // 一括送信用  ------------------
       // 引数なしの場合、メッセージは非表示。
       if (msg === undefined) msg = "";
 
@@ -1266,12 +1431,25 @@
       var innerMsg = "<div id='innerMsg_agg'>" + msg + "</div>";
 
       // ローディング画像が非表示かどうかチェックし、非表示の場合のみ出力。
-      if ($("#nowLoading_agg").length == 0) {
-        $("#kurukuru_agg").append("<div id='nowLoading_agg'>" + innerMsg + "</div>");
+      if ($("#nowLoading").length == 0) {
+        $("#kurukuru_agg").append("<div id='nowLoading'>" + innerMsg + "</div>");
       }
     }
 
-    function dispLoading_re(msg) {    // 回収モザイク用
+    function dispLoading_msig(msg) {  // msig 一括送信用  ---------------
+      // 引数なしの場合、メッセージは非表示。
+      if (msg === undefined) msg = "";
+
+      // 画面表示メッセージを埋め込み
+      var innerMsg = "<div id='innerMsg_msig'>" + msg + "</div>";
+
+      // ローディング画像が非表示かどうかチェックし、非表示の場合のみ出力。
+      if ($("#nowLoading").length == 0) {
+        $("#kurukuru_msig").append("<div id='nowLoading'>" + innerMsg + "</div>");
+      }
+    }
+
+    function dispLoading_re(msg) {    // 回収モザイク用  -----------------
       // 引数なしの場合、メッセージは非表示。
       if (msg === undefined) msg = "";
 
@@ -1279,35 +1457,40 @@
       var innerMsg = "<div id='innerMsg_re'>" + msg + "</div>";
 
       // ローディング画像が非表示かどうかチェックし、非表示の場合のみ出力。
-      if ($("#nowLoading_re").length == 0) {
-        $("#kurukuru_re").append("<div id='nowLoading_re'>" + innerMsg + "</div>");
+      if ($("#nowLoading").length == 0) {
+        $("#kurukuru_re").append("<div id='nowLoading'>" + innerMsg + "</div>");
       }
     }
 
     /* ------------------------------
      表示ストップ用の関数
      ------------------------------ */
-    function removeLoading_agg() {  // 一括送信用
-      $("#nowLoading_agg").remove();
+    function removeLoading() {  // 一括送信用
+      $("#nowLoading").remove();
     }
 
-    function removeLoading_re() {  // 回収モザイク用
-      $("#nowLoading_re").remove();
-    }
+    /*  function removeLoading_re() {  // 回収モザイク用
+        $("#nowLoading_re").remove();
+      }  */
 
 
   </script>
 
   <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
   <script type="text/javascript" src="https://xembook.github.io/symbol-browserify/metal-on-symbol-0.2.2.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- <script type="text/javascript" src="./js/jquery.simplePagination.js"></script> -->
-  <script type="text/javascript" src="script.js"></script>
-  <script>
 
-    // aggregate送信用ファイルを読み込み　エラーチェック　
-    const input_agg = document.getElementById("upload-file_agg");
-    const input_re = document.getElementById("upload-file_re");
+  <script type="text/javascript" src="script.js"></script>
+
+  <script>
+    // aggregate送信用ファイルを読み込み　エラーチェック　  //  3つが同じ冗長なコードになっているので、出来れば一つに纏めたい。
+    const input_agg = document.getElementById("upload-file_agg");    // aggregate
+    const input_msig = document.getElementById("upload-file_msig");  // multisig
+    const input_re = document.getElementById("upload-file_re");      // モザイク回収
+
+
     //FileReaderの定義
     const reader = new FileReader();
     let address1 = [];
@@ -1324,7 +1507,12 @@
       address1.length = 0;
       address2.length = 0;
       csv_check_agg = document.getElementById("csv_check_agg").checked;  // csvファイルチェックのフラグ
+      csv_check_msig = document.getElementById("csv_check_msig").checked;  // csvファイルチェックのフラグ
       csv_check_re = document.getElementById("csv_check_re").checked;  // csvファイルチェックのフラグ
+
+      console.log("csv_check_agg ====",csv_check_agg);
+      console.log("csv_check_msig ====",csv_check_msig);
+      console.log("csv_check_re ====",csv_check_re);
     });
 
     /////////////////////////// input_agg に変化があった場合 ////////////////////////////////////////////////////////////////////////////
@@ -1355,7 +1543,7 @@
             console.log("CSV_agg チェック =========", csv_check_agg);
             if (csv_check_agg === true) {
               //$('p2').text(""); // address_list 非表示
-              dispLoading_agg(`Address にエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
+              dispLoading_agg(`Address にエラーが無いかチェックしています...`); //  ローディング画像表示
               for (let i = 0; i < address2.length; ++i) {
                 let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
                 address1[i] = cells[1];                //アドレスだけを格納
@@ -1373,7 +1561,7 @@
                 if (cells[4] !== undefined) {              // 5列目がある場合
                   message1[i] = cells[4];
                   if (bytelength(cells[4]) > 1023) {
-                    swal(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
+                    Swal.fire(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
                    1023バイト 以下にしてください。`);
                     return;
                   }
@@ -1392,7 +1580,7 @@
                   const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
                   const ns_check = await nsRepo.getLinkedAddress(namespaceId)
                     .toPromise()
-                    .catch(() => swal(`Namespace or Address Error!!`, `[No.${i + 1}]
+                    .catch(() => Swal.fire(`Namespace or Address Error!!`, `[No.${i + 1}]
 
                              ${address1[i]}`));
 
@@ -1409,7 +1597,7 @@
                   if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T") {
                     const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
                       .toPromise()
-                      .catch(() => swal(`Address Error!!`, `
+                      .catch(() => Swal.fire(`Address Error!!`, `
                           ネットワークに認識されていないアドレスです
 
                           [No.${i + 1}]
@@ -1417,7 +1605,7 @@
                           ${address1[i]}
 
                           
-                          ※トランザクション履歴のないアドレスの場合は、まだネットワークに認識されていませんが、「送信」は可能です`));                                                   // アドレス　有無のチェック
+                          ※トランザクション履歴のないアドレスはネットワークに認識されていませんが、送信は可能です`));                                                   // アドレス　有無のチェック
 
                     alice = sym.Address.createFromRawAddress(address1[i]);                //アカウント制限チェック
                     res = await resAccountRepo.getAccountRestrictions(alice)
@@ -1429,7 +1617,7 @@
                                 ${res.address.address}
 
                                 `);
-                      swal(`アカウント制限有り`, `${res1}`);
+                      Swal.fire(`アカウント制限有り`, `${res1}`);
 
                       for (j = 0; j < res.restrictions.length; ++j) {
                         console.log(`restrictions[${i}][${j}]`, res.restrictions[j]);
@@ -1437,14 +1625,14 @@
                     }
 
                   } else { //先頭が NまたはTでない場合
-                    swal(`Address Error!!`, `[No.${i + 1}]
+                    Swal.fire(`Address Error!!`, `[No.${i + 1}]
 
                         ${address1[i]}`);        // アドレス　有無のチェック
                   }
                 }
               }
-              removeLoading_agg();  //  ローディング画像を非表示
-              swal(`アドレスチェック完了！`, "");
+              removeLoading();  //  ローディング画像を非表示
+              Swal.fire(`アドレスチェック完了！`, "");
             } else {    // エラーチェックしない
               for (let i = 0; i < address2.length; ++i) {
                 let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
@@ -1461,7 +1649,171 @@
                 if (cells[4] !== undefined) {              // 5列目がある場合
                   message1[i] = cells[4];
                   if (bytelength(cells[4]) > 1023) {
-                    swal(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
+                    Swal.fire(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
+                   1023バイト 以下にしてください。`);
+                    return;
+                  }
+                }
+                // 余分なハイフンやスペースを削除
+                if (address1[i].length === 45) {                 //ハイフン有りのアドレスの場合
+                  address1[i] = address1[i].replace(/-/g, "");  // ハイフンを削除する
+                }
+                address1[i] = address1[i].replace(/ /g, "");  // スペース削除
+                address1[i] = address1[i].replace(/　/g, ""); //　スペース削除
+                address1[i] = address1[i].replace(/\r?\n|\r/g, ""); //　改行削除
+
+              }
+              //const address_list = document.getElementById("address_list");
+              //address_list.innerHTML= `${address1}`;
+            }
+
+
+          })(); // async()
+
+          console.log("address1=", address1);
+          console.log("amount1=", amount1);
+          console.log("mosaic1=", mosaic1);
+          console.log("message1=", message1);
+        }
+        reader.readAsText(file1);
+      }
+    });
+
+    /////////////////////////// input_msig に変化があった場合 ////////////////////////////////////////////////////////////////////////////
+
+    input_msig.addEventListener('change', (e) => {
+      file1 = e.target.files[0];
+      console.log("%cfile1===", "color: red", file1);
+      if (typeof file1 === "undefined") {
+        address1.length = 0;
+        address2.length = 0; // ファイル選択が取り消された場合、配列を削除
+        $('p1').text("選択されていません");
+        //$('p2').text(""); // address_list 非表示
+        file = file1;
+      }
+
+      //ファイルの種類を絞る
+      if (file1.type === 'text/csv') {
+        reader.onload = () => {
+
+          address2 = reader.result.split(/\r\n|\n/);   //splitで改行ごとに配列化
+          console.log("address2===============", address2);
+
+          if (address2[address2.length - 1] === "") {  // 改行の後 "" が最後の配列にある場合
+            address2.pop();  //最後の配列要素を削除
+          }
+
+          (async () => {
+            console.log("CSV_msig チェック =========", csv_check_msig);
+            if (csv_check_msig === true) {
+              //$('p2').text(""); // address_list 非表示
+              dispLoading_msig(`Address にエラーが無いかチェックしています...`); //  ローディング画像表示
+              for (let i = 0; i < address2.length; ++i) {
+                let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                address1[i] = cells[1];                //アドレスだけを格納
+
+                console.log("cells[2]===================", cells[2]);
+                if (cells[2] !== undefined) {               //３列目がある場合
+                  amount1[i] = cells[2];
+                  if (cells[2] === "") {
+                    amount1[i] = "0";
+                  }
+                }
+                if (cells[3] !== undefined) {              // 4列目がある場合
+                  mosaic1[i] = cells[3];
+                }
+                if (cells[4] !== undefined) {              // 5列目がある場合
+                  message1[i] = cells[4];
+                  if (bytelength(cells[4]) > 1023) {
+                    Swal.fire(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
+                   1023バイト 以下にしてください。`);
+                    return;
+                  }
+                }
+                // 余分なハイフンやスペースを削除
+                if (address1[i].length === 45) {                 //ハイフン有りのアドレスの場合
+                  address1[i] = address1[i].replace(/-/g, "");  // ハイフンを削除する
+                }
+                address1[i] = address1[i].replace(/ /g, "");  // スペース削除
+                address1[i] = address1[i].replace(/　/g, ""); //　スペース削除
+                address1[i] = address1[i].replace(/\r?\n|\r/g, ""); //　改行削除
+
+                console.log(`address[${i}]============`, address1[i]);
+
+                if (address1[i].length !== 39) {  // 39文字以外の処理
+                  const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
+                  const ns_check = await nsRepo.getLinkedAddress(namespaceId)
+                    .toPromise()
+                    .catch(() => Swal.fire(`Namespace or Address Error!!`, `[No.${i + 1}]
+
+                             ${address1[i]}`));
+
+                  console.log(`%cns_check[${i}]`, "color: red", ns_check);
+                  if (ns_check !== true) { // Namespace がリンクされている場合
+                    address1[i] = ns_check.address;   // Namspace をアドレスに変更
+                  }
+                }
+              }
+
+              const res1 = [];
+              for (let i = 0; i < address1.length; ++i) {
+                if (address1[i].length === 39) {  // 39文字の場合
+                  if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T") {
+                    const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
+                      .toPromise()
+                      .catch(() => Swal.fire(`Address Error!!`, `
+                          ネットワークに認識されていないアドレスです
+
+                          [No.${i + 1}]
+                           
+                          ${address1[i]}
+
+                          
+                          ※トランザクション履歴のないアドレスはネットワークに認識されていませんが、送信は可能です`));                                                   // アドレス　有無のチェック
+
+                    alice = sym.Address.createFromRawAddress(address1[i]);                //アカウント制限チェック
+                    res = await resAccountRepo.getAccountRestrictions(alice)
+                      .toPromise()
+                      .catch(() => console.log(`制限無し[${i + 1}]`));
+
+                    if (res !== undefined) {
+                      res1.push(`[No.${i + 1}]
+                                ${res.address.address}
+
+                                `);
+                      Swal.fire(`アカウント制限有り`, `${res1}`);
+
+                      for (j = 0; j < res.restrictions.length; ++j) {
+                        console.log(`restrictions[${i}][${j}]`, res.restrictions[j]);
+                      }
+                    }
+
+                  } else { //先頭が NまたはTでない場合
+                    Swal.fire(`Address Error!!`, `[No.${i + 1}]
+
+                        ${address1[i]}`);        // アドレス　有無のチェック
+                  }
+                }
+              }
+              removeLoading();  //  ローディング画像を非表示
+              Swal.fire(`アドレスチェック完了！`, "");
+            } else {    // エラーチェックしない
+              for (let i = 0; i < address2.length; ++i) {
+                let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
+                address1[i] = cells[1];                //アドレスだけを格納
+                if (cells[2] !== undefined) {               //３列目がある場合
+                  amount1[i] = cells[2];
+                  if (cells[2] === "") {
+                    amount1[i] = "0";
+                  }
+                }
+                if (cells[3] !== undefined) {              // 4列目がある場合
+                  mosaic1[i] = cells[3];
+                }
+                if (cells[4] !== undefined) {              // 5列目がある場合
+                  message1[i] = cells[4];
+                  if (bytelength(cells[4]) > 1023) {
+                    Swal.fire(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
                    1023バイト 以下にしてください。`);
                     return;
                   }
@@ -1517,7 +1869,7 @@
             console.log("CSV_re チェック =========", csv_check_re);
             if (csv_check_re === true) {
               //$('p2').text(""); // address_list 非表示
-              dispLoading_re(`Address にエラーが無いかチェックしています...(件数が多いと1分くらいかかる場合があります)`); //  ローディング画像表示
+              dispLoading_re(`Address にエラーが無いかチェックしています...`); //  ローディング画像表示
               for (let i = 0; i < address2.length; ++i) {
                 let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
                 address1[i] = cells[1];                //アドレスだけを格納
@@ -1533,7 +1885,7 @@
                 if (cells[4] !== undefined) {              // 5列目がある場合
                   message1[i] = cells[4];
                   if (bytelength(cells[4]) > 1023) {
-                    swal(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
+                    Swal.fire(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
                    1023バイト 以下にしてください。`);
                     return;
                   }
@@ -1550,7 +1902,7 @@
                   const namespaceId = new sym.NamespaceId(address1[i].toLowerCase());
                   const ns_check = await nsRepo.getLinkedAddress(namespaceId)
                     .toPromise()
-                    .catch(() => swal(`Namespace or Address Error!!`, `[No.${i + 1}]
+                    .catch(() => Swal.fire(`Namespace or Address Error!!`, `[No.${i + 1}]
 
                              ${address1[i]}`));
 
@@ -1567,7 +1919,7 @@
                   if (address1[i].charAt(0) === "N" || address1[i].charAt(0) === "T") {
                     const account_check = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(address1[i]))
                       .toPromise()
-                      .catch(() => swal(`Address Error!!`, `[No.${i + 1}]
+                      .catch(() => Swal.fire(`Address Error!!`, `[No.${i + 1}]
 
                           ${address1[i]}`));                                                   // アドレス　有無のチェック
 
@@ -1581,7 +1933,7 @@
                                 ${res.address.address}
 
                                 `);
-                      swal(`アカウント制限有り`, `${res1}`);
+                      Swal.fire(`アカウント制限有り`, `${res1}`);
 
                       for (j = 0; j < res.restrictions.length; ++j) {
                         console.log(`restrictions[${i}][${j}]`, res.restrictions[j]);
@@ -1589,14 +1941,14 @@
                     }
 
                   } else { //先頭が NまたはTでない場合
-                    swal(`Address Error!!`, `[No.${i + 1}]
+                    Swal.fire(`Address Error!!`, `[No.${i + 1}]
 
                         ${address1[i]}`);        // アドレス　有無のチェック
                   }
                 }
               }
-              removeLoading_re();  //  ローディング画像を非表示
-              swal(`アドレスチェック完了！`, "");
+              removeLoading();  //  ローディング画像を非表示
+              Swal.fire(`アドレスチェック完了！`, "");
             } else {    // エラーチェックしない
               for (let i = 0; i < address2.length; ++i) {
                 let cells = address2[i].split(",");    //カンマごとに配列化 (名前とアドレスを分ける)
@@ -1613,7 +1965,7 @@
                 if (cells[4] !== undefined) {              // 5列目がある場合
                   message1[i] = cells[4];
                   if (bytelength(cells[4]) > 1023) {
-                    swal(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
+                    Swal.fire(`[${i + 1}行目]  メッセージのサイズが${bytelength(cells[4])}バイトです!!          
                    1023バイト 以下にしてください。`);
                     return;
                   }

@@ -118,14 +118,42 @@ black-bg(ハンバーガーメニュー解除用bg)
         text-align: right;
 }
 
-#selectCSS{
+#selectCSS {
   color: #007bff;
   background-color: rgb(255, 255, 255,0);
 }
 
-#Node{
+#Node {
   color: #007bff;
   background-color: rgb(255, 255, 255,0);
+}
+
+#page_num1 {
+  border-radius: 5px;
+}
+
+#page_num_mosa1 {
+  border-radius: 5px;
+}
+
+#page_num_namespace {
+  border-radius: 5px;
+}
+
+#page_num_meta {
+  border-radius: 5px;
+}
+
+#page_num_holder1 {
+  border-radius: 5px;
+}
+
+#form-maxfee {
+  border-radius: 5px;
+}
+
+#form-enc {
+  border-radius: 5px;
 }
 
 
@@ -265,6 +293,25 @@ button.accountInfo{
   right: 30px;
 }
 
+#account_append_info_1 {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+#account_append_info_1:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#account_append_info_2 { 
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+#account_append_info_2:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+
 .sender-card {
   background: rgb(255, 255, 255,0.8);
   border-radius: 16px;
@@ -278,6 +325,12 @@ button.accountInfo{
   position: absolute;
   bottom: 80px; 
   left: 40px;
+}
+
+.sender-card #multisig_message {
+  position: relative;
+  top: 0px;
+  left: 100px;
 }
 
 /*label {
@@ -311,6 +364,26 @@ input[type="file"] {
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);
 }
 
+.btn-gradient-radius_2 { /*  グラデーションボタン　mosaic namespace metadata  */
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  width:  100%;
+  padding: 10px 10px;
+  border-radius: 15px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: italic;
+  color: blue;
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);
+  transition: .4s;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
+}
+
+.btn-gradient-radius_2:hover {
+  background-image: linear-gradient(45deg, #ffffff00 0%, #66ffe670 100%);
+}
 
 #button-haichi{
   text-align: right;
@@ -346,6 +419,19 @@ input[type="file"] {
 
 .Address_List:hover{
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%); 
+}
+
+.multisig_agg{
+  padding: 4px;
+  margin-left: 200px;
+  border: solid;
+  border-radius: 15px;
+  font-size: 13px;
+  width: 300px; 
+  font-style: italic;
+  font-weight: bold;
+  color: blue;
+  background-image: linear-gradient(45deg, #ffffff00 0%, #05b7feb2 100%);
 }
 
 .button-txinfo{
@@ -547,7 +633,17 @@ a.btn-style-link_5:hover{
 }
 
 .textfiled {
-  width: 400px;                     /*左の白い背景の大きさ*/
+  width: 400px;                     /*テキストフィールドの大きさ*/
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.textfiled2 {
+  width: 400px;                     /*メッセージフィールド*/
+  height: 60px;
+  border-radius: 5px;
+  border: 1px solid black;
 }
 
 @media screen and (max-width:  480px) {
@@ -610,6 +706,12 @@ ul {
 .container {
   font-size: 24px;
   margin: 20px 20px 20px 0px;
+}
+
+.container-multisig{
+  border: 2px solid rgb(35, 174, 255);
+  border-radius: 10px;
+  padding: 15px;
 }
 
 .wrapper {
@@ -1031,6 +1133,52 @@ hr {
   box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.5);
 }
 
+/* 9    multisigアカウントからの一括送信　アドレスチェック  */      
+.toggle9 {
+  position: relative;
+  width: 50px;
+  height: 30px;
+  margin: 0px 150px;
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.toggle9 input[type=checkbox] {
+  display: none;
+}
+.toggle9:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #e9e9eb;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle9:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.3);
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle9.checked:before {
+  background: #35c759;
+}
+.toggle9.checked:after {
+  left: 23px;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.5);
+}
 
 /**********************************************************/
 /* モーダルウィンドウ    Mosaic  */
@@ -1145,6 +1293,7 @@ hr {
   height: 35px;
   margin-top: 5px;
   margin-bottom: auto;
+  border-radius: 5px;
   }
   @media screen and (max-width: 480px) {
   .divisibility {
@@ -1388,6 +1537,7 @@ hr {
     height: 35px;
     margin-top: 5px;
     margin-bottom: auto;
+    border-radius: 5px;
     }
     @media screen and (max-width: 480px) {
     .re_maxFee {
@@ -1400,6 +1550,7 @@ hr {
       height: 35px;
       margin-top: 5px;
       margin-bottom: auto;
+      border-radius: 5px;
       }
       @media screen and (max-width: 480px) {
       .alias_type {
@@ -1412,6 +1563,7 @@ hr {
         height: 35px;
         margin-top: 5px;
         margin-bottom: auto;
+        border-radius: 5px;
         }
         @media screen and (max-width: 480px) {
         .select1 {
@@ -1424,6 +1576,7 @@ hr {
           height: 35px;
           margin-top: 5px;
           margin-bottom: auto;
+          border-radius: 5px;
           }
           @media screen and (max-width: 480px) {
           .select_r {
@@ -1436,6 +1589,7 @@ hr {
             height: 35px;
             margin-top: 5px;
             margin-bottom: auto;
+            border-radius: 5px;
             }
             @media screen and (max-width: 480px) {
             .Meta_type {
@@ -1448,6 +1602,7 @@ hr {
               height: 35px;
               margin-top: 5px;
               margin-bottom: auto;
+              border-radius: 5px;
               }
               @media screen and (max-width: 480px) {
               .select_Meta {
@@ -1456,22 +1611,37 @@ hr {
               }
 
 .select_m1 {
-                width: 380px;
-                height: 35px;
-                margin-top: 5px;
+                width: 400px;
+                height: 30px;
+                margin-top: 7px;
                 margin-bottom: auto;
+                border-radius: 5px;
                 }
                 @media screen and (max-width: 480px) {
                 .select_m1 {
                 margin-top: 8px;
                 }
-                }               
+                } 
+                
+.select_m2 {
+                width: 300px;
+                height: 35px;
+                margin-top: 5px;
+                margin-bottom: auto;
+                border-radius: 5px;
+                }
+                @media screen and (max-width: 480px) {
+                .select_m2 {
+                margin-top: 8px;
+                }
+                }                 
           
 .select_mo {
                 width: 240px;
                 height: 35px;
                 margin-top: 5px;
                 margin-bottom: auto;
+                border-radius: 5px;
                 }
                 @media screen and (max-width: 480px) {
                 .select_mo {
@@ -1484,6 +1654,7 @@ hr {
                   height: 35px;
                   margin-top: 5px;
                   margin-bottom: auto;
+                  border-radius: 5px;
                   }
                   @media screen and (max-width: 480px) {
                   .select_sup {
@@ -1496,15 +1667,37 @@ hr {
                   height: 35px;
                   margin-top: 5px;
                   margin-bottom: auto;
+                  border-radius: 5px;
                   }
                   @media screen and (max-width: 480px) {
                   .select_N {
                   margin-top: 8px;
                   }
-                  }  
-.meta_address{
+                  }
+.select_msig {
+                  width: 310px;
+                  height: 35px;
+                 /* margin-top: 3px;
+                  margin-bottom: auto;*/
+                  align-items: center;
+                  border-radius: 5px;
+                  }
+                  @media screen and (max-width: 480px) {
+                  .select_msig {
+                  margin-top: 8px;
+                  }
+                  }
+
+.multisig_address_select {
+                    padding-top: 5px;
+                  }
+.multisig_address_select_1 {
+                    padding-top: 5px;
+                  }
+
+.meta_address {
                 font-size: 18px;
-                  }                                
+                  }                
 
 /**********************************************************/
 /* モーダルウィンドウ  sub Namespace  */
@@ -1929,7 +2122,7 @@ hr {
   height: 48px;
   flex: 1;
   width: 100%;
-  max-width: 410px;
+  max-width: 430px;
   background: #eaedf2;
   font-size: 18px;
   }
@@ -2697,6 +2890,161 @@ hr {
   }
   }  
 
+/**********************************************************/
+/* モーダルウィンドウ   multisig  */
+/**********************************************************/
+.popup_multisig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  opacity: 0;
+  visibility: hidden;
+  transition: .6s;
+  display: flex;
+  align-items: center;
+}
+.popup_multisig.is-show {
+  opacity: 1;
+  visibility: visible;
+}
+.popup_multisig-inner {
+  position: relative;
+  /*margin: 0 auto;*/
+  margin: 100px auto auto auto; 
+  padding-bottom: 50px;
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  background-color: #fff;
+  z-index: 3;
+  border-radius: 16px;
+}
+@media screen and (max-width: 480px) {
+  .popup_multisig-inner {
+    height: 100%;
+  }
+}
+.popup_multisig-inner img {
+  width: 100%;
+}
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 70px;
+  height: 70px;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+.close-btn i {
+  padding: 15px;
+  font-size: 40px;
+  color: #333;
+}
+.black-background_multisig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1000%;
+  background-color: rgba(0,0,0,.8);
+  z-index: -1;
+  cursor: pointer;
+}
+
+.Form_multisig {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 4%;
+  max-width: 800px;
+  height: 100%;
+  }
+  
+  .Form-Item_multisig {
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  }
+
+  
+  @media screen and (max-width: 480px) {
+    .Form-Item_multisig {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+    }
+  }
+
+  .Form-Item_multisig_1 {
+    border: 3px solid rgb(204, 35, 255);
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    }
+
+  .Form-Item:nth-child(5) {
+  border-bottom: 1px solid #ddd;
+  }
+  .Form-Item-Label {
+  width: 100%;
+  max-width: 300px;
+  letter-spacing: 0.05em;   
+  /*font-weight: bold;*/
+  font-size: 18px;
+  }
+  .Form-Item-Label-Required_multisig {
+  border-radius: 6px;
+  margin-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 240px;
+  display: inline-block;
+  text-align: center;
+  background: #5bc8ac;
+  color: #fff;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Label-Required_multisig {
+  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 32px;
+  font-size: 10px;
+  }
+  } 
+  .Form-Item-Input_multisig {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-left: 40px;
+  padding-left: 1em;
+  padding-right: 1em;
+  height: 48px;
+  flex: 1;
+  width: 100%;
+  max-width: 410px;
+  background: #eaedf2;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Input_multisig {
+  margin-left: 0;
+  margin-top: 18px;
+  height: 40px;
+  flex: inherit;
+  font-size: 15px;
+  }
+  }  
+
 /*******************************************/
 
 table {
@@ -2713,7 +3061,7 @@ th,td {
 }
 
 /**********************************/
-#nowLoading_agg {
+#nowLoading {
   display: table;
   width: 100%;
   height: 100%;
@@ -2724,7 +3072,7 @@ th,td {
   opacity: 0.9;
 }
 
-#nowLoading_re {
+/*#nowLoading_re {
   display: table;
   width: 100%;
   height: 100%;
@@ -2744,9 +3092,18 @@ th,td {
   left: 0;
   background-color: #fff;
   opacity: 0.5; 
-}
+} */
  
 #innerMsg_agg {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 140px;
+  z-index:20000;
+  background: url("./src/kurukuru.gif") center center no-repeat;
+}
+
+#innerMsg_msig {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
