@@ -53,16 +53,16 @@
 
     td.col-2,
     th.col-2 {
-      width: 18%;
-      max-width: 18%;
+      width: 15%;
+      max-width: 15%;
       text-align: center;
       /* 中央配置 */
     }
 
     td.col-3,
     th.col-3 {
-      width: 15%;
-      max-width: 15%;
+      width: 18%;
+      max-width: 18%;
       text-align: center;
       /* 中央配置 */
     }
@@ -141,13 +141,22 @@
       text-shadow: 0 0 20px #0aafe6;
       line-height: 1.2;
     }
+
+    h1 {
+      color: #855DF7;   
+    }
+
+    h2 {
+      color: #855DF7;
+    }
+
   </style>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
 </head>
 
 <body>
-  <h1>SYMBOL</h1>
+  <h1>SYMBOL Peer Node List </h1>
   <br>
   <div id="date"></div>
   <div id="clock"></div>
@@ -161,7 +170,7 @@
   <br>
   <br>
   <br>
-  <h2 style="text-align:left">Peer Node List (Main Net)</h2>
+  <h2 style="text-align:left">// Main Net //</Main></h2>
   <div
     style="font-family: 'Orbitron', sans-serif; font-size: 15px;color: #03a83a;text-shadow: 0 0 20px #0aafe6;line-height: 1.2;">
     Chain Height</div>
@@ -179,9 +188,9 @@
     <thead>
       <tr>
         <th class="col-1">#</th>
-        <th class="col-2">FriendlyName</th>
-        <th class="col-3">Host</th>
-        <th class="col-4">Host Detail</th>
+        <th class="col-2">Host</th>
+        <th class="col-3">FriendlyName</th>
+        <th class="col-4">Location</th>
         <th class="col-5">Version</th>
         <th class="col-6">PublicKey</th>
       </tr>
@@ -192,7 +201,7 @@
   </table>
   <br>
   <br>
-  <h2 style="text-align:left">Peer Node List (Test Net)</h2>
+  <h2 style="text-align:left">// Test Net //</h2>
 
   <div
     style="font-family: 'Orbitron', sans-serif; font-size: 15px;color: #03a83a;text-shadow: 0 0 20px #0aafe6;line-height: 1.2;">
@@ -211,9 +220,9 @@
     <thead>
       <tr>
         <th class="col-1">#</th>
-        <th class="col-2">FriendlyName</th>
-        <th class="col-3">Host</th>
-        <th class="col-4">Host Detail</th>
+        <th class="col-2">Host</th>
+        <th class="col-3">FriendlyName</th>
+        <th class="col-4">Location</th>
         <th class="col-5">Version</th>
         <th class="col-6">PublicKey</th>
       </tr>
@@ -223,6 +232,7 @@
     </tbody>
   </table>
 
+
   <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
   <script>
@@ -231,7 +241,8 @@
     //const repo = new sym.RepositoryFactoryHttp(NODE);
     //const accountRepo = repo.createAccountRepository();
 
-    let URL = 'https://symbol.services/nodes'  // mainnet
+    let URL = 'https://mainnet.dusanjp.com:3004/nodes'  // mainnet
+    //let URL = 'https://symbol.services/nodes'
 
     // fetch()を使用してデータを取得
     fetch(URL)
@@ -246,6 +257,12 @@
       .then((data) => {
         // rolesプロパティが1の要素のみを抽出
         const filteredData = data.filter((item) => item.roles === 1);
+        //const filteredData = data;
+
+        // hostで昇順にソート
+        filteredData.sort((a, b) => {
+          return a.host.localeCompare(b.host);
+        });
 
         console.log("filterData==", filteredData)
 
@@ -258,57 +275,57 @@
 
         // 抽出したデータを表に挿入
         filteredData.forEach((item) => {
-          if (item.hostDetail) {
+          if (item.hostDetail) {              //  ホスト詳細有り
 
-            if (item.version === 16777989) {
-              rowNum++; // 通し番号をインクリメント      
-              const row = document.createElement('tr');
-              row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', '${item.version}', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
-              <td>${item.host}</td>
-              <td>${item.hostDetail.location}</td>
-              <td>${item.version}</td>
-              <td>${item.publicKey}</td>
-            `;
-              tbody.appendChild(row);
-            }
             if (item.version === 16777990) {
-              rowNum++; // 通し番号をインクリメント      
-              const row = document.createElement('tr');
-              row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', '${item.version}', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
-              <td>${item.host}</td>
-              <td>${item.hostDetail.location}</td>
-              <td>${item.version}</td>
-              <td>${item.publicKey}</td>
-            `;
-              tbody.appendChild(row);
-            }
-          } else {
-            if (item.version === 16777989) {
               rowNum++; // 通し番号をインクリメント
               const row = document.createElement('tr');
               row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', 'Mobile 📱', '${item.version}', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', 'v1.0.3.6', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
               <td>${item.host}</td>
+              <td>${item.friendlyName}</td>
+              <td>${item.hostDetail.location}</td>
+              <td>v1.0.3.6</td>
+              <td>${item.publicKey}</td>
+            `;
+              tbody.appendChild(row);
+            }
+            if (item.version === 16777991) {
+              rowNum++; // 通し番号をインクリメント
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', 'v1.0.3.7', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
+              <td>${item.host}</td>
+              <td>${item.friendlyName}</td>
+              <td>${item.hostDetail.location}</td>
+              <td>v1.0.3.7</td>
+              <td>${item.publicKey}</td>
+            `;
+              tbody.appendChild(row);
+            }
+          } else {                             //　ホスト詳細無し 　モバイル認定
+            if (item.version === 16777990) {
+              rowNum++; // 通し番号をインクリメント
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', 'Mobile 📱', 'v1.0.3.6', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
+              <td>${item.host}</td>
+              <td>${item.friendlyName}</td>
               <td>Mobile 📱</td>
-              <td>${item.version}</td>
+              <td>v1.0.3.6</td>
               <td>${item.publicKey}</td>
             `;
               tbody.appendChild(row);
             }
-            if (item.version === 16777990) {
+            if (item.version === 16777991) {
               rowNum++; // 通し番号をインクリメント
               const row = document.createElement('tr');
               row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', '${item.version}', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', 'Mobile 📱', 'v1.0.3.7', '${item.publicKey}', 'MainNet');">${rowNum}</a></td>
               <td>${item.host}</td>
-              <td></td>
-              <td>${item.version}</td>
+              <td>${item.friendlyName}</td>
+              <td>Mobile 📱</td>
+              <td>v1.0.3.7</td>
               <td>${item.publicKey}</td>
             `;
               tbody.appendChild(row);
@@ -320,11 +337,11 @@
           const cells = document.querySelectorAll('tbody td:nth-child(5)'); // Role列を選択
 
           cells.forEach((cell) => {
-            if (cell.textContent === '16777989') { // 条件を確認
-              cell.style.backgroundColor = 'aquamarine'; // 背景色を変更  
+            if (cell.textContent === 'v1.0.3.6') { // 条件を確認
+              cell.style.backgroundColor = '#dda0dd'; // 背景色を変更
             }
-            if (cell.textContent === '16777990') { // 条件を確認
-              cell.style.backgroundColor = 'skyblue'; // 背景色を変更  
+            if (cell.textContent === 'v1.0.3.7') { // 条件を確認
+              cell.style.backgroundColor = 'aquamarine'; // 背景色を変更
             }
           });
         });
@@ -336,8 +353,8 @@
 
     ////////////////////////////////////////////////////////////////////////
 
-    URL = 'https://2.dusanjp.com:3004/nodes'   // testnet
-    // URL = 'https://testnet.symbol.services/nodes'   // testnet
+    URL = 'https://testnet.dusanjp.com:3004/nodes'   // testnet
+    //URL = 'https://testnet.symbol.services/nodes'   // testnet
 
 
     // fetch()を使用してデータを取得
@@ -354,6 +371,11 @@
         // rolesプロパティが1の要素のみを抽出
         const filteredData = data.filter((item) => item.roles === 1);
 
+        // hostで昇順にソート
+        filteredData.sort((a, b) => {
+          return a.host.localeCompare(b.host);
+        });
+
         // テーブルのtbody要素を取得
         const tbody = document.querySelector('#data-table2 tbody');
 
@@ -362,56 +384,56 @@
 
         // 抽出したデータを表に挿入
         filteredData.forEach((item) => {
-          if (item.hostDetail) {
-            if (item.version === 16777989) {
-              rowNum++; // 通し番号をインクリメント      
-              const row = document.createElement('tr');
-              row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', '${item.version}', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
-              <td>${item.host}</td>
-              <td>${item.hostDetail.location}</td>
-              <td>${item.version}</td>
-              <td>${item.publicKey}</td>
-            `;
-              tbody.appendChild(row);
-            }
+          if (item.hostDetail) {                //  ホスト詳細有り
             if (item.version === 16777990) {
-              rowNum++; // 通し番号をインクリメント      
-              const row = document.createElement('tr');
-              row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', '${item.version}', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
-              <td>${item.host}</td>
-              <td>${item.hostDetail.location}</td>
-              <td>${item.version}</td>
-              <td>${item.publicKey}</td>
-            `;
-              tbody.appendChild(row);
-            }
-          } else {
-            if (item.version === 16777989) {
               rowNum++; // 通し番号をインクリメント
               const row = document.createElement('tr');
               row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', 'Mobile 📱', '${item.version}', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', 'v1.0.3.6', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
               <td>${item.host}</td>
+              <td>${item.friendlyName}</td>
+              <td>${item.hostDetail.location}</td>
+              <td>v1.0.3.6</td>
+              <td>${item.publicKey}</td>
+            `;
+              tbody.appendChild(row);
+            }
+            if (item.version === 16777991) {
+              rowNum++; // 通し番号をインクリメント
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', 'v1.0.3.7', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
+              <td>${item.host}</td>
+              <td>${item.friendlyName}</td>
+              <td>${item.hostDetail.location}</td>
+              <td>v1.0.3.7</td>
+              <td>${item.publicKey}</td>
+            `;
+              tbody.appendChild(row);
+            }
+          } else {                             //  ホスト詳細無し　　モバイル認定
+            if (item.version === 16777990) {
+              rowNum++; // 通し番号をインクリメント
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', 'Mobile 📱', 'v1.0.3.6', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
+              <td>${item.host}</td>
+              <td>${item.friendlyName}</td>
               <td>Mobile 📱</td>
-              <td>${item.version}</td>
+              <td>v1.0.3.6</td>
               <td>${item.publicKey}</td>
             `;
               tbody.appendChild(row);
             }
-            if (item.version === 16777990) {
+            if (item.version === 16777991) {
               rowNum++; // 通し番号をインクリメント
               const row = document.createElement('tr');
               row.innerHTML = `
-              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', '${item.hostDetail ? item.hostDetail.location : ''}', '${item.version}', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
-              <td>${item.friendlyName}</td>
+              <td class="row-number"><a href="#" onclick="Num_Click('${item.friendlyName}', '${item.host}', 'Mobile 📱', 'v1.0.3.7', '${item.publicKey}', 'TestNet');">${rowNum}</a></td>
               <td>${item.host}</td>
-              <td></td>
-              <td>${item.version}</td>
+              <td>${item.friendlyName}</td>
+              <td>Mobile 📱</td>
+              <td>v1.0.3.7</td>
               <td>${item.publicKey}</td>
             `;
               tbody.appendChild(row);
@@ -423,11 +445,11 @@
           const cells = document.querySelectorAll('tbody td:nth-child(5)'); // Role列を選択
 
           cells.forEach((cell) => {
-            if (cell.textContent === '16777989') { // 条件を確認
-              cell.style.backgroundColor = 'aquamarine'; // 背景色を変更  
+            if (cell.textContent === 'v1.0.3.6') { // 条件を確認
+              cell.style.backgroundColor = '#dda0dd'; // 背景色を変更
             }
-            if (cell.textContent === '16777990') { // 条件を確認
-              cell.style.backgroundColor = "skyblue"; // 背景色を変更  
+            if (cell.textContent === 'v1.0.3.7') { // 条件を確認
+              cell.style.backgroundColor = "aquamarine"; // 背景色を変更
             }
           });
         });
@@ -438,7 +460,7 @@
       });
 
     function Num_Click(friendlyName, host, hostDetail, version, node_publicKey, NET_Type) {
-      const arrayBuffer = new TextEncoder().encode(`https://ventus-wallet.tk/peernode/delegate.html?friendlyName=${encodeURIComponent(friendlyName)}&host=${encodeURIComponent(host)}&hostDetail=${encodeURIComponent(hostDetail)}&version=${encodeURIComponent(version)}&node_publicKey=${encodeURIComponent(node_publicKey)}&NET_Type=${encodeURIComponent(NET_Type)}`);
+      const arrayBuffer = new TextEncoder().encode(`https://ventus-wallet.net/peernode/delegate.html?friendlyName=${encodeURIComponent(friendlyName)}&host=${encodeURIComponent(host)}&hostDetail=${encodeURIComponent(hostDetail)}&version=${encodeURIComponent(version)}&node_publicKey=${encodeURIComponent(node_publicKey)}&NET_Type=${encodeURIComponent(NET_Type)}`);
       const callback = Array.from(new Uint8Array(arrayBuffer), byte => byte.toString(16).padStart(2, '0')).join('').toUpperCase();
       const encodedUrl = `alice://sign?type=request_pubkey&callback=${callback}`;
       window.location.href = encodedUrl;
@@ -480,10 +502,10 @@
 
         function updateData() {
           chainHttp.getChainInfo().subscribe(x => {
-            $("#chain_height_M").text(`⛓️ ${x.height} ⛓️`);
+            $("#chain_height_M").text(`⛓️ ${Number(x.height.toString()).toLocaleString()} ⛓️`);
             //console.log("x.height", x.height.toString());
 
-            $("#finalized_height_M").text(`🔒 ${x.latestFinalizedBlock.height} 🔒`);
+            $("#finalized_height_M").text(`🔒 ${Number(x.latestFinalizedBlock.height.toString()).toLocaleString()} 🔒`);
           });
 
         }
@@ -536,10 +558,10 @@
 
         function updateData() {
           chainHttp.getChainInfo().subscribe(x => {
-            $("#chain_height_T").text(`⛓️ ${x.height} ⛓️`);
-           //console.log("x.height", x.height.toString());
+            $("#chain_height_T").text(`⛓️ ${Number(x.height.toString()).toLocaleString()} ⛓️`);
+            //console.log("x.height", x.height.toString());
 
-            $("#finalized_height_T").text(`🔒 ${x.latestFinalizedBlock.height} 🔒`);
+            $("#finalized_height_T").text(`🔒 ${Number(x.latestFinalizedBlock.height.toString()).toLocaleString()} 🔒`);
           });
 
         }

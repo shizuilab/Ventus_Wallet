@@ -31,15 +31,15 @@
       <th>Peer Node info</th>
     </tr>
     <tr>
-      <td>Friendly Name</td>
-      <td id="friendlyName"></td>
-    </tr>
-    <tr>
       <td>Host</td>
       <td id="host"></td>
     </tr>
     <tr>
-      <td>Host Detail</td>
+      <td>Friendly Name</td>
+      <td id="friendlyName"></td>
+    </tr>
+    <tr>
+      <td>Location</td>
       <td id="hostDetail"></td>
     </tr>
     <tr>
@@ -128,7 +128,7 @@
       const EPOCH_M = 1615853185;
 
       // TEST NET
-      const NODE_T = 'https://mikun-testnet.tk:3001'
+      const NODE_T = 'https://testnet1.symbol-mikun.net:3001'
       const repo_T = new sym.RepositoryFactoryHttp(NODE_T);
       const accountRepo_T = repo_T.createAccountRepository();
       //const networkType_T = sym.NetworkType.TEST_NET;
