@@ -141,11 +141,13 @@
       <div class="account-card">
         <!--  <h2><a href="#" onclick="alert(`test`);" class="accountInfo">Account Info</a></h2> -->
         <h2><button id="js-show-popup_aInfo" class="accountInfo">Account Info</button></h2>
-        <div id="m_ns_button" style="text-align: left">　　<button id="js-show-popup_m"
-            class="btn-gradient-radius">Mosaic</button>
+        <div id="m_ns_button" style="text-align: left">
+          <button id="js-show-popup_m" class="btn-gradient-radius">Mosaic</button>
           <button id="js-show-popup_n" class="btn-gradient-radius">Namespace</button>
           <button id="js-show-popup_Meta" class="btn-gradient-radius">Metadata</button>
+        <!--  <button id="js-show-popup_Msig" class="btn-gradient-radius">Multisig</button> -->
         </div>
+          <div id="account_name" style="text-align: left"></div>
         <hr>
         <div class="container" style="color:blue">
           <div id="multisig_account"></div>
@@ -986,7 +988,118 @@
     <div class="black-background_dona" id="js-black-bg_dona"></div>
   </div>
 
-  <!-- ------- popup multisig ---------------->
+  <!--    popup  Multisig Account 作成   ------------------------------------>
+  <div id="js-popup_Msig" class="popup_Msig">
+    <div class="popup_Msig-inner">
+      <div class="close-btn" id="js-close-btn_Msig"><i class="fas fa-times"></i></div>
+      <div class="Form_Msig">
+        <h4>Multisig Account</h4>
+
+        <div class="Form-Item_Msig">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">変換されるアカウント</span></br></p>
+          <div class="Form-Item-Input_Msig" style="text-align: center">
+            <div class="multisig_address_select_2"></div>
+          </div>
+        </div>
+        <div id="default_account" style="text-align: center;font-size: 20px;"></div>
+        <br>
+
+        <div class="Form-Item_Msig">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">　</span></p>
+          <div class="Form-Item-Input_Msig" style="text-align: center">
+            <div class="select_mosaic_Msig"></div>
+          </div>
+        </div>
+
+
+        <div class="Form-Item_Msig">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">最小 承認者数</span></p>
+          <div class="Form-Item-Input_Msig" style="text-align: center">
+            <select class="msig_min_del" id="min_sig">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="Form-Item_Msig">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">最小削除 承認者数</span></p>
+          <div class="Form-Item-Input_Msig" style="text-align: center">
+            <select class="msig_min_del" id="min_del_sig">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="19">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="Form-Item_Msig">
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">トランザクション手数料</span></p>
+          <div class="Form-Item-Input" style="text-align: center">
+            <select class="re_maxFee" id="re_maxFee_Msig">
+              <option value="0.04">0.02 xym (slow)</option>
+              <option value="0.05">0.04 xym</option>
+              <option value="0.07">0.07 xym</option>
+              <option value="0.1">0.1 xym (fast)</option>
+            </select>
+          </div>
+        </div>
+        <br>
+        <input type="button" onclick="Msig_account();" class="Form-Btn" id="js-popup_Msig" value="送信" />
+      </div>
+    </div>
+    <div class="black-background_Msig" id="js-black-bg_Msig"></div>
+  </div>
+
+  <!-- ------- popup multisig 送信 ---------------->
 
   <div id="js-popup_multisig" class="popup_multisig">
     <div class="popup_multisig-inner">
@@ -1026,7 +1139,7 @@
             <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">メッセージ</span></br></p>
             <input type="text" class="Form-Item-Input_multisig" id="multisig_message2" style="height: 100px;" />
           </div>
-          
+
           <br>
           <br>
           <div style="color:blue;text-align: center;" class="multisig_agg"><big>一括送信 (Aggregate Tx)</big></div>
@@ -1038,7 +1151,7 @@
               <input type="checkbox" name="check9" value="csv_check_msig" id="csv_check_msig" />
             </div>
           </div>
-  
+
           <div class="Form-Item_multisig"
             style="border-top: 0px solid rgb(0, 204, 255);border-bottom: 3px solid rgb(0, 204, 255)">
             <p class="Form-Item-Label"><span class="Form-Item-Label-Required_multisig">CSVファイルを選択</span></p>
@@ -1266,7 +1379,28 @@
 
     ////////////////////////////////////////////////
 
-    function popupImage_multisig() {  //  multisig　ポップアップ
+    function popupImage_Msig() {  //  multisig　Account 作成 ポップアップ
+      var popup_Msig = document.getElementById('js-popup_Msig');
+      if (!popup_Msig) return;
+      var blackBg = document.getElementById('js-black-bg_Msig');
+      var closeBtn = document.getElementById('js-close-btn_Msig');
+      var showBtn = document.getElementById('js-show-popup_Msig');
+
+      closePopUp(blackBg);
+      closePopUp(closeBtn);
+      closePopUp(showBtn);
+      function closePopUp(elem) {
+        if (!elem) return;
+        elem.addEventListener('click', function () {
+          popup_Msig.classList.toggle('is-show');
+        });
+      }
+    }
+    popupImage_Msig();
+
+    ////////////////////////////////////////////////
+
+    function popupImage_multisig() {  //  multisig　送信 ポップアップ
       var popup_multisig = document.getElementById('js-popup_multisig');
       if (!popup_multisig) return;
       var blackBg = document.getElementById('js-black-bg_multisig');
@@ -1356,7 +1490,7 @@
     } else {
       $(".toggle6 input").prop("checked", false);
     }
-    $(".toggle6").on("click", function () {   
+    $(".toggle6").on("click", function () {
       $(".toggle6").toggleClass("checked");
       if (!$('input[name="check6"]').prop("checked")) {
         $(".toggle6 input").prop("checked", true);
@@ -1381,7 +1515,7 @@
     } else {
       $(".toggle8 input").prop("checked", false);
     }
-    $(".toggle8").on("click", function () {   
+    $(".toggle8").on("click", function () {
       $(".toggle8").toggleClass("checked");
       if (!$('input[name="check8"]').prop("checked")) {
         $(".toggle8 input").prop("checked", true);
@@ -1395,7 +1529,7 @@
       $(".toggle9 input").prop("checked", true);
     } else {
       $(".toggle9 input").prop("checked", false);
-    }    
+    }
     $(".toggle9").on("click", function () {
       $(".toggle9").toggleClass("checked");
       if (!$('input[name="check9"]').prop("checked")) {
@@ -1510,9 +1644,9 @@
       csv_check_msig = document.getElementById("csv_check_msig").checked;  // csvファイルチェックのフラグ
       csv_check_re = document.getElementById("csv_check_re").checked;  // csvファイルチェックのフラグ
 
-      console.log("csv_check_agg ====",csv_check_agg);
-      console.log("csv_check_msig ====",csv_check_msig);
-      console.log("csv_check_re ====",csv_check_re);
+      console.log("csv_check_agg ====", csv_check_agg);
+      console.log("csv_check_msig ====", csv_check_msig);
+      console.log("csv_check_re ====", csv_check_re);
     });
 
     /////////////////////////// input_agg に変化があった場合 ////////////////////////////////////////////////////////////////////////////

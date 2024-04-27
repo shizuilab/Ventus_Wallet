@@ -289,8 +289,17 @@ button.accountInfo{
 
 .account-card #m_ns_button {
   position: absolute;
-  top: 30px; 
+  top: -40px; 
+  right: 20px;
+}
+
+.account-card #account_name {
+  font-family: 'Itim', cursive;
+  font-size: 30px;
+  position: absolute;
+  top: 20px; 
   right: 30px;
+  text-shadow: 2px 2px 3px white;
 }
 
 #account_append_info_1 {
@@ -348,6 +357,7 @@ input[type="file"] {
 
 .btn-gradient-radius { /*  グラデーションボタン　mosaic namespace metadata  */
   display: inline-block;
+  margin: 3px 0 3px 0; 
   padding: 0px 10px;
   border-radius: 15px;
   text-decoration: none;
@@ -364,7 +374,7 @@ input[type="file"] {
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);
 }
 
-.btn-gradient-radius_2 { /*  グラデーションボタン　mosaic namespace metadata  */
+.btn-gradient-radius_2 { /*  グラデーションボタン　マルチシグアカウント  */
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
@@ -1544,6 +1554,18 @@ hr {
     margin-top: 8px;
     }
     }
+
+.msig_min_del {
+      width: 220px;
+      height: 35px;
+      margin-bottom: auto;
+      border-radius: 5px;
+      }
+      @media screen and (max-width: 480px) {
+      .msig_min_del {
+      margin-top: 8px;
+      }
+      }
  
 .alias_type {
       width: 240px;
@@ -2891,7 +2913,163 @@ hr {
   }  
 
 /**********************************************************/
-/* モーダルウィンドウ   multisig  */
+/* モーダルウィンドウ   multisig  Account */
+/**********************************************************/
+.popup_Msig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  opacity: 0;
+  visibility: hidden;
+  transition: .6s;
+  display: flex;
+  align-items: center;
+}
+.popup_Msig.is-show {
+  opacity: 1;
+  visibility: visible;
+}
+.popup_Msig-inner {
+  position: relative;
+  /*margin: 0 auto;*/
+  margin: 100px auto auto auto; 
+  padding-bottom: 50px;
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  background-color: #fff;
+  z-index: 3;
+  border-radius: 16px;
+}
+@media screen and (max-width: 480px) {
+  .popup_Msig-inner {
+    height: 100%;
+  }
+}
+.popup_Msig-inner img {
+  width: 100%;
+}
+.close-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 70px;
+  height: 70px;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+.close-btn i {
+  padding: 15px;
+  font-size: 40px;
+  color: #333;
+}
+.black-background_Msig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1000%;
+  background-color: rgba(0,0,0,.8);
+  z-index: -1;
+  cursor: pointer;
+}
+
+.Form_Msig {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 4%;
+  max-width: 800px;
+  height: 100%;
+  }
+  
+  .Form-Item_Msig {
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  }
+
+  
+  @media screen and (max-width: 480px) {
+    .Form-Item_Msig {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+    }
+  }
+
+  .Form-Item_Msig_1 {
+    border: 3px solid rgb(204, 35, 255);
+    padding: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    }
+
+  .Form-Item:nth-child(5) {
+  border-bottom: 1px solid #ddd;
+  }
+  .Form-Item-Label {
+  width: 100%;
+  max-width: 300px;
+  letter-spacing: 0.05em;   
+  /*font-weight: bold;*/
+  font-size: 18px;
+  }
+  .Form-Item-Label-Required_Msig {
+  border-radius: 6px;
+  margin-right: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 240px;
+  display: inline-block;
+  text-align: center;
+  background: #5bc8ac;
+  color: #fff;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Label-Required_Msig {
+  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  width: 32px;
+  font-size: 10px;
+  }
+  } 
+  .Form-Item-Input_Msig {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-left: 40px;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 5px;
+  height: 48px;
+  flex: 1;
+  width: 100%;
+  max-width: 410px;
+  background: #eaedf2;
+  font-size: 18px;
+  }
+  @media screen and (max-width: 480px) {
+  .Form-Item-Input_Msig {
+  margin-left: 0;
+  margin-top: 18px;
+  height: 40px;
+  flex: inherit;
+  font-size: 15px;
+  }
+  }  
+
+/**********************************************************/
+/* モーダルウィンドウ   multisig 送信 */
 /**********************************************************/
 .popup_multisig {
   position: absolute;

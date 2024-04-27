@@ -64,7 +64,8 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
     console.log("getActiveNode 戻り値 : ", result);
     NODE = result;
-    const dom_netType = document.getElementById('netType');  // network Type を表示　
+    const dom_netType = document.getElementById('netType');  // network Type を表示
+    const dom_account_name = document.getElementById('account_name'); // account_name 表示　
 
     if (window.SSS.activeNetworkType === 104) { //MAIN_NET     
       epochAdjustment = 1615853185;
@@ -89,6 +90,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
       EXPLORER = "https://symbol.fyi";
       grace_block = 86400;
       dom_netType.innerHTML = `<font color="#ff00ff">< MAIN_NET ></font>`
+      dom_account_name.innerHTML = `<font color="#ff00ff">${window.SSS.activeName}</font>`
       console.log("MAIN_NET");
     }
 
@@ -115,9 +117,9 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
       EXPLORER = "https://testnet.symbol.fyi";
       grace_block = 2880;
       dom_netType.innerHTML = `<font color="ff8c00">< TEST_NET ></font>`
+      dom_account_name.innerHTML = `<font color="#ff8c00">${window.SSS.activeName}</font>`
       console.log("TEST_NET");
     }
-
 
     const address = sym.Address.createFromRawAddress(window.SSS.activeAddress);
 
@@ -388,31 +390,39 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
               jsSelectBox_msig.appendChild(select_msig);
             });
 
-            // select_msig をコピーして新しい要素を作成 
-            /*          const select_msig_copy = select_msig.cloneNode(true);
-          
-                      const jsSelectBox_msig2 = document.querySelector('.multisig_address_select_1');   //  Aggregate 画面  マルチシグアドレス
-                      jsSelectBox_msig2.classList.add('select_msig');
-                      jsSelectBox_msig2.appendChild(select_msig_copy);
-          
-                      const select_m13 = document.querySelectorAll('.select_msig');
-          
-                      console.log("select_msig_All====",select_m13)
-          
-                      // セレクトボックスの値が変更されたときに実行される関数
-                      function handleChange_m13(event) {
-                        // 他のセレクトボックスの値を変更する
-                        select_m13.forEach(select => {
-                          if (select !== event.target) {
-                            select.value = event.target.value;
-                          }
-                        });
-                      }
-          
-                      // 全てのセレクトボックスにchangeイベントリスナーを追加
-                      select_m13.forEach(select => {
-                        select.addEventListener('change', handleChange_m13);
-                      });     */
+
+            // select_msig をコピーして新しい要素を作成
+            const select_msig_copy = select_msig.cloneNode(true);
+
+            const jsSelectBox_msig2 = document.querySelector('.multisig_address_select_2');
+            jsSelectBox_msig2.appendChild(select_msig_copy);
+
+            const select_m_sig = document.querySelectorAll('.select_msig');
+
+            const default_account = document.getElementById("default_account");   //デフォルトのアカウントを表示しておく
+            default_account.innerHTML = `<font style="color:blue">${window.SSS.activeAddress}</font>`;
+
+            function handleChange_msig(event) {        // セレクトボックスの値が変更されたときに実行される関数
+
+              // 他のセレクトボックスの値を変更する
+              select_m_sig.forEach(select => {
+                if (select !== event.target) {
+                  select.value = event.target.value;
+                  if (event.target.value !== window.SSS.activeAddress) {
+                    default_account.innerHTML = "";
+                  } else {
+                    default_account.innerHTML = `<font style="color:blue">${window.SSS.activeAddress}</font>`;
+                  }
+
+                }
+              });
+
+            }
+
+            // 全てのセレクトボックスにchangeイベントリスナーを追加
+            select_m_sig.forEach(select => {
+              select.addEventListener('change', handleChange_msig);
+            });
 
           }, err => $("#js-show-popup_multisig").remove())
 
@@ -1075,7 +1085,6 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
         //select要素を取得する
 
         const select_mosaic = [];
-        // account_Info("NAXVQXPR6U32KAMNQXPFOF44VDUN4F7WQSEKRLA");
 
         ///////////////////////////////////////////////////////
 
@@ -1266,35 +1275,37 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
         networkType
       );
 
+      bondedListener = listener.aggregateBondedAdded(alice_1.address);
+
+      bondedHttp = txRepo.search({
+        address: alice_1.address,
+        group: sym.TransactionGroup.Partial
+      })
+        .pipe(
+          op.delay(2000),
+          op.mergeMap(page => page.data)
+        );
+
+
       //マルチシグアカウントの情報を取得
       msigRepo.getMultisigAccountInfo(sym.Address.createFromRawAddress(window.SSS.activeAddress))
         .subscribe(msig => {
-
-          const bondedListener = listener.aggregateBondedAdded(alice_1.address);
-
-          const bondedHttp = txRepo.search({
-            address: alice_1.address,
-            group: sym.TransactionGroup.Partial
-          })
-            .pipe(
-              op.delay(2000),
-              op.mergeMap(page => page.data)
-            );
 
           console.log("%cbondedListener====================", "color: red", bondedListener)
 
           let popupCount = 0; // 表示されたポップアップの数をカウントする変数
 
           bondedSubscribe = function (observer) {
+            console.log("%c導通チェック=================  1271", "color:red")
             observer.pipe(
 
               //すでに署名済みでない場合
               op.filter(_ => {
-                console.log("%c導通チェック=================  1279", "color:red")
+                console.log("%c導通チェック=================  1276", "color:red")
                 return !_.signedByAccount(alice_1.publicKey);
               })
             ).subscribe(_ => {
-              console.log("%c導通チェック=================  1283", "color:red")
+              console.log("%c導通チェック=================  1280", "color:red");
 
               txRepo.getTransactionsById(
                 [_.transactionInfo.hash],
@@ -1365,7 +1376,6 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                 });
             });
           }
-
           bondedSubscribe(bondedListener);
           bondedSubscribe(bondedHttp);
 
@@ -1866,6 +1876,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
                 const dom_aggTx = document.createElement('div');
                 const dom_mosaic = document.createElement('div');
+                const dom_receive = document.createElement('div');
                 const dom_NFT = document.createElement('div');
                 const dom_mosaic_img = document.createElement('div');
 
@@ -1914,8 +1925,13 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                 dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
 
                 xym_mon(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT, window.SSS.activePublicKey); // xym_mon NFT画像表示
-                nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示 
-
+                nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示
+                if (aggTx[0].innerTransactions.length > 1) { 
+                  if(aggTx[0].innerTransactions[1].recipientAddress.address === window.SSS.activeAddress){
+                    dom_receive.innerHTML = `<div style="text-align: center"><font color="#008000" size="+1" >😊⬅️🖼️</font></div>`;
+                  }
+                  nftdrive(aggTx[0].innerTransactions[1].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示  
+                }
                 if (aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex() !== "6BED913FA20223F8" && aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex() !== "72C0212E67A08BCE") { // XYMのモザイク画像は表示しない
                   let xhr = new XMLHttpRequest();     // mosaic-center の画像を表示
                   xhr.open("GET", `https://mosaic-center.net/db/api.php?mode=search&mosaicid=${aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex()}`, false);
@@ -1941,6 +1957,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                 dom_tx.appendChild(dom_aggTx);                     // dom_aggTx をdom_txに追加
                 dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
                 dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
+                dom_tx.appendChild(dom_receive);                   // dom_receive をdom_txに追加
                 dom_tx.appendChild(dom_NFT);                       // dom_NFT をdom_txに追加
                 dom_tx.appendChild(dom_mosaic_img);                // dom_mosaic_img をdom_txに追加
 
@@ -2567,14 +2584,14 @@ async function handleSSS_multisig() {
 
       } else { // 最小承認数が　２以上の場合   -------------------------------------------------------
         if (address1.length === 0) {  // CSVファイルを選択しない場合
-        aggregateTx = sym.AggregateTransaction.createBonded(
-          sym.Deadline.create(epochAdjustment, 48),  //Deadline
-          [
-            tx.toAggregate(publicAccount),
-          ],
-          networkType,
-          []
-        ).setMaxFeeForAggregate(100, msig.minApproval);
+          aggregateTx = sym.AggregateTransaction.createBonded(
+            sym.Deadline.create(epochAdjustment, 48),  //Deadline
+            [
+              tx.toAggregate(publicAccount),
+            ],
+            networkType,
+            []
+          ).setMaxFeeForAggregate(100, msig.minApproval);
         } else {                       // CSVファイルを選択した場合
           aggregateTx = sym.AggregateTransaction.createBonded(
             sym.Deadline.create(epochAdjustment, 48),  //Deadline
@@ -3459,6 +3476,7 @@ function select_Page() {
 
               const dom_aggTx = document.createElement('div');
               const dom_mosaic = document.createElement('div');
+              const dom_receive = document.createElement('div');
               const dom_NFT = document.createElement('div');
               const dom_mosaic_img = document.createElement('div');
 
@@ -3506,8 +3524,13 @@ function select_Page() {
               dom_aggTx.innerHTML = `<font color="#FF00FF">aggTx(${aggTx[0].innerTransactions.length})　${getTransactionType(aggTx[0].innerTransactions[0].type)}</font>`;  // アグリの数　と　Type
 
               xym_mon(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT, window.SSS.activePublicKey); // xym_mon NFT画像表示
-              nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示 
-
+              nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示
+              if (aggTx[0].innerTransactions.length > 1) { 
+                if(aggTx[0].innerTransactions[1].recipientAddress.address === window.SSS.activeAddress){
+                  dom_receive.innerHTML = `<div style="text-align: center"><font color="#008000" size="+1" >😊⬅️🖼️</font></div>`;
+                }
+                nftdrive(aggTx[0].innerTransactions[1].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示  
+              }
               if (aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex() !== "6BED913FA20223F8" && aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex() !== "72C0212E67A08BCE") { // XYMのモザイク画像は表示しない
                 let xhr = new XMLHttpRequest();     // mosaic-center の画像を表示
                 xhr.open("GET", `https://mosaic-center.net/db/api.php?mode=search&mosaicid=${aggTx[0].innerTransactions[0].mosaics[0].id.id.toHex()}`, false);
@@ -3533,7 +3556,8 @@ function select_Page() {
               dom_tx.appendChild(dom_aggTx);                     // dom_aggTx をdom_txに追加
               dom_tx.appendChild(dom_mosaic);                    // dom_mosaic をdom_txに追加 
               dom_tx.appendChild(dom_amount);                    // dom_amount をdom_txに追加
-              dom_tx.appendChild(dom_NFT);                    // dom_NFT をdom_txに追加
+              dom_tx.appendChild(dom_receive);                   // dom_receive をdom_txに追加
+              dom_tx.appendChild(dom_NFT);                       // dom_NFT をdom_txに追加
               dom_tx.appendChild(dom_mosaic_img);                // dom_mosaic_img をdom_txに追加
 
               await new Promise(resolve => setTimeout(resolve, 100)); // 0.1秒処理を止める
