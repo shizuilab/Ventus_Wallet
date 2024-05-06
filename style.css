@@ -631,8 +631,10 @@ a.btn-style-link_5:hover{
   }
 }
 
+
 .mosaic_img:hover{
-  opacity: 0.5; /* ホバー時の透明度 */  
+  opacity: 0.8; /* ホバー時の透明度 */  
+  
 }
 
 
@@ -718,6 +720,37 @@ ul {
   margin: 20px 20px 20px 0px;
 }
 
+.container2 {        /* 追加する連署者*/
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* 各項目の下に10ピクセルのマージンを追加 */
+}
+.delete-button {
+  cursor: pointer;
+}
+.input-container1{
+  width: 300px;
+  border-radius: 6px;
+  margin-top: 2px;
+}
+
+.input-container2{
+  border-radius: 6px;
+  margin-top: 2px;
+  background-color: lemonchiffon;
+  transition: 0.3s;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
+}
+.input-container2:hover{
+  opacity: 0.6;
+}
+
+#display-container {
+  display: flex;
+  flex-direction: column-reverse; /* 表示コンテナの項目を逆順に配置 */
+  align-items: flex-end; /* 右側に配置 */
+}
+
 .container-multisig{
   border: 2px solid rgb(35, 174, 255);
   border-radius: 10px;
@@ -765,6 +798,54 @@ hr {
 */
 
 /******** iOS風トグルスイッチ　**************************/
+
+/* 0 */
+.toggle0 {
+  position: relative;
+  width: 50px;
+  height: 30px;
+  margin: 0px 50px;
+  border-radius: 50px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.toggle0 input[type=checkbox] {
+  display: none;
+}
+.toggle0:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #6e6e6e;
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle0:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.3);
+  -webkit-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+.toggle0.checked:before {
+  background: #35c759;
+}
+.toggle0.checked:after {
+  left: 23px;
+  box-shadow: 0 9px 28px -6px rgba(0, 0, 0, 0.5);
+}
+
 /* 1 */
 .toggle1 {
   position: relative;
@@ -2982,7 +3063,7 @@ hr {
   margin-left: auto;
   margin-right: auto;
   padding: 0 4%;
-  max-width: 800px;
+  max-width: 900px;
   height: 100%;
   }
   

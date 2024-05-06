@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="style.css" type="text/css">
   <meta http-equiv="content-type" charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="Permissions-Policy" content="xr-spatial-tracking=*">
 
   <script src="./js/jquery-3.6.3.min.js"></script>
   <script src="./js/js.cookie.js"></script>
@@ -145,9 +146,9 @@
           <button id="js-show-popup_m" class="btn-gradient-radius">Mosaic</button>
           <button id="js-show-popup_n" class="btn-gradient-radius">Namespace</button>
           <button id="js-show-popup_Meta" class="btn-gradient-radius">Metadata</button>
-        <!--  <button id="js-show-popup_Msig" class="btn-gradient-radius">Multisig</button> -->
+          <button id="js-show-popup_Msig" class="btn-gradient-radius">Multisig</button>
         </div>
-          <div id="account_name" style="text-align: left"></div>
+        <div id="account_name" style="text-align: left"></div>
         <hr>
         <div class="container" style="color:blue">
           <div id="multisig_account"></div>
@@ -179,7 +180,6 @@
           <!--セレクトボックス-->
           <div class="form-mosaic_ID"></div>
         </div>
-
         <div id="hoyu-ryo" style="text-align: right;color: blue"></div>
         <div id="kigen-gire" style="text-align: right;color: red"></div>
 
@@ -194,11 +194,14 @@
         </div>
 
         <div class="textfiled-wrapper">
-          <div>平文 / 暗号化メッセージ</div>
-          <select id="form-enc">
+          <div>メッセージの暗号化</div>
+          <!-- <select id="form-enc">
             <option value="0">Plain message　　　(平文)</option>
             <option value="1">Encrypted message (暗号化)</option>
-          </select>
+          </select> -->
+          <div class="toggle0">
+            <input type="checkbox" name="check0" value="form-enc" id="form-enc" />
+          </div>
         </div>
 
         <div class="textfiled-wrapper">
@@ -1003,20 +1006,26 @@
         </div>
         <div id="default_account" style="text-align: center;font-size: 20px;"></div>
         <br>
+        <div id="rensyosya" style="text-align: left"></div>
+        <div id="display-container"></div>
 
+        <br>
         <div class="Form-Item_Msig">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">　</span></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">追加する連署者</span></p>
           <div class="Form-Item-Input_Msig" style="text-align: center">
-            <div class="select_mosaic_Msig"></div>
+
+              <div id="input-container">
+                <input type="text" id="input-text" class="input-container1" placeholder="　　　address  or  publicKey" >
+                <button id="add-button" class="input-container2">➕</button>
+              </div>
+
           </div>
         </div>
 
-
         <div class="Form-Item_Msig">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">最小 承認者数</span></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">最小　承認者数</span></p>
           <div class="Form-Item-Input_Msig" style="text-align: center">
             <select class="msig_min_del" id="min_sig">
-              <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -1047,10 +1056,9 @@
         </div>
 
         <div class="Form-Item_Msig">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">最小削除 承認者数</span></p>
+          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">最小削除　承認者数</span></p>
           <div class="Form-Item-Input_Msig" style="text-align: center">
             <select class="msig_min_del" id="min_del_sig">
-              <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -1081,19 +1089,15 @@
         </div>
 
 
-        <div class="Form-Item_Msig">
-          <p class="Form-Item-Label"><span class="Form-Item-Label-Required_Msig">トランザクション手数料</span></p>
-          <div class="Form-Item-Input" style="text-align: center">
-            <select class="re_maxFee" id="re_maxFee_Msig">
-              <option value="0.04">0.02 xym (slow)</option>
-              <option value="0.05">0.04 xym</option>
-              <option value="0.07">0.07 xym</option>
-              <option value="0.1">0.1 xym (fast)</option>
-            </select>
-          </div>
-        </div>
         <br>
         <input type="button" onclick="Msig_account();" class="Form-Btn" id="js-popup_Msig" value="送信" />
+
+        <br>
+        <div style="text-align:center">fee Multiprier = 100</div>
+        <br>
+        <br>
+        <div style="text-align:center;color:darkorange">テストネットの環境でマルチシグアカウント作成の動作確認をしてから、<br>メインネットで作業する事をオススメします。</div>
+
       </div>
     </div>
     <div class="black-background_Msig" id="js-black-bg_Msig"></div>
@@ -1443,6 +1447,14 @@
     ////////////////////////////////////////////////
 
     //トグルスイッチ
+    $(".toggle0").on("click", function () {            // メッセージ暗号化
+      $(".toggle0").toggleClass("checked");
+      if (!$('input[name="check0"]').prop("checked")) {
+        $(".toggle0 input").prop("checked", true);
+      } else {
+        $(".toggle0 input").prop("checked", false);
+      }
+    });
     $(".toggle1").on("click", function () {            // 供給量可変
       $(".toggle1").toggleClass("checked");
       if (!$('input[name="check1"]').prop("checked")) {
@@ -1610,7 +1622,7 @@
 
   </script>
 
-  <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.4.js"></script>
+  <script type="text/javascript" src="https://xembook.github.io/nem2-browserify/symbol-sdk-pack-2.0.5.js"></script>
   <script type="text/javascript" src="https://xembook.github.io/symbol-browserify/metal-on-symbol-0.2.2.js"></script>
   <!-- SweetAlert2 JS -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

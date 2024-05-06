@@ -14,7 +14,7 @@ window.onload = function () {     // ハンバーガーメニュー
 let harvestPageNumber = 0;
 
 const dom_version = document.getElementById('version');
-dom_version.innerHTML = `v1.0.34　|　Powered by SYMBOL`;
+dom_version.innerHTML = `v1.0.36　|　Powered by SYMBOL`;
 
 const sym = require('/node_modules/symbol-sdk');
 const op = require("/node_modules/rxjs/operators");
@@ -43,6 +43,11 @@ let metaRepo;
 let metaService;
 let resMosaicRepo;
 let msigRepo;
+let cosig = [];
+let cosig2 = [];
+let cosig_del = [];
+let msig;
+let inputValue;
 
 setTimeout(() => {  //////////////////  指定した時間後に実行する  ////////////////////////////////////////////////
 
@@ -331,9 +336,121 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
         //$("#account_importance").empty();
         //$("multisig_message").empty();
 
-        //マルチシグ
+        const default_account = document.getElementById("default_account");   //デフォルトのアカウントを表示しておく
+        default_account.innerHTML = `<font style="color:blue">< ${window.SSS.activeName} >　　${window.SSS.activeAddress}</font>`;
+
+        // 追加する連署者の要素を取得
+        let inputText = document.getElementById('input-text');
+        const addButton = document.getElementById('add-button');
+        const displayContainer = document.getElementById('display-container');
+
+
+        // 入力値を表示に追加する関数
+        function addInputToDisplay() {
+
+          if (inputText.value.trim().length === 39) {
+            inputValue = sym.Address.createFromRawAddress(inputText.value.trim()); //アドレスクラスの生成
+          }
+          else if (inputText.value.trim().length === 64) {   // 公開鍵クラスの生成
+            const pubtoaddr = sym.PublicAccount.createFromPublicKey(
+              inputText.value.trim(),
+              networkType
+            )
+            inputValue = sym.Address.createFromRawAddress(pubtoaddr.address.address);
+          } else {
+            Swal.fire({
+              title: `<font color="coral">入力エラー！！
+
+            追加したアドレス または 公開鍵を確認してください！</font>` })
+            inputValue = '';
+            inputText.value = '';
+            return;
+          }
+
+          if (default_account.innerHTML !== "") {
+            if (inputValue.address === window.SSS.activeAddress) {
+              Swal.fire({
+                title: `<font color="coral">同じアカウントは
+                連署者に追加出来ません！</font>` })
+              inputValue = '';
+              inputText.value = '';
+              return;
+            }
+
+          }
+
+          if (cosig.some(item => item.address === inputValue.address)) {
+            Swal.fire({ title: `<font color="coral">既に追加済みのアカウントです！</font>` })
+            inputValue = '';
+            inputText.value = '';
+            return;
+          } else {
+            // 新しい要素を配列に追加
+            cosig.push(inputValue);
+            cosig2.push(inputValue);
+          }
+
+          // 表示用の要素を作成し、表示コンテナに追加
+          const newItem = document.createElement('div');
+          newItem.classList.add('container2');
+
+          const addressSpan = document.createElement('span');
+          addressSpan.innerHTML = `<font style="color: orange">追加する連署者</font>　　${inputValue.address}`;
+          newItem.appendChild(addressSpan);
+
+          const deleteButton = document.createElement('span');
+          deleteButton.classList.add('delete-button');
+          deleteButton.textContent = '　🗑️';
+
+          // 削除ボタンのクリックイベントリスナーを追加
+          deleteButton.addEventListener('click', () => {
+            console.log("導通チェック　　🗑️ボタン　１");
+
+            // 対応するアドレスを取得
+            const addressToRemove = addressSpan.textContent.replace('追加する連署者', '').trim();
+
+            // 配列から対応するアドレスを削除
+            const index = cosig.findIndex(item => item.address === addressToRemove);
+            if (index !== -1) {
+              cosig.splice(index, 1);
+            }
+            const index2 = cosig2.findIndex(item => item.address === addressToRemove);
+            if (index2 !== -1) {
+              cosig2.splice(index2, 1);
+            }
+
+            newItem.remove(); // 表示から項目を削除
+            console.log("%ccosig=====", "color: red", cosig); // 削除
+            console.log("%ccosig2=====", "color: red", cosig2); // 削除
+          });
+
+          newItem.appendChild(deleteButton);
+          displayContainer.insertBefore(newItem, displayContainer.firstChild); // 新しい項目を最初の子要素として追加
+
+
+          // 入力ボックスの値をクリア
+          inputText.value = '';
+          console.log("%ccosig=====", "color: red", cosig);  // 追加
+          console.log("%ccosig2=====", "color: red", cosig2);  // 追加
+        }
+
+
+        // ➕ボタンのクリックイベントリスナー
+        addButton.addEventListener('click', addInputToDisplay);
+
+        // 入力フィールドでEnterキーが押されたときのイベントリスナー
+        inputText.addEventListener('keypress', (event) => {
+          if (event.key === 'Enter') {
+            addInputToDisplay();
+          }
+        });
+
+        //////////////////// マルチシグ情報 //////////////////////////////////////////////////
+
         msigRepo.getMultisigAccountInfo(accountInfo.address)
           .subscribe(msig => {
+
+            console.log("%cMultisig_info ===", "color: red", msig);
 
             //連署者アカウント
             var parentKeys = "";
@@ -399,10 +516,18 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
             const select_m_sig = document.querySelectorAll('.select_msig');
 
-            const default_account = document.getElementById("default_account");   //デフォルトのアカウントを表示しておく
-            default_account.innerHTML = `<font style="color:blue">${window.SSS.activeAddress}</font>`;
-
             function handleChange_msig(event) {        // セレクトボックスの値が変更されたときに実行される関数
+
+              cosig = [];
+              cosig2 = [];
+              const rensyosya = document.getElementById("rensyosya");
+              rensyosya.innerHTML = "";
+
+              const select_min_sig = document.getElementById('min_sig');          // 署名者のセレクトボックスに0を追加する
+              const select_min_del_sig = document.getElementById('min_del_sig');  //
+
+              const options = select_min_sig.getElementsByTagName('option');
+              const options2 = select_min_del_sig.getElementsByTagName('option');
 
               // 他のセレクトボックスの値を変更する
               select_m_sig.forEach(select => {
@@ -410,10 +535,101 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                   select.value = event.target.value;
                   if (event.target.value !== window.SSS.activeAddress) {
                     default_account.innerHTML = "";
-                  } else {
-                    default_account.innerHTML = `<font style="color:blue">${window.SSS.activeAddress}</font>`;
-                  }
 
+                    msigRepo.getMultisigAccountInfo(sym.Address.createFromRawAddress(event.target.value))
+                      .subscribe(msig2 => {
+                        console.log("%cマルチシグアカウント情報 ===", "color: red", msig2);
+
+                        // 0を追加してセレクトボックスを更新
+                        const zeroOption = document.createElement('option');
+                        zeroOption.text = '0';
+                        zeroOption.value = '0';
+                        select_min_sig.insertBefore(zeroOption, options[0]); // 0を先頭に追加
+                        select_min_sig.value = '0'; // 0を選択状態にする
+
+                        const zeroOption2 = document.createElement('option');
+                        zeroOption2.text = '0';
+                        zeroOption2.value = '0';
+                        select_min_del_sig.insertBefore(zeroOption2, options2[0]); // 0を先頭に追加
+                        select_min_del_sig.value = '0'; // 0を選択状態にする
+
+                        rensyosya.innerHTML = `<span style="color: blue;font-size:  17px"><i>　　　　　　　　　　　　　　　連署者　　${msig2.minApproval}/${msig2.cosignatoryAddresses.length}　トランザクション承認に必要な署名数<br>　　　　　　　　　　　　　　　　　　　　${msig2.minRemoval}/${msig2.cosignatoryAddresses.length}　連署者の削除に必要な署名数</i></span><br><br>`;
+                        displayContainer.innerHTML = "";
+                        cosig = msig2.cosignatoryAddresses;
+
+                        console.log("%ccosig=====", "color: red", cosig);  // 
+                        console.log("%ccosig2=====", "color: red", cosig2);  //
+
+                        // cosig配列のアドレスをHTMLに表示
+                        cosig.forEach(inputValue => {
+                          const newItem = document.createElement('div');
+                          newItem.classList.add('container2');
+
+                          const textSpan = document.createElement('span');
+                          textSpan.textContent = inputValue.address;
+                          newItem.appendChild(textSpan);
+
+                          const deleteButton = document.createElement('span');
+                          deleteButton.textContent = '　🗑️';
+                          deleteButton.classList.add('delete-button');
+
+                          // ゴミ箱ボタンがクリックされたら、打ち消し線を引くか解除し、cosig_delに追加または削除する
+                          deleteButton.addEventListener('click', () => {
+                            console.log("導通チェック　　🗑️ボタン　２");
+                            if (textSpan.style.textDecoration === 'line-through') {
+                              // 打ち消し線が引かれている場合、解除し、cosig_delから削除する
+                              textSpan.style.textDecoration = '';
+                              textSpan.style.color = 'black'; // テキストの色を黒に戻す
+                              newItem.querySelector('.cosig-text').remove(); // 「署名者を削除：」を削除
+                              console.log("inputValue===", inputValue);
+                              const index = cosig_del.indexOf(inputValue);
+                              if (index !== -1) {
+                                cosig_del.splice(index, 1);
+                              }
+                            } else {
+                              // 打ち消し線が引かれていない場合、引いて、cosig_delに追加する
+                              textSpan.style.textDecoration = 'line-through';
+                              textSpan.style.color = 'red'; // テキストの色を赤にする
+                              const cosigText = document.createElement('span');
+                              cosigText.classList.add('cosig-text');
+                              cosigText.textContent = ' 署名者を削除：';
+                              cosigText.style.color = 'red';
+                              newItem.insertBefore(cosigText, textSpan); // テキストの前に「署名者を削除：」を追加
+                              console.log("inputValue===", inputValue);
+                              cosig_del.push(inputValue);
+                            }
+
+                            console.log("%ccosig=====", "color: red", cosig);
+                            console.log("%ccosig2=====", "color: red", cosig2);
+                            console.log("%ccosig_del=====", "color: red", cosig_del);
+                            if (cosig_del.length > 1) {
+                              Swal.fire({
+                                title: `<font color="coral">削除する署名者は１つだけにしてください！</font>`
+                              })
+                            }
+
+                          });
+
+                          newItem.appendChild(deleteButton);
+                          displayContainer.appendChild(newItem);
+                        });
+
+                      });
+
+                  } else {                            //  アクティブアドレスの場合
+                    displayContainer.innerHTML = '';
+                    default_account.innerHTML = `<font style="color:blue">< ${window.SSS.activeName} >　　${window.SSS.activeAddress}</font>`;
+
+                    console.log("%ccosig=====", "color: red", cosig);  // 
+                    console.log("%ccosig2=====", "color: red", cosig2);  //
+
+                    // 条件が満たされていない場合、0を削除して元の状態に戻す
+                    select_min_sig.removeChild(options[0]); // 先頭の要素（0）を削除
+                    select_min_sig.value = '1'; // 最初の値（1）を選択状態にする
+
+                    select_min_del_sig.removeChild(options2[0]); // 先頭の要素（0）を削除
+                    select_min_del_sig.value = '1'; // 最初の値（1）を選択状態にする
+                  }
                 }
               });
 
@@ -424,9 +640,10 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
               select.addEventListener('change', handleChange_msig);
             });
 
-          }, err => $("#js-show-popup_multisig").remove())
+          }, err => $("#js-show-popup_multisig").remove());
 
         //ブロック //////////////////////////////////////////////////////////////////
+
         chainRepo.getChainInfo().subscribe(chain => {  //////////   
 
           rxjs.zip(
@@ -1293,19 +1510,17 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
           console.log("%cbondedListener====================", "color: red", bondedListener)
 
-          let popupCount = 0; // 表示されたポップアップの数をカウントする変数
-
           bondedSubscribe = function (observer) {
-            console.log("%c導通チェック=================  1271", "color:red")
+            console.log("%c導通チェック=================  1347", "color:red")
             observer.pipe(
 
               //すでに署名済みでない場合
               op.filter(_ => {
-                console.log("%c導通チェック=================  1276", "color:red")
+                console.log("%c導通チェック=================  1352", "color:red")
                 return !_.signedByAccount(alice_1.publicKey);
               })
             ).subscribe(_ => {
-              console.log("%c導通チェック=================  1280", "color:red");
+              console.log("%c導通チェック=================  1356", "color:red");
 
               txRepo.getTransactionsById(
                 [_.transactionInfo.hash],
@@ -1324,10 +1539,6 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
                     if ((aggTx[0].cosignatures.find((inTx) => inTx.signer.publicKey === window.SSS.activePublicKey)) === undefined) {
                       if (msig.cosignatoryAddresses.length === 0) { // 連署者アカウントの場合
-
-                        popupCount++; // ポップアップのカウントを増加
-
-                        console.log("popupCount ===", popupCount)
 
                         Swal.fire({
                           title: `署名要求が届いています`,
@@ -1379,7 +1590,85 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
           bondedSubscribe(bondedListener);
           bondedSubscribe(bondedHttp);
 
-        });
+        },
+          error => {
+            // エラーが発生した場合の処理　　マルチシグアカウントが無い場合 //////////////////////////////////////////////////
+
+            console.error("マルチシグアカウントが有りません");
+
+            bondedSubscribe = function (observer) {
+              console.log("%c導通チェック=================  1433", "color:red")
+              observer.pipe(
+
+                //すでに署名済みでない場合
+                op.filter(_ => {
+                  console.log("%c導通チェック=================  1438", "color:red")
+                  return !_.signedByAccount(alice_1.publicKey);
+                })
+              ).subscribe(_ => {
+                console.log("%c導通チェック=================  1442", "color:red");
+
+                txRepo.getTransactionsById(
+                  [_.transactionInfo.hash],
+                  sym.TransactionGroup.Partial
+                )
+                  .pipe(
+                    op.filter(aggTx => aggTx.length > 0)
+                  )
+                  .subscribe(aggTx => {
+                    console.log("検知 aggTx===", aggTx)
+
+                    if (aggTx[0].signer.address.address !== window.SSS.activeAddress) { //メインのアカウントが起案者のアカウントではない場合
+                      //インナートランザクションの署名者に自分が指定されている場合
+
+                      console.log("署名済みチェック===", (aggTx[0].cosignatures.find((inTx) => inTx.signer.publicKey === window.SSS.activePublicKey)));
+
+                      if ((aggTx[0].cosignatures.find((inTx) => inTx.signer.publicKey === window.SSS.activePublicKey)) === undefined) {
+
+                        Swal.fire({
+                          title: `署名要求が届いています`,
+                          html: `<a href="https://testnet.symbol.fyi/transactions/${aggTx[0].transactionInfo.hash}" target="_blank"><b>➡️こちらをクリックして詳細を確認してください。</b></a><br><br><font color="red">取引を取り消す事は出来ません。<br>全ての金額と受取人のアドレスを確認し、<br>慎重に署名を行なってください。</font>`,
+                          icon: 'info',
+                          showCancelButton: true,
+                          confirmButtonText: '署名する',
+                          cancelButtonText: 'キャンセル',
+
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+
+                            // 実行ボタンがクリックされた場合の処理
+                            window.SSS.setTransaction(aggTx[0]);
+                            window.SSS.requestSignCosignatureTransaction().then((signedTx) => {
+                              console.log('signedTx', signedTx);
+                              txRepo.announceAggregateBondedCosignature(signedTx);// announce
+
+                              var my_audio = new Audio("./src/ding.ogg");
+                              my_audio.currentTime = 0;  //再生開始位置を先頭に戻す
+                              my_audio.play();  //サウンドを再生
+
+                              Swal.fire({
+                                title: '署名しました！',
+                                html: `<a href="https://testnet.symbol.fyi/transactions/${aggTx[0].transactionInfo.hash}" target="_blank"><b>➡️こちらをクリックして詳細を確認してください。</b></a>`,
+                                cancelButtonText: '閉じる'
+                              })
+                            })
+
+                            // Swal.fire('実行完了', 'プログラムが正常に実行されました。', 'success');
+                          } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            // キャンセルボタンがクリックされた場合の処理
+                            console.log('署名をキャンセルしました。');
+                          }
+                        });
+
+                      }
+                    }
+                  });
+              });
+            }
+            bondedSubscribe(bondedListener);
+            bondedSubscribe(bondedHttp);
+
+          });
 
     });
 
@@ -1926,8 +2215,8 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
 
                 xym_mon(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT, window.SSS.activePublicKey); // xym_mon NFT画像表示
                 nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示
-                if (aggTx[0].innerTransactions.length > 1) { 
-                  if(aggTx[0].innerTransactions[1].recipientAddress.address === window.SSS.activeAddress){
+                if (aggTx[0].innerTransactions.length > 1) {
+                  if (aggTx[0].innerTransactions[1].recipientAddress.address === window.SSS.activeAddress && tx.type === 16961) {
                     dom_receive.innerHTML = `<div style="text-align: center"><font color="#008000" size="+1" >😊⬅️🖼️</font></div>`;
                   }
                   nftdrive(aggTx[0].innerTransactions[1].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示  
@@ -2200,7 +2489,7 @@ async function handleSSS() {
   const mosaic_ID = document.querySelector('.select_m1').value;
   const amount = document.getElementById('form-amount').value;
   const message = document.getElementById('form-message').value;
-  const enc = document.getElementById('form-enc').value;
+  const enc = document.getElementById('form-enc').checked;
   const maxfee = document.getElementById('form-maxfee').value;
 
   if (addr.length === 45) {   //ハイフン有りのアドレスの場合
@@ -2212,6 +2501,7 @@ async function handleSSS() {
   console.log("mosaic_ID==", mosaic_ID);
   console.log("amount==", amount);
   console.log("message==", message);
+  console.log("enc==", enc);
   console.log("maxfee==", maxfee);
 
   console.log("%cmessage UTF-8 バイト数=", "color: red", bytelength(message));
@@ -2226,7 +2516,7 @@ async function handleSSS() {
   const div = mosaicInfo.divisibility; // 可分性
 
 
-  if (enc === "0") {                      //////////////// メッセージが平文の場合 ////////////////////////////////////
+  if (enc === false) {                      //////////////// メッセージが平文の場合 ////////////////////////////////////
 
     if (addr.length === 39) {  //文字数が39文字の場合
       if (networkType === 152) {
@@ -2301,7 +2591,7 @@ async function handleSSS() {
       })
     }
   } else
-    if (enc === "1") {                ////////////// メッセージが暗号の場合 /////////////////////////////////////////////////
+    if (enc === true) {                ////////////// メッセージが暗号の場合 /////////////////////////////////////////////////
       if (addr.length === 39) {  //文字数が39文字の場合
         if (networkType === 152) {
           if (addr.charAt(0) !== "T") {
@@ -3525,8 +3815,8 @@ function select_Page() {
 
               xym_mon(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT, window.SSS.activePublicKey); // xym_mon NFT画像表示
               nftdrive(aggTx[0].innerTransactions[0].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示
-              if (aggTx[0].innerTransactions.length > 1) { 
-                if(aggTx[0].innerTransactions[1].recipientAddress.address === window.SSS.activeAddress){
+              if (aggTx[0].innerTransactions.length > 1) {
+                if (aggTx[0].innerTransactions[1].recipientAddress.address === window.SSS.activeAddress && tx.type === 16961) {
                   dom_receive.innerHTML = `<div style="text-align: center"><font color="#008000" size="+1" >😊⬅️🖼️</font></div>`;
                 }
                 nftdrive(aggTx[0].innerTransactions[1].mosaics[0].id, dom_NFT); // nftdrive NFT画像表示  
@@ -5607,6 +5897,18 @@ function appendHtml(src, dom_NFT) {      // html
   //document.getElementsByTagName('body')[0].appendChild(tag);
   dom_NFT.appendChild(tag);
 }
+/////////////////////////////////////////////////////////////////////////////
+
+function append_3D(src, dom_NFT, mo_id) {      // 3D
+
+  src = `https://nftdrive-ex.net/3dload.php?address=${mo_id}`;
+  (tag = document.createElement('iframe')).src = src;
+  tag.width = 300;
+  tag.height = 300;
+  tag.className = "mosaic_img";
+  //document.getElementsByTagName('body')[0].appendChild(tag);
+  dom_NFT.appendChild(tag);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  NFT (ジムモン) をデコードして表示する //
@@ -5744,6 +6046,10 @@ function nftdrive(mosaic, dom_NFT) {
         if (nftData.indexOf("data:text/html") === 0) {
           dom_NFT.innerHTML = `<br><div style="text-align: center"><a class="btn-style-link_2" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a></div><br>`
           appendHtml(nftData, dom_NFT);
+        }
+        if (nftData.indexOf("data:application/octet-stream") === 0) {
+          dom_NFT.innerHTML = `<br><div style="text-align: center"><a class="btn-style-link_2" href="https://nftdrive-explorer.info/chart.html?net=main&mosaic=${mosaic.id.toHex()}" target="_blank">NFTDrive</a></div><br>`
+          append_3D(nftData, dom_NFT, mo.id.toHex());
         }
       }
     });
@@ -6436,3 +6742,242 @@ async function multisig_mosaic(address) {
     });
 
 }
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+async function Msig_account() {    //  マルチシグアカウント作成　
+
+  console.log('handle sss multisig account');
+  let multisig_addr = document.querySelector('.select_msig');
+  let min_sig = document.getElementById('min_sig').value;
+  let min_del_sig = document.getElementById('min_del_sig').value;
+  let tx;
+  let aggregateTx;
+
+  if (multisig_addr === null) {   // セレクトボックスの値が null の場合
+    multisig_addr = window.SSS.activeAddress;
+  } else {                        // セレクトボックスの値がある場合
+    multisig_addr = document.querySelector('.select_msig').value;
+  }
+
+
+  console.log("multisig_addr==", multisig_addr);
+  console.log("新しい承認数 ==", min_sig);
+  console.log("新しい削除承認数 ==", min_del_sig);
+  console.log("cosig2==", cosig2); // グローバル変数
+  console.log("cosig_del==", cosig_del); // グローバル変数
+
+
+  const msig_account_Info = await accountRepo.getAccountInfo(sym.Address.createFromRawAddress(multisig_addr))
+    .toPromise()
+
+  //console.log("msig_account_Info===", msig_account_Info.publicKey)
+
+  const publicAccount = sym.PublicAccount.createFromPublicKey(       // マルチシグ化したいアカウントの公開鍵
+    msig_account_Info.publicKey,
+    networkType
+  );
+
+
+  if (multisig_addr !== window.SSS.activeAddress) { //  マルチシグに変更したいアカウントが、元々マルチシグアカウントの場合）
+    msigRepo.getMultisigAccountInfo(msig_account_Info.address).subscribe(msig => {
+
+      console.log("マルチシグアカウントの設定変更");
+      console.log("現在の最小承認数 =======", msig.minApproval);
+      console.log("現在の最小削除承認数 =======", msig.minRemoval);
+
+      min_sig = min_sig - msig.minApproval;        // 承認 署名者の増減計算
+      min_del_sig = min_del_sig - msig.minRemoval; // 除名 署名者の増減計算
+
+      tx = sym.MultisigAccountModificationTransaction.create(
+        undefined,
+        min_sig, //minApproval:承認のために必要な最小署名者数の増減
+        min_del_sig, //minRemoval:除名のために必要な最小署名者数の増減
+        cosig2, //追加対象アドレスリスト
+        cosig_del, //除名対象アドレスリスト
+        networkType
+      );
+
+      console.log("multisig_Modification====", tx);
+
+      if (msig.minRemoval === 1 && cosig2.length === 0 && cosig_del.length === 1) {  // 最小削除承認数が 1で、追加のアカウントが無い、削除アカウントが１の場合------------------------
+
+        console.log("aggregate Complete Tx", "color: red");
+        aggregateTx = sym.AggregateTransaction.createComplete(
+          sym.Deadline.create(epochAdjustment),  //Deadline
+          [
+            tx.toAggregate(publicAccount),
+          ],
+          networkType,
+          []
+        ).setMaxFeeForAggregate(100, 1);
+
+        console.log("aggregateTx====", aggregateTx);
+
+        window.SSS.setTransaction(aggregateTx);       // SSSにトランザクションを登録
+        window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+          console.log('signedTx', signedTx);
+          txRepo.announce(signedTx);
+        })
+
+      } else { // 最小承認数が　２以上の場合   -------------------------------------------------------
+        console.log("aggregate Bonded Tx", "color: red");
+
+        aggregateTx = sym.AggregateTransaction.createBonded(
+          sym.Deadline.create(epochAdjustment, 48),  //Deadline
+          [
+            tx.toAggregate(publicAccount),
+          ],
+          networkType,
+          []
+        ).setMaxFeeForAggregate(100, msig.minApproval);
+
+
+        console.log("aggregateTx====", aggregateTx)
+        console.log("aggregateTx.maxFee======", parseInt(aggregateTx.maxFee.toHex(), 16) / 1000000);
+
+        window.SSS.setTransaction(aggregateTx);               // SSSにトランザクションを登録
+        window.SSS.requestSign().then((signedAggregateTx) => {// アグリゲートTxに署名
+
+          console.log("signedAggregateTx===", signedAggregateTx);
+
+          const hashLockTx = sym.HashLockTransaction.create(  //  ハッシュロック
+            sym.Deadline.create(epochAdjustment),
+            new sym.Mosaic(
+              new sym.NamespaceId("symbol.xym"),
+              sym.UInt64.fromUint(10 * 1000000)
+            ), //固定値:10XYM
+            sym.UInt64.fromUint(5760),
+            signedAggregateTx,
+            networkType
+          ).setMaxFee(100);
+
+          console.log("hashLockTx===", hashLockTx);
+
+          setTimeout(() => {
+            window.SSS.setTransaction(hashLockTx);               // SSSにトランザクションを登録
+            window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+              console.log('signedTx', signedTx);
+              txRepo.announce(signedTx);
+            })
+          }, 1000);
+
+          wsEndpoint = NODE.replace('http', 'ws') + "/ws";
+          listener = new sym.Listener(wsEndpoint, nsRepo, WebSocket);
+
+          listener.open().then(() => {
+
+            //Websocketが切断される事なく、常時監視するために、ブロック生成(約30秒毎)の検知を行う
+
+            // ブロック生成の検知  /////////////////////////////////////////////////////////////////
+            listener.newBlock()
+              .subscribe(block => {
+                //  console.log(block);    //ブロック生成 　表示OFF
+              });
+
+            // 承認トランザクションの検知  //////////////////////////////////////////////////////////
+            listener.confirmed(sym.Address.createFromRawAddress(window.SSS.activeAddress))
+              .subscribe(tx => {
+                //受信後の処理を記述
+                console.log(tx);
+
+                setTimeout(() => {
+                  txRepo.announceAggregateBonded(signedAggregateTx);   // アグボンアナウンス
+                }, 100);
+              });
+          });
+
+        })
+      }
+    })
+  } else {  // マルチシグに変換したいアカウントが、アクティブアカウントの場合　 ///////////////////////////////////////////
+
+    console.log("アクティブアカウントからのマルチシグ変換");
+
+    tx = sym.MultisigAccountModificationTransaction.create(
+      undefined,
+      min_sig, //minApproval:承認のために必要な最小署名者数の増減
+      min_del_sig, //minRemoval:除名のために必要な最小署名者数の増減
+      cosig2, //追加対象アドレスリスト
+      cosig_del, //除名対象アドレスリスト
+      networkType
+    );
+
+    console.log("multisig_Modification====", tx);
+
+    aggregateTx = sym.AggregateTransaction.createBonded(
+      sym.Deadline.create(epochAdjustment, 48),  //Deadline
+      [
+        tx.toAggregate(publicAccount),
+      ],
+      networkType,
+      []
+    ).setMaxFeeForAggregate(100, cosig.length); // 追加したい連署者数
+
+
+    console.log("aggregateTx====", aggregateTx)
+    console.log("aggregateTx.maxFee======", parseInt(aggregateTx.maxFee.toHex(), 16) / 1000000);
+
+    window.SSS.setTransaction(aggregateTx);               // SSSにトランザクションを登録
+    window.SSS.requestSign().then((signedAggregateTx) => {// アグリゲートTxに署名
+
+      console.log("導通チェック＝＝＝  signedAggregateTx ")
+
+      console.log("signedAggregateTx===", signedAggregateTx);
+
+      const hashLockTx = sym.HashLockTransaction.create(  //  ハッシュロック
+        sym.Deadline.create(epochAdjustment),
+        new sym.Mosaic(
+          new sym.NamespaceId("symbol.xym"),
+          sym.UInt64.fromUint(10 * 1000000)
+        ), //固定値:10XYM
+        sym.UInt64.fromUint(5760),
+        signedAggregateTx,
+        networkType
+      ).setMaxFee(100);
+
+      console.log("hashLockTx===", hashLockTx);
+
+      setTimeout(() => {
+        window.SSS.setTransaction(hashLockTx);               // SSSにトランザクションを登録
+        window.SSS.requestSign().then(signedTx => {   // SSSを用いた署名をユーザーに要求
+          console.log('signedTx', signedTx);
+          txRepo.announce(signedTx);
+        })
+      }, 1000);
+
+      wsEndpoint = NODE.replace('http', 'ws') + "/ws";
+      listener = new sym.Listener(wsEndpoint, nsRepo, WebSocket);
+
+      listener.open().then(() => {
+
+        //Websocketが切断される事なく、常時監視するために、ブロック生成(約30秒毎)の検知を行う
+
+        // ブロック生成の検知  /////////////////////////////////////////////////////////////////
+        listener.newBlock()
+          .subscribe(block => {
+            //  console.log(block);    //ブロック生成 　表示OFF
+          });
+
+        // 承認トランザクションの検知  //////////////////////////////////////////////////////////
+        listener.confirmed(sym.Address.createFromRawAddress(window.SSS.activeAddress))
+          .subscribe(tx => {
+            //受信後の処理を記述
+            console.log(tx);
+
+            setTimeout(() => {
+              txRepo.announceAggregateBonded(signedAggregateTx);   // アグボンアナウンス
+            }, 100);
+          });
+      });
+
+    })
+
+  }
+
+}
+
