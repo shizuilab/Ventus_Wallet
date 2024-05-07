@@ -604,7 +604,7 @@ setTimeout(() => {  //////////////////  指定した時間後に実行する  //
                             console.log("%ccosig_del=====", "color: red", cosig_del);
                             if (cosig_del.length > 1) {
                               Swal.fire({
-                                title: `<font color="coral">削除する署名者は１つだけにしてください！</font>`
+                                title: `<font color="coral">一度に削除出来る署名者は１つだけです！</font>`
                               })
                             }
 
