@@ -320,6 +320,11 @@ button.accountInfo{
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+#account_append_info_2 #tree_button { 
+  position: absolute;
+  top: -40px; 
+  right: 20px;
+}
 
 .sender-card {
   background: rgb(255, 255, 255,0.8);
@@ -374,25 +379,41 @@ input[type="file"] {
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);
 }
 
-.btn-gradient-radius_2 { /*  グラデーションボタン　マルチシグアカウント  */
+.btn-gradient-radius_tree { /*  グラデーションボタン　tree button */
   display: inline-block;
-  margin-left: auto;
-  margin-right: auto;
-  width:  100%;
-  padding: 10px 10px;
+  margin: 3px 10px 3px 0; 
+  padding: 0px 10px;
   border-radius: 15px;
   text-decoration: none;
   font-size: 15px;
   font-weight: bold;
   font-style: italic;
   color: blue;
+  background-image: linear-gradient(45deg, #ffffff00 0%, #e905feb2 100%);
+  transition: .4s;
+  box-shadow: 2px 2px 2px rgb(102, 113, 102);
+}
+
+.btn-gradient-radius_tree:hover {
   background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);
+}
+
+.btn-gradient-radius_2 { /*  グラデーションボタン　マルチシグアカウント  */
+  display: inline-block;
+  width:  35%;
+  border-radius: 15px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: italic;
+  color: blue;
+  background-image: linear-gradient(45deg, #ffffff00 0%, #66ffe670 100%);
   transition: .4s;
   box-shadow: 2px 2px 2px rgb(102, 113, 102);
 }
 
 .btn-gradient-radius_2:hover {
-  background-image: linear-gradient(45deg, #ffffff00 0%, #66ffe670 100%);
+  background-image: linear-gradient(45deg, #ffffff00 0%, #ffffff00 100%);
 }
 
 #button-haichi{
@@ -3307,6 +3328,7 @@ hr {
 /*******************************************/
 
 table {
+  table-layout: fixed;  /*  */
   border-collapse:  collapse; /* セルの線を重ねる */
   width: 100%;
 }
@@ -3317,6 +3339,13 @@ tr:nth-child(even) {
 
 th,td {
   padding: 5px 10px;          /* 余白指定 */
+
+  border: 1px solid #ccc;
+  padding: 8px;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 /**********************************/
